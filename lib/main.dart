@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'src/carrinho.dart';
 import 'src/tabs.dart';
 void main() {
   runApp(const MyApp());
