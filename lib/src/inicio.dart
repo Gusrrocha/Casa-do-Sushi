@@ -31,7 +31,7 @@ class Inicio extends StatelessWidget{
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.set_meal, size: 80),
-                    Text("Sushi mal-passado"),
+                    Text("Sushi"),
                     Row(
                       children: [
                         Padding(padding: EdgeInsets.all(10),child: Text("R\$")),
