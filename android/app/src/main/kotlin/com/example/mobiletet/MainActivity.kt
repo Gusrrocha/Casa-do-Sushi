@@ -1,4 +1,4 @@
-package com.example.mobiletet
+package com.example.CasadoSushi
 
 import io.flutter.embedding.android.FlutterActivity
 

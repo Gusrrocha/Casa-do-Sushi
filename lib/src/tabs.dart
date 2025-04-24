@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobiletet/src/carrinho.dart';
-import 'package:mobiletet/src/inicio.dart';
-import 'package:mobiletet/src/perfil.dart';
-import 'package:mobiletet/src/pesquisa.dart';
+import 'package:CasadoSushi/src/carrinho.dart';
+import 'package:CasadoSushi/src/inicio.dart';
+import 'package:CasadoSushi/src/perfil.dart';
+import 'package:CasadoSushi/src/pesquisa.dart';
 
 
 class Tabs extends StatefulWidget {
