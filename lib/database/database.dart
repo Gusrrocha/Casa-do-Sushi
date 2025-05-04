@@ -1,10 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:CasadoSushi/models/sushi.dart';
 import 'package:path/path.dart';
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 const String filename = "sushi_db.db";
 
 class SushiDatabase {
+  
   SushiDatabase._init();
 
   static final SushiDatabase instance = SushiDatabase._init();
@@ -19,17 +22,22 @@ class SushiDatabase {
 
   Future _createDB(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE Sushi (
+      CREATE TABLE IF NOT EXISTS Sushi (
       $idField $idType,
+      $photoField $textTypeNullable,
       $nameField $textType,
-      $descriptionField $textType,
-      $valueField $doubleType,
+      $descriptionField $textTypeNullable,
+      $valueField $doubleType
       )
     ''');
+    
   }
 
   Future<Database> _initializeDB(String filename) async {
+
     final dbPath = await getDatabasesPath();
+
+    
     final path = join(dbPath, filename);
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
@@ -40,7 +48,7 @@ class SushiDatabase {
     return sushi.copyWith(id: id);
   }
 
-  Future<List<Sushi?>> listSushi() async {
+  Future<List<Sushi>> listSushi() async {
     final db = await instance.database;
     final list = await db.query('Sushi');
     return list.map((json) => Sushi.fromJson(json)).toList();

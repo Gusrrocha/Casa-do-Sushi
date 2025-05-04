@@ -1,3 +1,4 @@
+import 'package:CasadoSushi/src/adminUI.dart';
 import 'package:flutter/material.dart';
 import 'package:CasadoSushi/src/carrinho.dart';
 import 'package:CasadoSushi/src/inicio.dart';
@@ -14,7 +15,7 @@ class Tabs extends StatefulWidget {
 
 class TabsState extends State <Tabs> {
   late List<Widget> listScreens;
-
+  bool isAdmin = true;
   @override
   void initState() {
     super.initState();
@@ -22,7 +23,10 @@ class TabsState extends State <Tabs> {
       Inicio(),
       Pesquisa(),
       Carrinho(),
-      Perfil()
+      Perfil(),
+      if(isAdmin)
+        AdminDashBoard()
+      
     ];
   }
 
@@ -31,7 +35,7 @@ class TabsState extends State <Tabs> {
     return MaterialApp(
       color: Colors.yellow,
       home: DefaultTabController(
-        length: 4,
+        length: isAdmin ? 5 : 4,
         animationDuration: Duration.zero,
         child: Scaffold(
           body: TabBarView(
@@ -58,6 +62,11 @@ class TabsState extends State <Tabs> {
               Tab(
                 text: 'Perfil',
                 icon: Icon(Icons.person)
+              ),
+              if(isAdmin == true)
+                Tab(
+                  text: 'Admin Dashboard',
+                  icon: Icon(Icons.admin_panel_settings)
               )
             ],
           ),
