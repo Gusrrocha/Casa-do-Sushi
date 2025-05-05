@@ -1,5 +1,6 @@
 import 'package:CasadoSushi/database/database.dart';
 import 'package:CasadoSushi/models/sushi.dart';
+import 'package:CasadoSushi/src/screensADB/addProduto.dart';
 import 'package:flutter/material.dart';
 
 class Produtos extends StatefulWidget{
@@ -44,7 +45,11 @@ class ProdutosState extends State<Produtos>{
           Text("Todos os produtos"),
           ElevatedButton(
             onPressed: () {
-
+              showModalBottomSheet(
+                context: context, 
+                isScrollControlled: true,
+                useSafeArea: true,
+                builder: (context) => AdicionarProduto());
             }, 
             child: const Text("Adicionar")
           ),
