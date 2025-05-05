@@ -38,7 +38,6 @@ class EditProdutoState extends State<EditProduto>{
 
   void saveForm(){
     if(_formKey.currentState!.validate()){
-      Sushi sushi_copy = widget.sushi; 
       Sushi sushi = Sushi(
         id: sushi_copy.id,
         photo: sushi_copy.photo,
@@ -60,10 +59,10 @@ class EditProdutoState extends State<EditProduto>{
 
   @override
   Widget build(BuildContext context) {
-    Sushi sushi_copy = widget.sushi; 
+    sushi_copy = widget.sushi; 
     _nameController.text = sushi_copy.name;
     _descriptionController.text = sushi_copy.description!;
-    _valueController.text = sushi_copy.value.toString();
+    _valueController.text = sushi_copy.value.toString().replaceAll('.', ',');
     return DraggableScrollableSheet(
       expand: false,
       snap: true,

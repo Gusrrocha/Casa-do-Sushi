@@ -1,80 +1,101 @@
+import 'package:CasadoSushi/database/database.dart';
+import 'package:CasadoSushi/models/sushi.dart';
 import 'package:flutter/material.dart';
 
-class Inicio extends StatelessWidget{
+class Inicio extends StatefulWidget {
   const Inicio({super.key});
 
-  Widget build(BuildContext context){
+  @override
+  InicioState createState() => InicioState();
+}
+
+class InicioState extends State<Inicio> {
+  SushiDatabase sushiDatabase = SushiDatabase.instance;
+  late List<Sushi> sushi = [];
+
+  @override
+  void initState() {
+    refreshTable();
+    super.initState();
+  }
+
+  refreshTable() {
+    sushiDatabase.listSushi().then(
+      (value) => {
+        setState(() {
+          sushi = value;
+        }),
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: const Text("Início")),),
-      body: 
-      Column(
+      appBar: AppBar(title: Center(child: const Text("Início"))),
+      body: Column(
         children: [
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
-                child:Text("Promoções...", style: TextStyle(fontWeight: FontWeight.bold)))
-            ],
-          ),
+          SizedBox(height: 20),
           Container(
-          margin: const EdgeInsets.fromLTRB(0,1.5,0,10),
-          padding: EdgeInsets.all(10),
-          height: 200,
-          child: ListView(
-            // This next line does the trick.
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[ 
-              Container(
-                width: 160, 
-                color: Colors.red,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.set_meal, size: 80),
-                    Text("Sushi"),
-                    Row(
-                      children: [
-                        Padding(padding: EdgeInsets.all(10),child: Text("R\$")),
-                        Spacer(),
-                        Padding(padding: EdgeInsets.fromLTRB(0, 0, 10, 0), child:Align(alignment: Alignment.bottomRight, child:Text("Valor")))
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
+            padding: EdgeInsets.all(10),
+            height: 160,
+            child: ListView(
+              // This next line does the trick.
+              scrollDirection: Axis.horizontal,
+              children: <Widget>[
+                for (var item in sushi)
+                  Container(
+                    width: 120,
+                    margin: const EdgeInsets.fromLTRB(8,0,8,0),
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withAlpha(100),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(3, 7),
+                        ),
                       ],
-                    )
-                    
-                  ],
-                ),
-              ),
-              Container(width: 160, color: Colors.blue),
-              Container(width: 160, color: Colors.green),
-              Container(width: 160, color: Colors.yellow),
-              Container(width: 160, color: Colors.orange),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.set_meal, size: 80),
+                        Text(item.name),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text("Valor", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                              ),
+                            ),
+                            Spacer(),
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                "R\$ ${item.value.toString().contains('.') ? item.value.toString().replaceAll('.', ',') : "${item.value},00"}",
+                                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 2, 0, 2),
-                child:Text("Outra coisa...", style: TextStyle(fontWeight: FontWeight.bold)))
-            ],
-          ),
-          Container(
-          margin: const EdgeInsets.fromLTRB(0,1.5,0,10),
-          padding: EdgeInsets.all(10),
-          height: 200,
-          child: ListView(
-            // This next line does the trick.
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              Container(width: 160, color: Colors.red),
-              Container(width: 160, color: Colors.blue),
-              Container(width: 160, color: Colors.green),
-              Container(width: 160, color: Colors.yellow),
-              Container(width: 160, color: Colors.orange),
-              ],
-            ),
-          ),
-          ],
-        ),
+        ],
+      ),
     );
   }
 }

@@ -40,19 +40,27 @@ class ProdutosState extends State<Produtos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Center(child:Text("Produtos"))
+      ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("Todos os produtos"),
-          ElevatedButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                builder: (context) => AdicionarProduto(),
-              );
-            },
-            child: const Text("Adicionar"),
+          Padding(padding: EdgeInsets.all(8), child: SizedBox(height:5.0)),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton( 
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  builder: (context) => AdicionarProduto(),
+                );
+              },
+              child: const Text("Adicionar"),
+            ),
           ),
           if (sushi.isNotEmpty)
             ListView.builder(
