@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:CasadoSushi/models/sushi.dart';
 import 'package:path/path.dart';
-import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 const String filename = "sushi_db.db";
 
@@ -34,10 +32,7 @@ class SushiDatabase {
   }
 
   Future<Database> _initializeDB(String filename) async {
-
     final dbPath = await getDatabasesPath();
-
-    
     final path = join(dbPath, filename);
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
@@ -48,14 +43,28 @@ class SushiDatabase {
     return sushi.copyWith(id: id);
   }
 
+
+
   Future<List<Sushi>> listSushi() async {
     final db = await instance.database;
     final list = await db.query('Sushi');
     return list.map((json) => Sushi.fromJson(json)).toList();
   }
 
+  Future<void> deleteSushi(int id) async{
+    final db = await instance.database;
+    await db.delete("Sushi", where: '_id = ?', whereArgs: [id]);
+  }
+
+  Future<void> updateSushi(Sushi sushi, int id) async{
+    final db = await instance.database;
+    await db.update('Sushi', sushi.toJson(), where: '_id = ?', whereArgs: [id]);
+  } 
   Future<void> close() async {
     final db = await instance.database;
+    _database = null;
     return db.close();
   }
+
+  
 }
