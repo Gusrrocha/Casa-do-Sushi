@@ -63,6 +63,7 @@ class DatabaseHelper {
       quantidade INTEGER NOT NULL,
       valor $doubleType
       FOREIGN KEY(idPedido) REFERENCES Pedido(id)
+      FOREIGN KEY(idProduto) REFERENCES Produto(id)
     ''');
     
   }
