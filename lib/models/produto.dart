@@ -1,11 +1,10 @@
-
 const String idField = "_id";
 const String photoField = "photo";
 const String nameField = "name";
 const String descriptionField = "description";
 const String valueField = "value";
 
-const List<String> sushiColumns = [
+const List<String> produtoColumns = [
   idField,
   photoField,
   nameField,
@@ -13,19 +12,16 @@ const List<String> sushiColumns = [
   valueField
 ];
 
-const String boolType = "BOOLEAN NOT NULL";
-const String idType = "INTEGER PRIMARY KEY AUTOINCREMENT";
-const String textTypeNullable = "TEXT";
-const String textType = "TEXT NOT NULL";
-const String doubleType = "REAL NOT NULL";
-class Sushi{
+
+
+class Produto{
   final int? id;
   final String? photo;
   final String name;
   final String? description;
   final double value;
 
-  const Sushi({
+  const Produto({
     this.id,
     this.photo,
     required this.name,
@@ -33,7 +29,7 @@ class Sushi{
     required this.value
   });
 
-  static Sushi fromJson(Map<String, dynamic> json) => Sushi(
+  static Produto fromJson(Map<String, dynamic> json) => Produto(
     id: json[idField] as int?,
     photo: json[photoField] as String?,
     name: json[nameField] as String,
@@ -49,14 +45,14 @@ class Sushi{
     valueField: value,
   };
 
-  Sushi copyWith({
+  Produto copyWith({
     int? id,
     String? photo,
     String? name,
     String? description,
     double? value,
   }) => 
-  Sushi(
+  Produto(
     id: id ?? this.id,
     photo: photo ?? this.photo,
     name: name ?? this.name,

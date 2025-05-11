@@ -1,7 +1,7 @@
-import 'package:CasadoSushi/database/database.dart';
-import 'package:CasadoSushi/models/sushi.dart';
-import 'package:CasadoSushi/src/screensADB/add_produto.dart';
-import 'package:CasadoSushi/src/screensADB/edit_produto.dart';
+import 'package:casadosushi/models/produto.dart';
+import 'package:casadosushi/repositories/produto_repository.dart';
+import 'package:casadosushi/src/screensADB/add_produto.dart';
+import 'package:casadosushi/src/screensADB/edit_produto.dart';
 import 'package:flutter/material.dart';
 
 class Produtos extends StatefulWidget {
@@ -12,8 +12,8 @@ class Produtos extends StatefulWidget {
 }
 
 class ProdutosState extends State<Produtos> {
-  SushiDatabase sushiDatabase = SushiDatabase.instance;
-  late List<Sushi> sushi = [];
+  ProdutoRepository produtoRepository = ProdutoRepository();
+  late List<Produto> produto = [];
 
   @override
   void initState() {
@@ -21,17 +21,11 @@ class ProdutosState extends State<Produtos> {
     super.initState();
   }
 
-  @override
-  dispose() {
-    sushiDatabase.close();
-    super.dispose();
-  }
-
   refreshTable() {
-    sushiDatabase.listSushi().then(
+    produtoRepository.listProduto().then(
       (value) => {
         setState(() {
-          sushi = value;
+          produto = value;
         }),
       },
     );
@@ -62,17 +56,17 @@ class ProdutosState extends State<Produtos> {
               child: const Text("Adicionar"),
             ),
           ),
-          if (sushi.isNotEmpty)
+          if (produto.isNotEmpty)
             ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: sushi.length,
+              itemCount: produto.length,
               itemBuilder:
                   (context, index) => Card(
                     child: ListTile(
-                      leading: Text(sushi[index].id.toString()),
-                      title: Text(sushi[index].name),
-                      subtitle: Text("R\$ ${sushi[index].value.toString().replaceAll('.',',')}"),
+                      leading: Text(produto[index].id.toString()),
+                      title: Text(produto[index].name),
+                      subtitle: Text("R\$ ${produto[index].value.toString().replaceAll('.',',')}"),
                       trailing: SizedBox(
                         width: 100,
                         child: Row(
@@ -86,7 +80,7 @@ class ProdutosState extends State<Produtos> {
                                   context: context,
                                   isScrollControlled: true,
                                   useSafeArea: true,
-                                  builder: (context) => EditProduto(id: sushi[index].id!, sushi: sushi[index]),
+                                  builder: (context) => EditProduto(id: produto[index].id!, produto: produto[index]),
                                 );
                               },
                             ),
@@ -94,7 +88,7 @@ class ProdutosState extends State<Produtos> {
                               icon: Icon(Icons.delete),
                               onPressed: () {
                                 setState(() {
-                                  sushiDatabase.deleteSushi(sushi[index].id!);
+                                  produtoRepository.deleteProduto(produto[index].id!);
                                   refreshTable();
                                 });
                               },

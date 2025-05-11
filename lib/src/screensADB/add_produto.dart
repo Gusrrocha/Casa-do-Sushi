@@ -1,5 +1,5 @@
-import 'package:CasadoSushi/database/database.dart';
-import 'package:CasadoSushi/models/sushi.dart';
+import 'package:casadosushi/models/produto.dart';
+import 'package:casadosushi/repositories/produto_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,31 +14,26 @@ class AdicionarProduto extends StatefulWidget{
 
 class AdicionarProdutoState extends State<AdicionarProduto>{
   
-  SushiDatabase sushiDatabase = SushiDatabase.instance;
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _valueController = TextEditingController();
+  ProdutoRepository produtoRepository = ProdutoRepository();
 
   @override
   void initState() {
     super.initState();
   }
   
-  @override
-  dispose(){
-    sushiDatabase.close();
-    super.dispose();
-  }
 
   void saveForm(){
     if(_formKey.currentState!.validate()){
-      Sushi sushi = Sushi(
+      Produto produto = Produto(
         name: _nameController.text, 
         description: _descriptionController.text, 
         value: !_valueController.text.contains(',') ? double.parse(_valueController.text) : double.parse(_valueController.text.replaceAll(',', '.'))
       );
-      sushiDatabase.createSushi(sushi);
+      produtoRepository.createProduto(produto);
       _nameController.clear();
       _descriptionController.clear();
       _valueController.clear();

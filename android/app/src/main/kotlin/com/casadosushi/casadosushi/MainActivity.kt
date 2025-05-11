@@ -1,4 +1,4 @@
-package com.example.CasadoSushi
+package com.casadosushi.casadosushi
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -7,7 +7,7 @@ void main() {
   if(kIsWeb){
     databaseFactory = databaseFactoryFfiWeb;
   }
-  
+ 
   runApp(const MyApp());
 }
 

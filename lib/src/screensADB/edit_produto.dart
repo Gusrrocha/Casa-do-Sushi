@@ -1,12 +1,12 @@
-import 'package:CasadoSushi/database/database.dart';
-import 'package:CasadoSushi/models/sushi.dart';
+import 'package:casadosushi/models/produto.dart';
+import 'package:casadosushi/repositories/produto_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class EditProduto extends StatefulWidget{
   final int id;
-  final Sushi sushi;
-  const EditProduto({super.key, required this.id, required this.sushi});
+  final Produto produto;
+  const EditProduto({super.key, required this.id, required this.produto});
 
   @override
   EditProdutoState createState() => EditProdutoState();
@@ -15,37 +15,30 @@ class EditProduto extends StatefulWidget{
 }
 
 class EditProdutoState extends State<EditProduto>{
-  late Sushi sushi_copy;
-  SushiDatabase sushiDatabase = SushiDatabase.instance;
+  late Produto produto_copy;
+  ProdutoRepository produtoRepository = ProdutoRepository();
+
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _valueController = TextEditingController();
-  
-  
 
   @override
   void initState() {
     super.initState();
     
   }
-  
-  @override
-  dispose(){
-    sushiDatabase.close();
-    super.dispose();
-  }
 
   void saveForm(){
     if(_formKey.currentState!.validate()){
-      Sushi sushi = Sushi(
-        id: sushi_copy.id,
-        photo: sushi_copy.photo,
+      Produto produto = Produto(
+        id: produto_copy.id,
+        photo: produto_copy.photo,
         name: _nameController.text, 
         description: _descriptionController.text, 
         value: !_valueController.text.contains(',') ? double.parse(_valueController.text) : double.parse(_valueController.text.replaceAll(',', '.'))
       );
-      sushiDatabase.updateSushi(sushi, widget.id);
+      produtoRepository.updateProduto(produto, widget.id);
       _nameController.clear();
       _descriptionController.clear();
       _valueController.clear();
@@ -59,10 +52,10 @@ class EditProdutoState extends State<EditProduto>{
 
   @override
   Widget build(BuildContext context) {
-    sushi_copy = widget.sushi; 
-    _nameController.text = sushi_copy.name;
-    _descriptionController.text = sushi_copy.description!;
-    _valueController.text = sushi_copy.value.toString().replaceAll('.', ',');
+    produto_copy = widget.produto; 
+    _nameController.text = produto_copy.name;
+    _descriptionController.text = produto_copy.description!;
+    _valueController.text = produto_copy.value.toString().replaceAll('.', ',');
     return DraggableScrollableSheet(
       expand: false,
       snap: true,

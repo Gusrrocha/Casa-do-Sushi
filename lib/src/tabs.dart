@@ -1,9 +1,9 @@
-import 'package:CasadoSushi/src/adminUI.dart';
+import 'package:casadosushi/src/adminUI.dart';
 import 'package:flutter/material.dart';
-import 'package:CasadoSushi/src/carrinho.dart';
-import 'package:CasadoSushi/src/inicio.dart';
-import 'package:CasadoSushi/src/perfil.dart';
-import 'package:CasadoSushi/src/pesquisa.dart';
+import 'package:casadosushi/src/carrinho.dart';
+import 'package:casadosushi/src/inicio.dart';
+import 'package:casadosushi/src/perfil.dart';
+import 'package:casadosushi/src/pesquisa.dart';
 
 
 class Tabs extends StatefulWidget {

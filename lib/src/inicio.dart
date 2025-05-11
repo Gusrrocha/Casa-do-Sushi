@@ -1,5 +1,5 @@
-import 'package:CasadoSushi/database/database.dart';
-import 'package:CasadoSushi/models/sushi.dart';
+import 'package:casadosushi/models/produto.dart';
+import 'package:casadosushi/repositories/produto_repository.dart';
 import 'package:flutter/material.dart';
 
 class Inicio extends StatefulWidget {
@@ -10,8 +10,8 @@ class Inicio extends StatefulWidget {
 }
 
 class InicioState extends State<Inicio> {
-  SushiDatabase sushiDatabase = SushiDatabase.instance;
-  late List<Sushi> sushi = [];
+  ProdutoRepository produtoRepository = ProdutoRepository();
+  late List<Produto> produto = [];
 
   @override
   void initState() {
@@ -20,10 +20,10 @@ class InicioState extends State<Inicio> {
   }
 
   refreshTable() {
-    sushiDatabase.listSushi().then(
+    produtoRepository.listProduto().then(
       (value) => {
         setState(() {
-          sushi = value;
+          produto = value;
         }),
       },
     );
@@ -48,7 +48,7 @@ class InicioState extends State<Inicio> {
               // This next line does the trick.
               scrollDirection: Axis.horizontal,
               children: <Widget>[
-                for (var item in sushi)
+                for (var item in produto)
                   Container(
                     width: 120,
                     margin: const EdgeInsets.fromLTRB(8,0,8,0),
