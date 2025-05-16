@@ -1,3 +1,4 @@
+import 'package:casadosushi/database/auth.dart';
 import 'package:casadosushi/screens/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +10,7 @@ class Perfil extends StatefulWidget{
   PerfilState createState() => PerfilState();
 }
 class PerfilState extends State<Perfil>{
-  
+  Auth auth = Auth();
 
 
   @override
@@ -26,12 +27,16 @@ class PerfilState extends State<Perfil>{
         children: [
           ElevatedButton(
             onPressed: () {
-              final navigator = Navigator.of(context);
-            
+              final navigator = Navigator.of(context);          
               () async {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setBool('isLoggedIn', false);
-
+                try{
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setBool('isLoggedIn', false);
+                  auth.logout();
+                }
+                catch (e){
+                  print("Erro ao tentar sair: $e");
+                }
                 if(!mounted) return;
 
                 navigator.pushReplacement(

@@ -1,3 +1,4 @@
+import 'package:casadosushi/database/auth.dart';
 import 'package:casadosushi/repositories/usuario_repository.dart';
 import 'package:casadosushi/screens/cadastro.dart';
 import 'package:casadosushi/screens/tabs.dart';
@@ -15,9 +16,8 @@ class LoginPageState extends State<LoginPage>{
   final emailController = TextEditingController();
   final senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  Auth auth = Auth();
   bool isLoginTrue = false;
-
   UsuarioRepository usuarioRepository = UsuarioRepository(); 
 
   @override
@@ -30,7 +30,14 @@ class LoginPageState extends State<LoginPage>{
     final email = emailController.text;
     final senha = senhaController.text;
     if(_formKey.currentState!.validate()){
-      if(await usuarioRepository.authUser(email, senha)){
+        try{
+          await auth.login(email,senha);
+        }
+        catch (e){
+          setState(() {
+          isLoginTrue = true;
+          });
+        }
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);
         if(!mounted) return;
@@ -41,13 +48,11 @@ class LoginPageState extends State<LoginPage>{
         ); 
       }
       else{
-        setState(() {
-          isLoginTrue = true;
-        });
+        
       }
-    }
-    
   }
+    
+  
   
   @override
   Widget build(BuildContext context) {
@@ -83,7 +88,7 @@ class LoginPageState extends State<LoginPage>{
                     },
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "Endereço de e-mail"
+                      labelText: "Endereço de e-mail"
                     ),
                   ),
                 ),
@@ -105,7 +110,7 @@ class LoginPageState extends State<LoginPage>{
                     },
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "Senha"
+                      labelText: "Senha"
                     ),
                     obscureText: true,
                   ),

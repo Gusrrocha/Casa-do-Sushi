@@ -64,53 +64,77 @@ class AdicionarProdutoState extends State<AdicionarProduto>{
                 )
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24.0),
+                padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 10),
                 child: Column(
                   children: [
-                    TextFormField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                        icon: Icon(Icons.person),
-                        labelText: 'Nome do Produto',
-                        border: OutlineInputBorder()
+                    Container(
+                      width: MediaQuery.of(context).size.width *.9,
+                      margin: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: const Color.fromARGB(255, 204, 96, 82).withAlpha(64)
+                      ),
+                      child: TextFormField(
+                      controller: _nameController,
+                      decoration: const InputDecoration(  
+                          labelText: 'Nome do Produto',
+                          border: InputBorder.none
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, digite o nome do produto.';
+                        }
+                        return null;
+                      },
+                                        ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, digite o nome do produto.';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _descriptionController,
-                    decoration: const InputDecoration(
-                        icon: Icon(Icons.person),
-                        labelText: 'Descrição do Produto',
-                        border: OutlineInputBorder()
+                    Container(
+                      width: MediaQuery.of(context).size.width *.9,
+                      margin: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: const Color.fromARGB(255, 204, 96, 82).withAlpha(64)
+                      ),
+                      child: TextFormField(
+                        controller: _descriptionController,
+                        decoration: const InputDecoration(
+                            labelText: 'Descrição do Produto',
+                            border: InputBorder.none
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, digite a descrição do produto.';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, digite a descrição do produto.';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _valueController,
-                    decoration: const InputDecoration(
-                        icon: Icon(Icons.person),
-                        labelText: 'Valor do Produto',
-                        border: OutlineInputBorder()
+                    Container(
+                      width: MediaQuery.of(context).size.width *.9,
+                      margin: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: const Color.fromARGB(255, 204, 96, 82).withAlpha(64)
+                      ),
+                      child: TextFormField(
+                        controller: _valueController,
+                        decoration: const InputDecoration(
+                            labelText: 'Valor do Produto',
+                            border: InputBorder.none
+                        ),
+                        keyboardType: TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\,?\d{0,2}')),],
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, digite o valor do produto.';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
-                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\,?\d{0,2}')),],
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, digite o valor do produto.';
-                      }
-                      return null;
-                    },
-                  ),
 
                   const SizedBox(height: 24.0),
                   ElevatedButton(

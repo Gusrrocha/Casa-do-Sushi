@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "321081180947",
+    "project_id": "casa-do-sushi-d05f9",
+    "storage_bucket": "casa-do-sushi-d05f9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321081180947:android:ed4c0aedfa2ac26d1310e6",
+        "android_client_info": {
+          "package_name": "com.casadosushi.casadosushi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnVDnImURTwroZpIkB74iF5YYNAbM7A-s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -46,7 +46,6 @@ class TabsState extends State <Tabs> {
             labelStyle: TextStyle(fontWeight: FontWeight.bold),
             unselectedLabelColor: Colors.black,
             unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
-            indicatorColor: Colors.pinkAccent,
             tabs: [
               Tab(
                 text: 'Início',

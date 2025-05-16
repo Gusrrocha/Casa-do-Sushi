@@ -1,4 +1,5 @@
 import 'package:casadosushi/repositories/usuario_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -31,17 +32,24 @@ class CadastroState extends State<Cadastro>{
     super.initState();
   }
   
-  cadastrar(){
+  cadastrar() async {
     final nome = "${nomeController.text} ${sobrenomeController.text}";
     final email = emailController.text;
     final senha = senhaController.text;
     final telefone = telefoneFormatter.getUnmaskedText();
     final cpf = _cpfFormatter.getUnmaskedText();
 
-    
     if(_formKey.currentState!.validate()){
-      usuarioRepository.insertUser(Usuario(nome: nome, email: email, telefone: telefone, cpf: cpf, senha: senha));
-      Navigator.of(context).pop();
+      try{
+        final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: senha);
+        await usuarioRepository.insertUser(Usuario(nome: nome, email: email, telefone: telefone, cpf: cpf, senha: senha));
+        if(!mounted) return;
+        Navigator.of(context).pop();
+      }
+      catch (e){
+        print("Erro ao cadastrar: $e");
+      }
+      
     }
   }
   @override
@@ -81,7 +89,7 @@ class CadastroState extends State<Cadastro>{
                         
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Nome"
+                          labelText: "Nome"
                         ),
                       ),
                     ),
@@ -103,7 +111,7 @@ class CadastroState extends State<Cadastro>{
                         },
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Sobrenome"
+                          labelText: "Sobrenome"
                         ),
                       ),
                     ),
@@ -128,7 +136,7 @@ class CadastroState extends State<Cadastro>{
                     },
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "Endereço de e-mail"
+                      labelText: "Endereço de e-mail"
                     ),
                   ),
                 ),
@@ -153,7 +161,7 @@ class CadastroState extends State<Cadastro>{
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "Telefone",
+                      labelText: "Telefone",
                       counterText: ''    
                     ),
                   ),
@@ -178,7 +186,7 @@ class CadastroState extends State<Cadastro>{
                     inputFormatters: [_cpfFormatter],
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "CPF"
+                      labelText: "CPF"
                     ),
                   ),
                 ),
@@ -199,9 +207,10 @@ class CadastroState extends State<Cadastro>{
                     }
                     return null;
                     },
+                    maxLength: 8,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "Senha"
+                      labelText: "Senha"
                     ),
                     obscureText: true,
                   ),
@@ -227,7 +236,7 @@ class CadastroState extends State<Cadastro>{
                     },
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: "Confirmar Senha"
+                      labelText: "Confirmar Senha"
                     ),
                     obscureText: true,
                   ),
