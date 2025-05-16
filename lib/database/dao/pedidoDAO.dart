@@ -12,6 +12,12 @@ class PedidoDAO{
     return pedido.copyWith(id: id);
   }
 
+  Future<List<Pedido>> listPedido() async{
+    final db = await _db;
+    final list = await db.query('Pedido');
+    return list.map((json) => Pedido.fromJson(json)).toList();
+  }
+
   Future<void> deletePedido(int id) async {
     final db = await _db;
     await db.delete('Pedido', where: 'id = ?', whereArgs: [id]);

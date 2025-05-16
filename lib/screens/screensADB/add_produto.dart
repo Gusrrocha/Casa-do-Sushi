@@ -37,9 +37,6 @@ class AdicionarProdutoState extends State<AdicionarProduto>{
       _nameController.clear();
       _descriptionController.clear();
       _valueController.clear();
-      setState(() {
-        
-      });
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Produto Adicionado com Sucesso!")));
     }

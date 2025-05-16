@@ -1,7 +1,7 @@
 import 'package:casadosushi/models/produto.dart';
 import 'package:casadosushi/repositories/produto_repository.dart';
-import 'package:casadosushi/src/screensADB/add_produto.dart';
-import 'package:casadosushi/src/screensADB/edit_produto.dart';
+import 'package:casadosushi/screens/screensADB/add_produto.dart';
+import 'package:casadosushi/screens/screensADB/edit_produto.dart';
 import 'package:flutter/material.dart';
 
 class Produtos extends StatefulWidget {
@@ -45,13 +45,14 @@ class ProdutosState extends State<Produtos> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton( 
-              onPressed: () {
-                showModalBottomSheet(
+              onPressed: () async {
+                await showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
                   useSafeArea: true,
                   builder: (context) => AdicionarProduto(),
                 );
+                refreshTable();
               },
               child: const Text("Adicionar"),
             ),
@@ -75,22 +76,21 @@ class ProdutosState extends State<Produtos> {
                             //Text(sushi[index].description ?? ""),
                             IconButton(
                               icon: Icon(Icons.edit),
-                              onPressed: () {
-                                showModalBottomSheet(
+                              onPressed: () async {
+                                await showModalBottomSheet(
                                   context: context,
                                   isScrollControlled: true,
                                   useSafeArea: true,
                                   builder: (context) => EditProduto(id: produto[index].id!, produto: produto[index]),
                                 );
+                                refreshTable();
                               },
                             ),
                             IconButton(
                               icon: Icon(Icons.delete),
-                              onPressed: () {
-                                setState(() {
-                                  produtoRepository.deleteProduto(produto[index].id!);
-                                  refreshTable();
-                                });
+                              onPressed: () async {
+                                await produtoRepository.deleteProduto(produto[index].id!);
+                                refreshTable();
                               },
                             ),
                           ],

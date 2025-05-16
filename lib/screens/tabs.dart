@@ -1,9 +1,9 @@
-import 'package:casadosushi/src/adminUI.dart';
+import 'package:casadosushi/screens/adminUI.dart';
 import 'package:flutter/material.dart';
-import 'package:casadosushi/src/carrinho.dart';
-import 'package:casadosushi/src/inicio.dart';
-import 'package:casadosushi/src/perfil.dart';
-import 'package:casadosushi/src/pesquisa.dart';
+import 'package:casadosushi/screens/carrinho.dart';
+import 'package:casadosushi/screens/inicio.dart';
+import 'package:casadosushi/screens/perfil.dart';
+import 'package:casadosushi/screens/pesquisa.dart';
 
 
 class Tabs extends StatefulWidget {
@@ -41,11 +41,12 @@ class TabsState extends State <Tabs> {
           body: TabBarView(
               physics: NeverScrollableScrollPhysics(), children: listScreens),
           bottomNavigationBar: TabBar(
+            dividerColor: Colors.transparent,
             labelColor: Colors.black,
             labelStyle: TextStyle(fontWeight: FontWeight.bold),
             unselectedLabelColor: Colors.black,
             unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
-            indicatorColor: Colors.tealAccent,
+            indicatorColor: Colors.pinkAccent,
             tabs: [
               Tab(
                 text: 'Início',
@@ -70,7 +71,7 @@ class TabsState extends State <Tabs> {
               )
             ],
           ),
-          backgroundColor: Colors.teal,
+          backgroundColor: Color(0xFFd97c7c),
         ),
       ),
     );

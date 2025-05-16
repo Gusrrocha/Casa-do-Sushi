@@ -40,9 +40,10 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS Usuario(
       id $idType,
-      nome $textTypeNullable,
-      telefone $textTypeNullable,
-      email $textTypeNullable,
+      nome $textType,
+      telefone $textType UNIQUE,
+      email $textType,
+      senha $textType,
       cpf TEXT NOT NULL UNIQUE
       )
     ''');
@@ -61,9 +62,10 @@ class DatabaseHelper {
       idPedido INTEGER NOT NULL,
       idProduto INTEGER NOT NULL,
       quantidade INTEGER NOT NULL,
-      valor $doubleType
-      FOREIGN KEY(idPedido) REFERENCES Pedido(id)
-      FOREIGN KEY(idProduto) REFERENCES Produto(id)
+      valor $doubleType,
+      FOREIGN KEY(idPedido) REFERENCES Pedido(id),
+      FOREIGN KEY(idProduto) REFERENCES Produto(_id)
+      )
     ''');
     
   }

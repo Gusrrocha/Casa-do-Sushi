@@ -6,6 +6,8 @@ class PedidoRepository {
 
   Future<Pedido> createPedido(Pedido pedido) => pedidoDAO.createPedido(pedido);
 
+  Future<List<Pedido>> listPedido() => pedidoDAO.listPedido();
+
   Future<void> deletePedido(int id) => pedidoDAO.deletePedido(id);
 
   Future<void> updatePedido(Pedido pedido, int id) => pedidoDAO.updatePedido(pedido, id);
