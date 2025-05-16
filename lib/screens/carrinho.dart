@@ -10,8 +10,8 @@ class Carrinho extends StatefulWidget {
 class CarrinhoState extends State<Carrinho> with AutomaticKeepAliveClientMixin<Carrinho>{ 
   @override
   void initState() {
+    
     super.initState();
-    print("InitState Carrinho");
   }
   
   @override

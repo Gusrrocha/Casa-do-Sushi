@@ -16,6 +16,7 @@ class LoginPageState extends State<LoginPage>{
   final senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  bool isLoginTrue = false;
 
   UsuarioRepository usuarioRepository = UsuarioRepository(); 
 
@@ -28,19 +29,23 @@ class LoginPageState extends State<LoginPage>{
   login() async {
     final email = emailController.text;
     final senha = senhaController.text;
-    
-    if(await usuarioRepository.authUser(email, senha)){
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
-      if(!mounted) return;
-         
-      Navigator.pushReplacement(
-        context, 
-        MaterialPageRoute(builder: (context) => Tabs())
-      );
-      
+    if(_formKey.currentState!.validate()){
+      if(await usuarioRepository.authUser(email, senha)){
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        if(!mounted) return;
+          
+        Navigator.pushReplacement(
+          context, 
+          MaterialPageRoute(builder: (context) => Tabs())
+        ); 
+      }
+      else{
+        setState(() {
+          isLoginTrue = true;
+        });
+      }
     }
-    
     
   }
   
@@ -131,7 +136,11 @@ class LoginPageState extends State<LoginPage>{
                       },
                       child: Text("Cadastrar-se")
                     )
-                ],)
+                ],  
+                ),
+                isLoginTrue
+                      ? Text("E-mail ou senha está incorreto", style: TextStyle(color:Colors.red))
+                      : const SizedBox()
               ],
             ),
           ),

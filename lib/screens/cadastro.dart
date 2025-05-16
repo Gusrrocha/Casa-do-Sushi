@@ -39,12 +39,9 @@ class CadastroState extends State<Cadastro>{
     final cpf = _cpfFormatter.getUnmaskedText();
 
     
-    try{
+    if(_formKey.currentState!.validate()){
       usuarioRepository.insertUser(Usuario(nome: nome, email: email, telefone: telefone, cpf: cpf, senha: senha));
       Navigator.of(context).pop();
-    }
-    catch (e){
-      print("An error occurred: $e");
     }
   }
   @override
