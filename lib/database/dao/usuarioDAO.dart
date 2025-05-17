@@ -33,4 +33,16 @@ class UsuarioDAO {
     return result.isNotEmpty ? true : false;
   }
 
+  Future<String> checkUser(Usuario usuario) async{
+    final db = await _db;
+    var result = await db.rawQuery("SELECT * FROM Usuario WHERE email = '${usuario.email}'");
+    if(result.isNotEmpty) return "Já existe um usuário com este e-mail";
+    result = await db.rawQuery("SELECT * FROM Usuario WHERE telefone = '${usuario.telefone}'");
+    if(result.isNotEmpty) return "Já existe um usuário com este número de telefone";
+    result = await db.rawQuery("SELECT * FROM Usuario WHERE cpf = '${usuario.cpf}'");
+    if(result.isNotEmpty) return "Já existe um usuário com este CPF";
+
+    return "";
+  }
+
 }

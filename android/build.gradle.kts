@@ -21,5 +21,12 @@ tasks.register<Delete>("clean") {
 }
 
 plugins {
-    id("com.google.gms.google-services") version "4.4.2" apply false
+    id("com.google.gms.google-services") version "4.3.15" apply false
+}
+
+buildscript {
+    dependencies {
+        classpath("com.android.tools.build:gradle:7.3.1")
+        classpath(kotlin("gradle-plugin", version = "2.1.0"))
+    }
 }

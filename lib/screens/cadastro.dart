@@ -22,9 +22,10 @@ class CadastroState extends State<Cadastro>{
   final cpfController = TextEditingController();
   final telefoneFormatter = MaskTextInputFormatter(mask: "(##) #####-####", filter: {"#": RegExp(r'[0-9]')});
   final _cpfFormatter = MaskTextInputFormatter(mask: "###.###.###-##", filter: {"#": RegExp(r'[0-9]')});
-  
+  String isUser = "";
   UsuarioRepository usuarioRepository = UsuarioRepository();
   final _formKey = GlobalKey<FormState>();
+  bool isUserCorrect = true;
 
   @override
   void initState() {
@@ -40,16 +41,27 @@ class CadastroState extends State<Cadastro>{
     final cpf = _cpfFormatter.getUnmaskedText();
 
     if(_formKey.currentState!.validate()){
-      try{
-        final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: senha);
-        await usuarioRepository.insertUser(Usuario(nome: nome, email: email, telefone: telefone, cpf: cpf, senha: senha));
-        if(!mounted) return;
-        Navigator.of(context).pop();
+      Usuario usuario = Usuario(nome: nome, email: email, telefone: telefone, cpf: cpf, senha: senha, isAdmin: 0);
+      isUser = await usuarioRepository.checkUser(usuario);
+      if(isUser.isEmpty){
+        isUserCorrect = true;
+        try{
+          await usuarioRepository.insertUser(usuario);  
+          if(!mounted) return;
+          Navigator.of(context).pop();
+        }
+        catch (e){
+          print("Erro ao cadastrar: $e");
+        }
+        finally{
+          final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: senha);
+        }
       }
-      catch (e){
-        print("Erro ao cadastrar: $e");
+      else{
+        setState(() {
+          isUserCorrect = false;
+        }); 
       }
-      
     }
   }
   @override
@@ -255,7 +267,10 @@ class CadastroState extends State<Cadastro>{
                     )
                   ),
                 ),
-                SizedBox(height: 20)
+                SizedBox(height: 20),
+                isUserCorrect
+                      ? const SizedBox()
+                      : Text(isUser, style: TextStyle(color:Colors.red))
               ],
             ),
           ),

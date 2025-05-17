@@ -5,6 +5,7 @@ class Usuario {
   final String email;
   final String senha;
   final String cpf;
+  final int? isAdmin;
 
   const Usuario({
     this.id,
@@ -12,7 +13,8 @@ class Usuario {
     required this.telefone,
     required this.email,
     required this.senha,
-    required this.cpf
+    required this.cpf,
+    this.isAdmin
   });
 
   static Usuario fromJson(Map<String, dynamic> json) => Usuario(
@@ -22,6 +24,7 @@ class Usuario {
     email: json['email'] as String,
     senha: json['senha'] as String,
     cpf: json['cpf'] as String,
+    isAdmin: json['isAdmin'] as int?
   );
   
   Map<String, dynamic> toJson() =>{
@@ -30,7 +33,8 @@ class Usuario {
     'telefone': telefone,
     'email': email,
     'senha': senha,
-    'cpf': cpf
+    'cpf': cpf,
+    'isAdmin': isAdmin
   };
 
   Usuario copyWith({
@@ -39,7 +43,8 @@ class Usuario {
     String? telefone,
     String? email,
     String? senha,
-    String? cpf
+    String? cpf,
+    int? isAdmin
   }) => 
   Usuario(
     id: id ?? this.id,
@@ -47,6 +52,7 @@ class Usuario {
     telefone: telefone ?? this.telefone,
     email: email ?? this.email,
     senha: senha ?? this.senha,
-    cpf: cpf ?? this.cpf
+    cpf: cpf ?? this.cpf,
+    isAdmin: isAdmin ?? this.isAdmin
   );
 }

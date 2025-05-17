@@ -42,9 +42,10 @@ class DatabaseHelper {
       id $idType,
       nome $textType,
       telefone $textType UNIQUE,
-      email $textType,
+      email $textType UNIQUE,
       senha $textType,
-      cpf TEXT NOT NULL UNIQUE
+      cpf $textType UNIQUE,
+      isAdmin INTEGER
       )
     ''');
 
