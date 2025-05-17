@@ -1,4 +1,6 @@
+import 'package:casadosushi/repositories/usuario_repository.dart';
 import 'package:casadosushi/screens/adminUI.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:casadosushi/screens/carrinho.dart';
 import 'package:casadosushi/screens/inicio.dart';
@@ -15,27 +17,55 @@ class Tabs extends StatefulWidget {
 
 class TabsState extends State <Tabs> {
   late List<Widget> listScreens;
-  bool isAdmin = true;
+  User? user = FirebaseAuth.instance.currentUser;
+  UsuarioRepository usuarioRepository = UsuarioRepository();
+  late bool isAdmin = false;
   @override
   void initState() {
-    super.initState();
+    if(user != null){
+      WidgetsBinding.instance.addPostFrameCallback((_){
+      checkAdmin().whenComplete((){
+        setState(() {
+          listScreens = [
+          Inicio(),
+          Pesquisa(),
+          Carrinho(),
+          Perfil(),
+          if(isAdmin)
+            AdminDashBoard()
+          
+          ];
+      });
+      
+    });
+    });
+    } 
+    
     listScreens = [
       Inicio(),
       Pesquisa(),
       Carrinho(),
       Perfil(),
-      if(isAdmin)
-        AdminDashBoard()
-      
     ];
+    super.initState();
+    
   }
 
+  checkAdmin() async{
+    if(user == null){
+      return;
+    }
+    bool temp = await usuarioRepository.checkIfAdmin(user!.uid);
+    setState((){
+      isAdmin = temp;
+    }); 
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       color: Colors.yellow,
       home: DefaultTabController(
-        length: isAdmin ? 5 : 4,
+        length: listScreens.length,
         animationDuration: Duration.zero,
         child: Scaffold(
           body: TabBarView(

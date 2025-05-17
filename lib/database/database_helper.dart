@@ -40,6 +40,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS Usuario(
       id $idType,
+      firebaseUID INTEGER NOT NULL UNIQUE,
       nome $textType,
       telefone $textType UNIQUE,
       email $textType UNIQUE,
@@ -69,6 +70,9 @@ class DatabaseHelper {
       )
     ''');
     
+    await db.execute('''INSERT INTO Usuario (firebaseUID, nome, telefone, email, senha, cpf, isAdmin) 
+                        VALUES ('10y6NFSpbBVwwnHWH1n0aiGrHQ32', 'admin', 'admin', 'admin@gmail.com', 'admin123', 'admin', 1)''');
+
   }
 
   Future<Database> _initializeDB(String filename) async {

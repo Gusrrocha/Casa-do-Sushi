@@ -135,9 +135,8 @@ class LoginPageState extends State<LoginPage>{
                     Text("Não tem uma conta ainda?"),
                     TextButton(
                       onPressed: (){
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Cadastro()));
+                        Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) => Cadastro()));
                       },
                       child: Text("Cadastrar-se")
                     )

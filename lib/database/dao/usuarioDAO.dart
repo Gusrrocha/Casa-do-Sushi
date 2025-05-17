@@ -33,16 +33,22 @@ class UsuarioDAO {
     return result.isNotEmpty ? true : false;
   }
 
-  Future<String> checkUser(Usuario usuario) async{
+  Future<String> checkUser(String email, String telefone, String cpf) async{
     final db = await _db;
-    var result = await db.rawQuery("SELECT * FROM Usuario WHERE email = '${usuario.email}'");
+    var result = await db.rawQuery("SELECT * FROM Usuario WHERE email = '$email'");
     if(result.isNotEmpty) return "Já existe um usuário com este e-mail";
-    result = await db.rawQuery("SELECT * FROM Usuario WHERE telefone = '${usuario.telefone}'");
+    result = await db.rawQuery("SELECT * FROM Usuario WHERE telefone = '$telefone'");
     if(result.isNotEmpty) return "Já existe um usuário com este número de telefone";
-    result = await db.rawQuery("SELECT * FROM Usuario WHERE cpf = '${usuario.cpf}'");
+    result = await db.rawQuery("SELECT * FROM Usuario WHERE cpf = '$cpf'");
     if(result.isNotEmpty) return "Já existe um usuário com este CPF";
 
     return "";
+  }
+
+  Future<bool> checkIfAdmin(String uid) async {
+    final db = await _db;
+    final result = await db.rawQuery("SELECT isAdmin FROM Usuario WHERE firebaseUID = '$uid'");
+    return result.first['isAdmin'] != 0 ? true : false;
   }
 
 }

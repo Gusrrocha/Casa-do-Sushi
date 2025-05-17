@@ -37,24 +37,23 @@ class CadastroState extends State<Cadastro>{
     final nome = "${nomeController.text} ${sobrenomeController.text}";
     final email = emailController.text;
     final senha = senhaController.text;
-    final telefone = telefoneFormatter.getUnmaskedText();
-    final cpf = _cpfFormatter.getUnmaskedText();
-
+    final telefone = telefoneFormatter.getMaskedText();
+    final cpf = _cpfFormatter.getMaskedText();
     if(_formKey.currentState!.validate()){
-      Usuario usuario = Usuario(nome: nome, email: email, telefone: telefone, cpf: cpf, senha: senha, isAdmin: 0);
-      isUser = await usuarioRepository.checkUser(usuario);
+      
+      isUser = await usuarioRepository.checkUser(email, telefone, cpf);
       if(isUser.isEmpty){
         isUserCorrect = true;
         try{
+          final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: senha);
+          Usuario usuario = Usuario(firebaseUID: cred.user!.uid, nome: nome, email: email, telefone: telefone, cpf: cpf, senha: senha, isAdmin: 0);
           await usuarioRepository.insertUser(usuario);  
-          if(!mounted) return;
+          if(!mounted) return;      
           Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Cadastro realizado com sucesso!")));
         }
         catch (e){
           print("Erro ao cadastrar: $e");
-        }
-        finally{
-          final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: senha);
         }
       }
       else{
@@ -67,6 +66,7 @@ class CadastroState extends State<Cadastro>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      appBar: AppBar(title: Text("")),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

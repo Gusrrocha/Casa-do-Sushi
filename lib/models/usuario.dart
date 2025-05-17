@@ -1,5 +1,6 @@
 class Usuario {
   final int? id;
+  final String? firebaseUID;
   final String nome;
   final String telefone;
   final String email;
@@ -9,6 +10,7 @@ class Usuario {
 
   const Usuario({
     this.id,
+    this.firebaseUID,
     required this.nome,
     required this.telefone,
     required this.email,
@@ -19,6 +21,7 @@ class Usuario {
 
   static Usuario fromJson(Map<String, dynamic> json) => Usuario(
     id: json['id'] as int?,
+    firebaseUID: json['firebaseUID'] as String,
     nome: json['nome'] as String,
     telefone: json['telefone'] as String,
     email: json['email'] as String,
@@ -29,6 +32,7 @@ class Usuario {
   
   Map<String, dynamic> toJson() =>{
     'id': id,
+    'firebaseUID': firebaseUID,
     'nome': nome,
     'telefone': telefone,
     'email': email,
@@ -39,7 +43,8 @@ class Usuario {
 
   Usuario copyWith({
     int? id,
-    String? nome,
+    String? firebaseUID,
+    String? nome,  
     String? telefone,
     String? email,
     String? senha,
@@ -48,6 +53,7 @@ class Usuario {
   }) => 
   Usuario(
     id: id ?? this.id,
+    firebaseUID: firebaseUID ?? this.firebaseUID,
     nome: nome ?? this.nome,
     telefone: telefone ?? this.telefone,
     email: email ?? this.email,

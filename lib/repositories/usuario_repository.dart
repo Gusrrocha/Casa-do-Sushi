@@ -15,5 +15,7 @@ class UsuarioRepository {
 
   Future<bool> authUser(String email, String senha) => usuarioDAO.authUser(email, senha);
 
-  Future<String> checkUser(Usuario usuario) => usuarioDAO.checkUser(usuario);
+  Future<String> checkUser(String email, String telefone, String cpf) => usuarioDAO.checkUser(email, telefone, cpf);
+  
+  Future<bool> checkIfAdmin(String uid) => usuarioDAO.checkIfAdmin(uid);
 }

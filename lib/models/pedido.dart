@@ -13,13 +13,15 @@ class Pedido{
     required this.data
   });
 
+
+
   static Pedido fromJson(Map<String, dynamic> json) => Pedido(
     id: json['id'] as int?,
     idUsuario: json['idUsuario'] as int,
     listaItens: json['listaItens'] as List<Item>,
     data: json['data'] as DateTime,
   );
-  
+
   Map<String, dynamic> toJson() =>{
     'id': id,
     'idUsuario': idUsuario,
