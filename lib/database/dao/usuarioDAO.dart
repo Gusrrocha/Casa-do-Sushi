@@ -29,7 +29,7 @@ class UsuarioDAO {
 
   Future<bool> authUser(String email, String senha) async{
     final db = await _db;
-    final result = await db.rawQuery("SELECT * FROM Usuario WHERE email = '$email' AND senha = $senha");
+    final result = await db.rawQuery("SELECT * FROM Usuario WHERE email = '$email' AND senha = '$senha'");
     return result.isNotEmpty ? true : false;
   }
 

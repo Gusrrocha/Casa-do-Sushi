@@ -1,13 +1,16 @@
+import 'package:casadosushi/carrinho_provider.dart';
+import 'package:casadosushi/screens/compra_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Carrinho extends StatefulWidget {
-  const Carrinho({super.key});
+class CarrinhoPage extends StatefulWidget {
+  const CarrinhoPage({super.key});
 
   @override
-  CarrinhoState createState() => CarrinhoState();
+  CarrinhoPageState createState() => CarrinhoPageState();
 }
   
-class CarrinhoState extends State<Carrinho> with AutomaticKeepAliveClientMixin<Carrinho>{ 
+class CarrinhoPageState extends State<CarrinhoPage> with AutomaticKeepAliveClientMixin<CarrinhoPage>{ 
   @override
   void initState() {
     
@@ -17,99 +20,91 @@ class CarrinhoState extends State<Carrinho> with AutomaticKeepAliveClientMixin<C
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
-
+      appBar: AppBar(title: Text("Carrinho"), centerTitle: true,),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.arrow_back, color: Colors.white),
-                  Center(
-                    child: Text(
-                      "Casa do Sushi",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      textScaler: TextScaler.linear(3.0),
-                    ),
-                  ),
-                  const SizedBox(height: 60),
-                  Center(
-                    child: Text(
-                      "Carrinho",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      textScaler: TextScaler.linear(2.0),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  SizedBox(
-                    child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      width: double.infinity,
-                      color: Colors.grey,
-                      child: Text(
-                        "Produto(s) comprado(s)",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+        child: Consumer<CarrinhoProvider>(
+              builder: (context, carrinhoProvider, child) =>
+                Column(
+                  children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: carrinhoProvider.carrinho.length,
+                        itemBuilder: (context, index) {
+                          final item = carrinhoProvider.carrinho[index];
+                          return Card(
+                            child: ListTile(
+                              leading: Icon(Icons.fastfood, size: 50),
+                              title: Text(item.produto?.name ?? "Produto Desconhecido"),
+                              subtitle: Text("R\$ ${(item.produto?.value ?? 0).toStringAsFixed(2)}"),
+                              trailing: SizedBox(
+                                width: 100,
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.remove_circle),
+                                      onPressed: () {
+                                        carrinhoProvider.removeItem(item.produto!);
+                                      },                       
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                      child: TextField(
+                                        controller: TextEditingController(text: item.quantidade.toString()),
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          
+                                        ),
+                                      ),
+                                    ),
+                                    
+                                    IconButton(
+                                      icon: Icon(Icons.add_circle),
+                                      onPressed: () {
+                                        carrinhoProvider.addItem(item.produto!);
+                                      },                       
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                         ),
-                        textScaler: TextScaler.linear(1.5),
+                      SizedBox(height: 20),
+                      Text("Total: R\$ ${carrinhoProvider.total.toStringAsFixed(2)}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Spacer(),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                carrinhoProvider.clearCarrinho();
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Carrinho limpo com sucesso!")));
+                              },
+                              child: Text("Limpar Carrinho"),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CompraPage(itens: carrinhoProvider.carrinho)));
+                              },
+                              child: Text("Prosseguir à Compra"),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  SizedBox(
-                    child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      width: double.infinity,
-                      color: Colors.grey,
-                      child: Text(
-                        "Valor",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        textScaler: TextScaler.linear(1.5),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  SizedBox(
-                    child: Container(
-                      padding: EdgeInsets.all(8.0),
-                      width: double.infinity,
-                      color: Colors.grey,
-                      child: Text(
-                        "Endereço",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        textScaler: TextScaler.linear(1.5),
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Padding(padding:EdgeInsets.all(8.0), 
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Icon(Icons.arrow_forward, color: Colors.white),
-                  ),
-                  )
                 ],
+                ) 
+                  )
               ),
-            ),
-          ],
-        ),
-      ),
     );
   }
   

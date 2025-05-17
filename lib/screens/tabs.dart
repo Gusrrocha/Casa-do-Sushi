@@ -19,34 +19,12 @@ class TabsState extends State <Tabs> {
   late List<Widget> listScreens;
   User? user = FirebaseAuth.instance.currentUser;
   UsuarioRepository usuarioRepository = UsuarioRepository();
-  late bool isAdmin = false;
+  bool isAdmin = false;
   @override
   void initState() {
     if(user != null){
-      WidgetsBinding.instance.addPostFrameCallback((_){
-      checkAdmin().whenComplete((){
-        setState(() {
-          listScreens = [
-          Inicio(),
-          Pesquisa(),
-          Carrinho(),
-          Perfil(),
-          if(isAdmin)
-            AdminDashBoard()
-          
-          ];
-      });
-      
-    });
-    });
-    } 
-    
-    listScreens = [
-      Inicio(),
-      Pesquisa(),
-      Carrinho(),
-      Perfil(),
-    ];
+      checkAdmin();
+    }
     super.initState();
     
   }
@@ -62,6 +40,15 @@ class TabsState extends State <Tabs> {
   }
   @override
   Widget build(BuildContext context) {
+    final listScreens = [
+      Inicio(),
+      Pesquisa(),
+      CarrinhoPage(),
+      Perfil(),
+      if(isAdmin)
+        AdminDashBoard()
+          
+    ];
     return MaterialApp(
       color: Colors.yellow,
       home: DefaultTabController(

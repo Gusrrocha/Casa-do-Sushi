@@ -17,7 +17,7 @@ class LoginPageState extends State<LoginPage>{
   final senhaController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Auth auth = Auth();
-  bool isLoginTrue = false;
+  bool isLoginFalse = false;
   UsuarioRepository usuarioRepository = UsuarioRepository(); 
 
   @override
@@ -29,26 +29,36 @@ class LoginPageState extends State<LoginPage>{
   login() async {
     final email = emailController.text;
     final senha = senhaController.text;
+    
     if(_formKey.currentState!.validate()){
-        try{
-          await auth.login(email,senha);
-        }
-        catch (e){
+        if(await usuarioRepository.authUser(email, senha)){
+          try{
+            await auth.login(email,senha);
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setBool('isLoggedIn', true);
+            if(!mounted) return;
+              
+            Navigator.pushReplacement(
+              context, 
+              MaterialPageRoute(builder: (context) => Tabs())
+            ); 
+          }
+          catch (e){
+            setState(() {
+            isLoginFalse = true;
+            });
+          }   
+        }  
+        else{
           setState(() {
-          isLoginTrue = true;
+            isLoginFalse = true;
           });
-        }
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('isLoggedIn', true);
-        if(!mounted) return;
-          
-        Navigator.pushReplacement(
-          context, 
-          MaterialPageRoute(builder: (context) => Tabs())
-        ); 
+        }  
       }
       else{
-        
+        setState(() {
+          isLoginFalse = true;
+        });
       }
   }
     
@@ -142,7 +152,7 @@ class LoginPageState extends State<LoginPage>{
                     )
                 ],  
                 ),
-                isLoginTrue
+                isLoginFalse
                       ? Text("E-mail ou senha está incorreto", style: TextStyle(color:Colors.red))
                       : const SizedBox()
               ],

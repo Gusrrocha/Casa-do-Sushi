@@ -40,7 +40,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE IF NOT EXISTS Usuario(
       id $idType,
-      firebaseUID INTEGER NOT NULL UNIQUE,
+      firebaseUID TEXT NOT NULL UNIQUE,
       nome $textType,
       telefone $textType UNIQUE,
       email $textType UNIQUE,
@@ -64,7 +64,6 @@ class DatabaseHelper {
       idPedido INTEGER NOT NULL,
       idProduto INTEGER NOT NULL,
       quantidade INTEGER NOT NULL,
-      valor $doubleType,
       FOREIGN KEY(idPedido) REFERENCES Pedido(id),
       FOREIGN KEY(idProduto) REFERENCES Produto(_id)
       )

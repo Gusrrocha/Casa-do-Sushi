@@ -1,16 +1,20 @@
+import 'package:casadosushi/models/produto.dart';
+
 class Item {
   final int? id;
-  final int idPedido;
+  final int? idPedido;
   final int idProduto;
-  final int quantidade;
-  final int valor;
+  int quantidade;
+  double? valor;
+  Produto? produto;
 
-  const Item({
+  Item({
     this.id,
-    required this.idPedido,
+    this.idPedido,
     required this.idProduto,
-    required this.quantidade,
-    required this.valor
+    this.quantidade = 1,
+    this.valor,
+    this.produto
   });
 
   static Item fromJson(Map<String, dynamic> json) => Item(
@@ -18,7 +22,6 @@ class Item {
     idPedido: json['idPedido'] as int,
     idProduto: json['idProduto'] as int,
     quantidade: json['quantidade'] as int,
-    valor: json['valor'] as int
   );
   
   Map<String, dynamic> toJson() =>{
@@ -26,7 +29,6 @@ class Item {
     'idPedido': idPedido,
     'idProduto': idProduto,
     'quantidade': quantidade,
-    'valor': valor
   };
 
   Item copyWith({
@@ -34,13 +36,11 @@ class Item {
     int? idPedido,
     int? idProduto,
     int? quantidade,
-    int? valor
   }) => 
   Item(
     id: id ?? this.id,
     idPedido: idPedido ?? this.idPedido,
     idProduto: idProduto ?? this.idProduto,
     quantidade: quantidade ?? this.quantidade,
-    valor: valor ?? this.valor
   );
 }
