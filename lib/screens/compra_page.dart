@@ -24,8 +24,8 @@ class CompraPageState extends State<CompraPage>{
         child:Container(
           child: Column(
           children: [
-            
-          ],
+              
+            ],
           ),
         ),
       )

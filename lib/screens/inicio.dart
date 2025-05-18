@@ -46,7 +46,7 @@ class InicioState extends State<Inicio> {
             ),
             margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
             padding: EdgeInsets.all(10),
-            height: 160,
+            height: 200,
             child: ListView(
               // This next line does the trick.
               scrollDirection: Axis.horizontal,
@@ -55,7 +55,7 @@ class InicioState extends State<Inicio> {
                   InkWell(
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ItemPage(produto: item))),
                     child: Container(
-                      width: 120,
+                      width: 150,
                       margin: const EdgeInsets.fromLTRB(8,0,8,0),
                       decoration: BoxDecoration(
                         border: Border.all(),
@@ -70,32 +70,27 @@ class InicioState extends State<Inicio> {
                         ],
                       ),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.set_meal, size: 80),
-                          Text(item.name),
-                          Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                child: Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text("Valor", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                                ),
-                              ),
-                              Spacer(),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  "R\$ ${item.value.toString().contains('.') ? item.value.toString().replaceAll('.', ',') : "${item.value},00"}",
-                                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)
-                                ),
-                              ),
-                            ],
+                          Padding(padding: EdgeInsets.fromLTRB(10, 10, 0, 0), 
+                                  child: Align(alignment: Alignment.centerLeft, 
+                                               child: Text(item.name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold), textScaler: TextScaler.linear(1.5),))),
+                          
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "R\$ ${item.value.toString().contains('.') ? item.value.toString().replaceAll('.', ',') : "${item.value},00"}",
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                textScaler: TextScaler.linear(1.5),
+                              )
+                              
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
+                          ],
+                          ),
+                        )
                   ),
               ],
             ),

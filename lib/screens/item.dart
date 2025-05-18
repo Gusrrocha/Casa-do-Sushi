@@ -33,6 +33,7 @@ class ItemPageState extends State<ItemPage>{
         duration: Duration(seconds: 2),
       ),
     );
+    Navigator.of(context).pop();
   }
 
   @override
@@ -46,72 +47,139 @@ class ItemPageState extends State<ItemPage>{
     quantidadeController.text = "1";
     return Scaffold(
       appBar: AppBar(title: Text("")),
-      body: Center(
-        child:Container(
+      body: 
+        Container(
           child: Column(
-          children: [
-            //Container(
-             // child:Image()
-            //),
-            Text(widget.produto.name),        
-            Text(widget.produto.value.toString()),
-            Text(widget.produto.description ?? ""),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                
-                IconButton(
-                  icon: Icon(Icons.remove_circle),
-                  onPressed: () {
-                    quantidadeController.text = (int.parse(quantidadeController.text) - 1).toString();
-                    if (int.parse(quantidadeController.text) < 1) {
-                      quantidadeController.text = "1";
-                    }
-                  },                       
+            children: [
+              //Container(
+              // child:Image()
+              //),
+              SizedBox(
+                height: 200,
+                child: Image.asset(
+                  "f",
+                  fit: BoxFit.cover,
                 ),
-                SizedBox(
-                  width: 20,
-                  child: TextField(
-                    controller: quantidadeController,
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16,24,8,8),
+                child: Align(
+                    alignment: Alignment.centerLeft, 
+                    child: Text(widget.produto.name, 
+                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold))),
+              ),              
+              Padding(
+                padding: const EdgeInsets.fromLTRB(24,24,8,8),
+                child: Align(
+                    alignment: Alignment.centerLeft, 
+                    child: Text("R\$ ${widget.produto.value.toString().replaceAll('.', ',')}", 
+                    style: TextStyle(fontSize: 24), textScaler: TextScaler.linear(1.5))),
+                    
+              ),
+              Divider(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16,24,8,8),
+                child: Align(
+                    alignment: Alignment.centerLeft, 
+                    child: Text("Descrição", 
+                    style: TextStyle(fontSize: 20))),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16,24,8,8),
+                child: Align(
+                    alignment: Alignment.centerLeft, 
+                    child: Text(widget.produto.description ?? "",
+                    style: TextStyle(fontSize: 20))),
+              ),
+              Spacer(),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                  
+                  width: 200,
+                  height: 50,
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                          child: IconButton(
+                            icon: Icon(Icons.remove_circle),
+                            onPressed: () {
+                              quantidadeController.text = (int.parse(quantidadeController.text) - 1).toString();
+                              if (int.parse(quantidadeController.text) < 1) {
+                                quantidadeController.text = "1";
+                              }
+                            },                       
+                          ),
+                      ),
+                      Expanded(
+                          child: TextField(
+                            style: TextStyle(fontSize: 30),
+                            textAlign: TextAlign.center,
+                            textAlignVertical: TextAlignVertical.center,
+                            controller: quantidadeController,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                          ),
+                      ),
+                      
+                      Expanded(
+                          child: IconButton(
+                            icon: Icon(Icons.add_circle),
+                            onPressed: () {
+                              quantidadeController.text = (int.parse(quantidadeController.text) + 1).toString();               
+                            },                       
+                          ),
+                      )
+                    ],
                   ),
                 ),
-                
-                IconButton(
-                  icon: Icon(Icons.add_circle),
-                  onPressed: () {
-                    quantidadeController.text = (int.parse(quantidadeController.text) + 1).toString();  
-
-                  },                       
-                )
-              ],
-            ),         
-            Row(
-              children: [
-                IconButton(
-                  onPressed: () => addToCart(widget.produto), 
-                  icon: Icon(Icons.add_shopping_cart)
+              ),      
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 100,
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [            
+                    Expanded(
+                      child: SizedBox.expand(
+                        child: IconButton(
+                          onPressed: () => addToCart(widget.produto), 
+                          visualDensity: VisualDensity.compact,
+                          icon: Icon(Icons.add_shopping_cart),
+                          color: Colors.green,
+                          style: ButtonStyle(
+                            backgroundColor: WidgetStateProperty.all<Color>(Colors.green.withAlpha(64)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SizedBox.expand(
+                        child: ElevatedButton( 
+                          onPressed: () {
+                            setState(() { 
+                              item.quantidade = int.parse(quantidadeController.text);
+                              item.valor = widget.produto.value * item.quantidade;
+                            });
+                            List<Item> itens = [item];
+                            Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CompraPage(itens: itens)));    
+                          }, 
+                          child: Text("Comprar")
+                          
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() { 
-                      item.quantidade = int.parse(quantidadeController.text);
-                      item.valor = widget.produto.value * item.quantidade;
-                    });
-                    List<Item> itens = [item];
-                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CompraPage(itens: itens)));    
-                  }, 
-                  child: Text("Comprar")
-                )
-              ],
-            )
+              )
           ],
           ),
         ),
-      )
       );
   }
 }
