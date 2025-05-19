@@ -56,6 +56,15 @@ class DatabaseHelper {
       idUsuario INTEGER NOT NULL,
       data TEXT NOT NULL,
       valor $doubleType,
+      paymentMethod $textType,
+      parcelas INTEGER,
+      cep $textType,
+      rua $textType,
+      numero $textType,
+      complemento $textTypeNullable,
+      bairro $textType,
+      cidade $textType,
+      estado $textType,
       FOREIGN KEY(idUsuario) REFERENCES Usuario(id)
       )
     ''');

@@ -51,15 +51,117 @@ class PedidosState extends State<Pedidos>{
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          for(var item in pedidos[index].listaItens)
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(item.produto!.name),
-                                Text('${item.quantidade.toString()}x'),
-                                Text('R\$ ${item.produto!.value.toStringAsFixed(2).replaceAll('.', ',')}'),
-                              ],
+                          Container(
+                             // fixed height so you can control cutoff
+                            height: 125,
+                            width: 400,
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              itemCount: pedidos[index].listaItens.length,
+                              itemBuilder: (context, indexItem) {
+                                var item = pedidos[index].listaItens[indexItem];
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(item.produto!.name),
+                                    Text('${item.quantidade.toString()}x'),
+                                    Text('R\$ ${item.produto!.value.toStringAsFixed(2).replaceAll('.', ',')}'),
+                                  ],
+                                );
+                              },
                             ),
+                          ),
+                          SizedBox(height: 10),
+                          Divider(),
+                          Text("Local de Entrega", style: TextStyle(fontWeight: FontWeight.bold)),
+                          SizedBox(height: 10),
+                          Container(
+                            height: 400,
+                            width: 400,
+                            padding: const EdgeInsets.all(8.0),
+                            child: GridView(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 3,
+                              ),
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Text("Rua"),
+                                      Spacer(),
+                                      Text(pedidos[index].rua),
+                                  ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Text("Número"),
+                                      Spacer(),
+                                      Text(pedidos[index].numero),
+                                  ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Text("Complemento"),
+                                      Spacer(),
+                                      Text(pedidos[index].complemento ?? "N/A"),
+                                  ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Text("CEP"),
+                                      Spacer(),
+                                      Text(pedidos[index].cep),
+                                  ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Text("Bairro"),
+                                      Spacer(),
+                                      Text(pedidos[index].bairro),
+                                  ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Text("Cidade"),
+                                      Spacer(),
+                                      Text(pedidos[index].cidade),
+                                  ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Text("Estado"),
+                                      Spacer(),
+                                      Text(pedidos[index].estado),
+                                  ],
+                                  ),
+                                ),
+                              ]
+                            ),
+                          )
                         ],
                       ),
                       actions: [
@@ -74,7 +176,14 @@ class PedidosState extends State<Pedidos>{
               child: Card(
                 child: ListTile(
                   title: Text("${pedidos[index].listaItens.length.toString()} itens"),
-                  subtitle: Text(pedidos[index].data.toString()),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(pedidos[index].data.toString()),
+                      Text(pedidos[index].parcelas == null ? "À vista" : "${pedidos[index].parcelas}x")
+                    ],
+                  ),
                   trailing: Text('R\$ ${pedidos[index].valor!.toStringAsFixed(2).replaceAll('.', ',')}'),
                 ),
               ),

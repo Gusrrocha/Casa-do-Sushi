@@ -164,7 +164,7 @@ class CadastroState extends State<Cadastro>{
                   child: TextFormField(
                     controller: telefoneController,
                     validator: (value) {
-                    if(value!.isEmpty){
+                    if(value!.isEmpty || telefoneFormatter.getUnmaskedText().length < 10){
                       return "O número de telefone é requerido.";
                     }
                     return null;
@@ -190,7 +190,7 @@ class CadastroState extends State<Cadastro>{
                   child: TextFormField(
                     controller: cpfController,
                     validator: (value) {
-                    if(value!.isEmpty){
+                    if(value!.isEmpty || _cpfFormatter.getUnmaskedText().length < 11){
                       return "O CPF é requerido.";
                     }
                     return null;
@@ -214,12 +214,11 @@ class CadastroState extends State<Cadastro>{
                   child: TextFormField(
                     controller: senhaController,
                     validator: (value) {
-                    if(value!.isEmpty){
+                    if(value!.isEmpty || senhaController.text.length < 8){
                       return "A senha é requerida.";
                     }
                     return null;
                     },
-                    maxLength: 8,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       labelText: "Senha"

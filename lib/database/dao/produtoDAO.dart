@@ -28,4 +28,9 @@ class ProdutoDAO {
     await db.update('Produto', produto.toJson(), where: '_id = ?', whereArgs: [id]);
   } 
   
+  Future<Produto> getProdutoById(int id) async {
+    final db = await _db;
+    final result = await db.query('Produto', where: '_id = ?', whereArgs: [id]);
+    return Produto.fromJson(result.first);
+  }
 }

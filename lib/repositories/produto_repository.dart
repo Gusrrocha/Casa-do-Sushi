@@ -11,4 +11,6 @@ class ProdutoRepository{
   Future<void> deleteProduto(int id) => _produtoDAO.deleteProduto(id);
 
   Future<void> updateProduto(Produto produto, int id) => _produtoDAO.updateProduto(produto, id);
+
+  Future<Produto> getProdutoById(int id) => _produtoDAO.getProdutoById(id);
 }

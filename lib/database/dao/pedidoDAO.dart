@@ -16,8 +16,17 @@ class PedidoDAO{
 
   Future<List<Pedido>> listPedido() async{
     final db = await _db;
-    final list = await db.query('Pedido');
-    return list.map((json) => Pedido.fromJson(json)).toList();
+    final result = await db.query('Pedido');
+    final lista = result.map((json) => Pedido.fromJson(json)).toList();
+    for (var pedido in lista) {
+      final itemMaps = await db.query('Item', where: 'idPedido = ?', whereArgs: [pedido.id]);
+      pedido.listaItens = itemMaps.map((json) => Item.fromJson(json)).toList();
+      for (var item in pedido.listaItens) {
+        final produtoMaps = await db.query('Produto', where: '_id = ?', whereArgs: [item.idProduto]);
+        item.produto = produtoMaps.map((json) => Produto.fromJson(json)).first;
+      }
+    }
+    return lista;
   }
 
   Future<void> deletePedido(int id) async {

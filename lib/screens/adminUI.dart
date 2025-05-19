@@ -1,4 +1,4 @@
-import 'package:casadosushi/screens/relatorios.dart';
+import 'package:casadosushi/screens/screensADB/relatorios.dart';
 import 'package:casadosushi/screens/screensADB/Produtos.dart';
 import 'package:casadosushi/screens/screensADB/pedidos.dart';
 import 'package:flutter/material.dart';
