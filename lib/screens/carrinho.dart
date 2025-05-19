@@ -94,6 +94,11 @@ class CarrinhoPageState extends State<CarrinhoPage> with AutomaticKeepAliveClien
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
                               onPressed: () {
+                                if(carrinhoProvider.carrinho.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Carrinho vazio!")));
+                                  return;
+                                }
+                                
                                 Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CompraPage(itens: carrinhoProvider.carrinho)));
                               },
                               child: Text("Prosseguir à Compra"),

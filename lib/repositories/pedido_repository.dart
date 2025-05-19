@@ -11,4 +11,6 @@ class PedidoRepository {
   Future<void> deletePedido(int id) => pedidoDAO.deletePedido(id);
 
   Future<void> updatePedido(Pedido pedido, int id) => pedidoDAO.updatePedido(pedido, id);
+
+  Future<List<Pedido>> getAllPedidosByUserId(int id) => pedidoDAO.getAllPedidosByUserId(id);
 }

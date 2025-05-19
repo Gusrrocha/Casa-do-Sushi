@@ -3,14 +3,17 @@ import 'package:casadosushi/models/item.dart';
 class Pedido{
   final int? id;
   final int idUsuario;
-  final List<Item> listaItens;
-  final DateTime data;
+  List<Item> listaItens;
+  final String data;
+  final double? valor;
 
-  const Pedido({
+
+  Pedido({
     this.id,
     required this.idUsuario,
     this.listaItens = const [],
-    required this.data
+    required this.data,
+    required this.valor
   });
 
 
@@ -18,28 +21,30 @@ class Pedido{
   static Pedido fromJson(Map<String, dynamic> json) => Pedido(
     id: json['id'] as int?,
     idUsuario: json['idUsuario'] as int,
-    listaItens: json['listaItens'] as List<Item>,
-    data: json['data'] as DateTime,
+    data: json['data'] as String,
+    valor: json['valor'] as double?
   );
 
   Map<String, dynamic> toJson() =>{
     'id': id,
     'idUsuario': idUsuario,
-    'listaItens': listaItens,
     'data': data,
+    'valor': valor
   };
 
   Pedido copyWith({
     int? id,
     int? idUsuario,
     List<Item>? listaItens,
-    DateTime? data,
+    String? data,
+    double? valor
   }) => 
   Pedido(
     id: id ?? this.id,
     idUsuario: idUsuario ?? this.idUsuario,
     listaItens: listaItens ?? this.listaItens,
-    data: data ?? this.data
+    data: data ?? this.data,
+    valor: valor ?? this.valor
   );
 }
 

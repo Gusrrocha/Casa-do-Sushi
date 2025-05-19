@@ -54,6 +54,8 @@ class DatabaseHelper {
       CREATE TABLE IF NOT EXISTS Pedido(
       id $idType,
       idUsuario INTEGER NOT NULL,
+      data TEXT NOT NULL,
+      valor $doubleType,
       FOREIGN KEY(idUsuario) REFERENCES Usuario(id)
       )
     ''');

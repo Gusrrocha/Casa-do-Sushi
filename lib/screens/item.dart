@@ -167,6 +167,7 @@ class ItemPageState extends State<ItemPage>{
                               item.valor = widget.produto.value * item.quantidade;
                             });
                             List<Item> itens = [item];
+                            
                             Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CompraPage(itens: itens)));    
                           }, 
                           child: Text("Comprar")

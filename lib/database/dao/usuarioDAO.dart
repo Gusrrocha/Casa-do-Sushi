@@ -51,4 +51,11 @@ class UsuarioDAO {
     return result.first['isAdmin'] != 0 ? true : false;
   }
 
+  Future<int> getUserByUID(String uid) async {
+    final db = await _db;
+    final result = await db.query('Usuario', columns: ['id'], where: 'firebaseUID = ?', whereArgs: [uid]);
+    return result.first['id'] as int;
+  }
+
+  
 }

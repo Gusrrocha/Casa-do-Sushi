@@ -1,6 +1,8 @@
+import 'package:casadosushi/carrinho_provider.dart';
 import 'package:casadosushi/database/auth.dart';
 import 'package:casadosushi/screens/loginPage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Perfil extends StatefulWidget{
@@ -27,21 +29,28 @@ class PerfilState extends State<Perfil>{
         children: [
           ElevatedButton(
             onPressed: () {
-              final navigator = Navigator.of(context);          
+              final navigator = Navigator.of(context);     
+              
+              final carrinhoprovider = Provider.of<CarrinhoProvider>(context, listen: false);
+
+              carrinhoprovider.clearCarrinho();
+               
               () async {
                 try{
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.setBool('isLoggedIn', false);
                   auth.logout();
+                  
+                  if(!mounted) return;
+                  
+                  navigator.pushReplacement(
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  );
                 }
                 catch (e){
                   print("Erro ao tentar sair: $e");
                 }
-                if(!mounted) return;
-
-                navigator.pushReplacement(
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
+                
             }();
             }, 
             child: Text("Sair da conta")

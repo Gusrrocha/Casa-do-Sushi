@@ -1,5 +1,7 @@
 import 'package:casadosushi/database/database_helper.dart';
+import 'package:casadosushi/models/item.dart';
 import 'package:casadosushi/models/pedido.dart';
+import 'package:casadosushi/models/produto.dart';
 import 'package:sqflite/sqflite.dart';
 
 
@@ -26,5 +28,20 @@ class PedidoDAO{
   Future<void> updatePedido(Pedido pedido, int id) async{
     final db = await _db;
     await db.update('Pedido', pedido.toJson(), where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<List<Pedido>> getAllPedidosByUserId(int id) async{
+    final db = await _db;
+    final result = await db.query('Pedido', where: 'idUsuario = ?', whereArgs: [id]);
+    final lista = result.map((json) => Pedido.fromJson(json)).toList();
+    for (var pedido in lista) {
+      final itemMaps = await db.query('Item', where: 'idPedido = ?', whereArgs: [pedido.id]);
+      pedido.listaItens = itemMaps.map((json) => Item.fromJson(json)).toList();
+      for (var item in pedido.listaItens) {
+        final produtoMaps = await db.query('Produto', where: '_id = ?', whereArgs: [item.idProduto]);
+        item.produto = produtoMaps.map((json) => Produto.fromJson(json)).first;
+      }
+    }
+    return lista;
   }
 }

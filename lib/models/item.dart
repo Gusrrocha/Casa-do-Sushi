@@ -2,7 +2,7 @@ import 'package:casadosushi/models/produto.dart';
 
 class Item {
   final int? id;
-  final int? idPedido;
+  int? idPedido;
   final int idProduto;
   int quantidade;
   double? valor;
