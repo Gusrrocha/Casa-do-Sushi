@@ -19,5 +19,7 @@ class UsuarioRepository {
   
   Future<bool> checkIfAdmin(String uid) => usuarioDAO.checkIfAdmin(uid);
 
-  Future<int> getUserByUID(String uid) => usuarioDAO.getUserByUID(uid);
+  Future<Usuario> getUserByUID(String uid) => usuarioDAO.getUserByUID(uid);
+
+  Future<int> getUserIdByUID(String uid) => usuarioDAO.getUserIdByUID(uid);
 }

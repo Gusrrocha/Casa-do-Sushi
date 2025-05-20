@@ -19,6 +19,7 @@ class LoginPageState extends State<LoginPage>{
   Auth auth = Auth();
   bool isLoginFalse = false;
   UsuarioRepository usuarioRepository = UsuarioRepository(); 
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -33,6 +34,9 @@ class LoginPageState extends State<LoginPage>{
     if(_formKey.currentState!.validate()){
         if(await usuarioRepository.authUser(email, senha)){
           try{
+            setState(() {
+              isLoading = true;
+            });
             await auth.login(email,senha);
             final prefs = await SharedPreferences.getInstance();
             await prefs.setBool('isLoggedIn', true);
@@ -66,6 +70,9 @@ class LoginPageState extends State<LoginPage>{
   
   @override
   Widget build(BuildContext context) {
+    if(isLoading){
+      return const Center(child: CircularProgressIndicator());
+    }
     return Scaffold(
       body: Center(
         child: Padding(

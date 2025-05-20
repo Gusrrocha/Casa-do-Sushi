@@ -26,6 +26,7 @@ class CadastroState extends State<Cadastro>{
   UsuarioRepository usuarioRepository = UsuarioRepository();
   final _formKey = GlobalKey<FormState>();
   bool isUserCorrect = true;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -45,6 +46,9 @@ class CadastroState extends State<Cadastro>{
       if(isUser.isEmpty){
         isUserCorrect = true;
         try{
+          setState(() {
+            isLoading = true;
+          });
           final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: senha);
           Usuario usuario = Usuario(firebaseUID: cred.user!.uid, nome: nome, email: email, telefone: telefone, cpf: cpf, senha: senha, isAdmin: 0);
           await usuarioRepository.insertUser(usuario);  
@@ -65,6 +69,9 @@ class CadastroState extends State<Cadastro>{
   }
   @override
   Widget build(BuildContext context){
+    if(isLoading){
+      return const Center(child: CircularProgressIndicator());
+    }
     return Scaffold(
       appBar: AppBar(title: Text("")),
       body: Center(

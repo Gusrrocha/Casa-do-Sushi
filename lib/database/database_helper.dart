@@ -75,7 +75,7 @@ class DatabaseHelper {
       idPedido INTEGER NOT NULL,
       idProduto INTEGER NOT NULL,
       quantidade INTEGER NOT NULL,
-      FOREIGN KEY(idPedido) REFERENCES Pedido(id),
+      FOREIGN KEY(idPedido) REFERENCES Pedido(id) ON DELETE CASCADE,
       FOREIGN KEY(idProduto) REFERENCES Produto(_id)
       )
     ''');

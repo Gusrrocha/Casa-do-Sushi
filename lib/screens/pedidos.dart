@@ -26,13 +26,17 @@ class PedidosState extends State<Pedidos>{
 
   _getPedidos() async{
     String uid = await auth.usuarioAtual();
-    int id = await usuarioRepository.getUserByUID(uid);
+    int id = await usuarioRepository.getUserIdByUID(uid);
     List<Pedido> pedidosTemp = await pedidoRepository.getAllPedidosByUserId(id);
     setState((){
       pedidos = pedidosTemp;
     });
   }
 
+  _removePedido(int id) async{
+    await pedidoRepository.deletePedido(id);
+    _getPedidos();
+  }
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -164,7 +168,15 @@ class PedidosState extends State<Pedidos>{
                           )
                         ],
                       ),
-                      actions: [
+                      actions: [           
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+
+                            _removePedido(pedidos[index].id!);
+                          },
+                          child: const Text("Remover Pedido"),
+                        ),
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
                           child: const Text("Fechar"),

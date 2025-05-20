@@ -67,7 +67,7 @@ class CompraPageState extends State<CompraPage>{
     DateTime data = DateTime.now();
     String formattedDate = "${data.day}/${data.month}/${data.year}";
     Pedido pedido = Pedido(listaItens: widget.itens, 
-                          idUsuario: await usuarioRepository.getUserByUID(await auth.usuarioAtual()), 
+                          idUsuario: await usuarioRepository.getUserIdByUID(await auth.usuarioAtual()), 
                           data: formattedDate, valor: valorTotal, 
                           paymentMethod: paymentMethod, 
                           parcelas: paymentMethod == "Cartão de crédito" ? selectedMonth : null,

@@ -113,6 +113,7 @@ class RelatoriosState extends State<Relatorios> {
                     sections: resultado.entries.map((entry){
                       final porcentagem = (entry.value / safeTotal) * 100;
                         return PieChartSectionData(
+                          color: Colors.primaries[resultado.keys.toList().indexOf(entry.key) % Colors.primaries.length],
                           value: entry.value.toDouble(),
                           title: '${entry.key.name}\n${porcentagem.toStringAsFixed(1)}%',
                           radius: 60,
@@ -123,8 +124,6 @@ class RelatoriosState extends State<Relatorios> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(onPressed: _getPedidos, child: Text("Atualizar")),
             ],
           ),
         ),
