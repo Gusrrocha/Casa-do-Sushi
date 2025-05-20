@@ -57,7 +57,7 @@ class ItemPageState extends State<ItemPage>{
               SizedBox(
                 height: 200,
                 child: Image.asset(
-                  "f",
+                  item.produto?.photo ?? "assets/images/placeholder.jpg",
                   fit: BoxFit.cover,
                 ),
               ),

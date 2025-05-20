@@ -83,6 +83,7 @@ class DatabaseHelper {
     await db.execute('''INSERT INTO Usuario (firebaseUID, nome, telefone, email, senha, cpf, isAdmin) 
                         VALUES ('10y6NFSpbBVwwnHWH1n0aiGrHQ32', 'admin', 'admin', 'admin@gmail.com', 'admin123', 'admin', 1)''');
 
+    await insertDummyData(db);
   }
 
   Future<Database> _initializeDB(String filename) async {
@@ -99,5 +100,53 @@ class DatabaseHelper {
     final db = await instance.database;
     _database = null;
     return db.close();
+  }
+
+  Future<void> insertDummyData(db) async {
+    List<Produto> dummyProdutos = [
+      Produto(
+        name: "Hot Roll",
+        description: "Enrolado empanado e frito recheado com salmão e cream cheese.",
+        value: 35.99,
+        photo: "assets/images/hotrolls.jpg",
+      ),
+      Produto(
+        name: "Sushi",
+        description: "Sushi tradicional com peixe cru e arroz temperado.",
+        value: 30.99,
+        photo: 'assets/images/sushi-with-salmon.jpg',
+      ),
+      Produto(
+        name: "Temaki",
+        description: "Enrolado de alga arroz, salmão e cebolinha.",
+        value: 27.99,
+        photo: 'assets/images/temaki_salmao.png',
+      ),
+      Produto(
+        name: "Sashimi",
+        description: "Fatias finas de salmão.",
+        value: 36.99,
+        photo: 'assets/images/sashimi.jpg',
+      ),
+      Produto(
+        name: "Uramaki",
+        description: "Enrolado de arroz com peixe e cream cheese.",
+        value: 41.99,
+        photo: 'assets/images/uramaki.jpeg',
+      ),
+      Produto(
+        name: "Yakisoba",
+        description: "Macarrão frito com legumes e carne.",
+        value: 25.99,
+        photo: 'assets/images/yakisoba.jpg',
+      )
+    ];
+    for(var produto in dummyProdutos) {
+      print(produto);
+      await db.insert(
+        'Produto',
+        produto.toJson(),
+      );
+    }
   }
 }

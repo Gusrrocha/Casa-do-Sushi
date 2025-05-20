@@ -50,7 +50,6 @@ class TabsState extends State <Tabs> {
           
     ];
     return MaterialApp(
-      color: Colors.yellow,
       home: DefaultTabController(
         length: listScreens.length,
         animationDuration: Duration.zero,
