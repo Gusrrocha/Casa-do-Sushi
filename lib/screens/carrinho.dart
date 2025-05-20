@@ -9,117 +9,156 @@ class CarrinhoPage extends StatefulWidget {
   @override
   CarrinhoPageState createState() => CarrinhoPageState();
 }
-  
-class CarrinhoPageState extends State<CarrinhoPage> with AutomaticKeepAliveClientMixin<CarrinhoPage>{ 
+
+class CarrinhoPageState extends State<CarrinhoPage> {
   @override
   void initState() {
-    
     super.initState();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Carrinho"), centerTitle: true,),
+      appBar: AppBar(title: Text("Carrinho"), centerTitle: true),
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Consumer<CarrinhoProvider>(
-              builder: (context, carrinhoProvider, child) =>
-                Column(
-                  children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: carrinhoProvider.carrinho.length,
-                        itemBuilder: (context, index) {
-                          final item = carrinhoProvider.carrinho[index];
-                          return Center(
-                            child: Container(
-                              height: 100,
-                              child: Card(
-                                child: ListTile(
-                                  leading: item.produto?.photo != null
-                                    ? Image.asset(item.produto!.photo!, width: 90, height: 90)
-                                    : Image.asset("assets/images/placeholder.jpg", width: 50, height: 50),
-                                  title: Text(item.produto?.name ?? "Produto Desconhecido"),
-                                  subtitle: Text("R\$ ${(item.produto?.value ?? 0).toStringAsFixed(2)}"),
-                                  trailing: SizedBox(
-                                    width: 100,
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          icon: Icon(Icons.remove_circle),
-                                          onPressed: () {
-                                            carrinhoProvider.removeItem(item.produto!);
-                                          },                       
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                          child: TextField(
-                                            controller: TextEditingController(text: item.quantidade.toString()),
-                                            readOnly: true,
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              
-                                            ),
-                                          ),
-                                        ),
-                                        
-                                        IconButton(
-                                          icon: Icon(Icons.add_circle),
-                                          onPressed: () {
-                                            carrinhoProvider.addItem(item.produto!);
-                                          },                       
-                                        )
-                                      ],
+          builder:
+              (context, carrinhoProvider, child) => Column(
+                children: [
+                  carrinhoProvider.carrinho.isNotEmpty ?
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: carrinhoProvider.carrinho.length,
+                    itemBuilder: (context, index) {
+                      final item = carrinhoProvider.carrinho[index];
+                      return Center(
+                        child: Container(
+                          child: Card(
+                            child: ListTile(
+                              leading:
+                                  item.produto?.photo != null
+                                      ? Image.asset(
+                                        item.produto!.photo!,
+                                        width: 90,
+                                        height: 120,
+                                      )
+                                      : Image.asset(
+                                        "assets/images/placeholder.jpg",
+                                        width: 50,
+                                        height: 50,
+                                      ),
+                              title: Text(
+                                item.produto?.name ?? "Produto Desconhecido",
+                              ),
+                              subtitle: Text(
+                                "R\$ ${(item.produto?.value ?? 0).toStringAsFixed(2).replaceAll('.', ',')}",
+                              ),
+                              trailing: SizedBox(
+                                width: 100,
+                                child: Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.remove_circle),
+                                      onPressed: () {
+                                        carrinhoProvider.removeItem(
+                                          item.produto!,
+                                        );
+                                      },
                                     ),
-                                  ),
+                                    SizedBox(
+                                      width: 20,
+                                      child: TextField(
+                                        controller: TextEditingController(
+                                          text: item.quantidade.toString(),
+                                        ),
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                    ),
+
+                                    IconButton(
+                                      icon: Icon(Icons.add_circle),
+                                      onPressed: () {
+                                        carrinhoProvider.addItem(item.produto!);
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          );
-                        },
-                        ),
-                      SizedBox(height: 20),
-                      Text("Total: R\$ ${carrinhoProvider.total.toStringAsFixed(2)}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                carrinhoProvider.clearCarrinho();
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Carrinho limpo com sucesso!")));
-                              },
-                              child: Text("Limpar Carrinho"),
-                            ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if(carrinhoProvider.carrinho.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Carrinho vazio!")));
-                                  return;
-                                }
-                                
-                                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CompraPage(itens: carrinhoProvider.carrinho)));
-                              },
-                              child: Text("Prosseguir à Compra"),
-                            ),
-                          )
-                        ],
-                      ),
-                ],
-                ) 
+                        ),
+                      );
+                    },
                   )
+                  :
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.remove_shopping_cart_outlined, size: 50),
+                      SizedBox(height: 20),
+                      Text("O carrinho está vazio")
+                  ],
+                  ),
+                  Spacer(),
+                  SizedBox(height: 20),
+                  Text(
+                    "Total: R\$ ${carrinhoProvider.total.toStringAsFixed(2)}",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            carrinhoProvider.clearCarrinho();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Carrinho limpo com sucesso!"),
+                              ),
+                            );
+                          },
+                          child: Text("Limpar Carrinho"),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (carrinhoProvider.carrinho.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Carrinho vazio!")),
+                              );
+                              return;
+                            }
+
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (BuildContext context) => CompraPage(
+                                      itens: carrinhoProvider.carrinho,
+                                    ),
+                              ),
+                            );
+                          },
+                          child: Text("Prosseguir à Compra"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
+        ),
+      ),
     );
   }
-  
-  @override
-  bool get wantKeepAlive => true;
+
 }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:casadosushi/screens/carrinho.dart';
 import 'package:casadosushi/screens/inicio.dart';
 import 'package:casadosushi/screens/perfil.dart';
-import 'package:casadosushi/screens/pedidos.dart';
+import 'package:casadosushi/screens/pedidosPage.dart';
 
 
 class Tabs extends StatefulWidget {
@@ -43,7 +43,7 @@ class TabsState extends State <Tabs> {
     final listScreens = [
       Inicio(),
       CarrinhoPage(),
-      Pedidos(),
+      PedidosPage(),
       Perfil(),
       if(isAdmin)
         AdminDashBoard()

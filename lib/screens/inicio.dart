@@ -14,7 +14,7 @@ class InicioState extends State<Inicio> {
   ProdutoRepository produtoRepository = ProdutoRepository();
   late List<Produto> produto = [];
   late List<Produto> produtoList2 = [];
-  
+
   final searchField = TextEditingController();
 
   @override
@@ -38,11 +38,11 @@ class InicioState extends State<Inicio> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 233, 233, 233),
-      appBar: AppBar( 
+      appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 233, 233, 233),
-        title: const Text("Casa do Sushi"), 
-        centerTitle: true
-        ),
+        title: const Text("Casa do Sushi"),
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           Spacer(),
@@ -56,10 +56,17 @@ class InicioState extends State<Inicio> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: TextField(
-              controller: searchField, 
-              onChanged: (value){
+              controller: searchField,
+              onChanged: (value) {
                 setState(() {
-                  produtoList2 = produto.where((element) => element.name.toLowerCase().contains(value.toLowerCase())).toList();
+                  produtoList2 =
+                      produto
+                          .where(
+                            (element) => element.name.toLowerCase().contains(
+                              value.toLowerCase(),
+                            ),
+                          )
+                          .toList();
                 });
               },
               decoration: InputDecoration(
@@ -77,7 +84,7 @@ class InicioState extends State<Inicio> {
             ),
           ),
           SizedBox(height: 20),
-          
+
           Container(
             margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
             padding: EdgeInsets.all(10),
@@ -94,47 +101,71 @@ class InicioState extends State<Inicio> {
                 for (var item in produtoList2)
                   InkWell(
                     hoverColor: Colors.transparent,
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ItemPage(produto: item))),
-                    child: Card(           
+                    onTap:
+                        () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder:
+                                (BuildContext context) =>
+                                    ItemPage(produto: item),
+                          ),
+                        ),
+                    child: Card(
                       color: Colors.white,
                       elevation: 3,
                       shadowColor: const Color.fromARGB(255, 161, 161, 161),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child:
-                        Column(
-                          children: [
-                            item.photo != null 
-                            ?
-                            Image.asset(
-                              item.photo!,
-                              width: 150,
-                              height: 100,
-                              fit: BoxFit.cover,
-                            )
-                            :
-                            Icon(Icons.set_meal),
-                            Padding(padding: EdgeInsets.fromLTRB(10, 10, 0, 0), 
-                                    child: Align(alignment: Alignment.centerLeft, 
-                                                 child: Text(item.name, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold), textScaler: TextScaler.linear(1.5),))),
-                            
-                            Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  "R\$ ${item.value.toString().contains('.') ? item.value.toString().replaceAll('.', ',') : "${item.value},00"}",
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: const Color.fromARGB(255, 202, 146, 146),),
-                                  textScaler: TextScaler.linear(1.5),
-                                )
-                                
+                      child: Column(
+                        children: [
+                          SizedBox(height: 10),
+                          item.photo != null
+                              ? Image.asset(
+                                item.photo!,
+                                width: 150,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              )
+                              : Icon(Icons.set_meal),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                item.name,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textScaler: TextScaler.linear(1.5),
                               ),
                             ),
-                            ],
+                          ),
+
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "R\$ ${item.value.toString().contains('.') ? item.value.toString().replaceAll('.', ',') : "${item.value},00"}",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color.fromARGB(
+                                    255,
+                                    202,
+                                    146,
+                                    146,
+                                  ),
+                                ),
+                                textScaler: TextScaler.linear(1.5),
+                              ),
                             ),
                           ),
-                    )
+                        ],
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),

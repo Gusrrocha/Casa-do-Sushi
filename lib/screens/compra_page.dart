@@ -63,7 +63,6 @@ class CompraPageState extends State<CompraPage>{
   final _formKeyEndereco = GlobalKey<FormState>();
 
   _finalizarCompra(double valorTotal) async{
-
     DateTime data = DateTime.now();
     String formattedDate = "${data.day}/${data.month}/${data.year}";
     Pedido pedido = Pedido(listaItens: widget.itens, 
@@ -110,49 +109,47 @@ class CompraPageState extends State<CompraPage>{
   Widget paginaInicial(){
     
     return Container(
+          padding: EdgeInsets.all(8),
           child: Column(
           children: [
             for (var payM in payments)
-              Container(
-                width: 400, 
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(payM),
-                    Spacer(),
-                    Radio(
-                      value: payM,
-                      groupValue: paymentMethod,
-                      onChanged: (value) {
-                        setState(() {
-                          paymentMethod = value!;
-                        });
-                      },
-                    ),   
-                  ],
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.125,
+                width: MediaQuery.of(context).size.width *.95,
+                child: Container(        
+                    margin: EdgeInsets.all(8.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color.fromARGB(64, 0, 0, 0),width: 1),
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: Colors.white,
+                    ),
+                    child: InkWell(
+                    onTap: (){
+                      setState(() {
+                        paymentMethod = payM;
+                      });
+                      if(paymentMethod == "Cartão de crédito" || paymentMethod == "Cartão de débito"){
+                        goToStep(1);
+                      }
+                      else{
+                        goToStep(3);
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        payM == "Dinheiro" ? Icon(Icons.wallet, size: 40,) : Icon(Icons.credit_card, size: 40),
+                        SizedBox(width: 10),
+                        Text(payM, style: TextStyle(fontWeight: FontWeight.bold), textScaler: TextScaler.linear(1.25),),
+                        Spacer(),
+                      ],
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if(paymentMethod == ""){
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text("Selecione um método de pagamento!"),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                    return;
-                  }
-                  if(paymentMethod == "Dinheiro"){
-                    goToStep(3);
-                  }
-                  else{
-                    goToStep(1);
-                  }
-                }, 
-                child: Text("Finalizar Compra")
-              )
+              
             ],
           ),
         );
@@ -166,54 +163,22 @@ class CompraPageState extends State<CompraPage>{
         key: _formKey,
         child: Column(
           children: [
-            TextFormField(
-              controller: cartaoController,
-              validator: (value){
-                if(value == null || value.isEmpty || value.length < 16){
-                  return "Campo obrigatório";
-                }
-                return null;
-              },
-              
-              inputFormatters: [_cartaoFormatter],
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Número do Cartão",
-                border: OutlineInputBorder(),
-              ),
+              TextFormField(
+                controller: cartaoController,
+                validator: (value){
+                  if(value == null || value.isEmpty || value.length < 16){
+                    return "Campo obrigatório";
+                  }
+                  return null;
+                }, 
+                inputFormatters: [_cartaoFormatter],
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  labelText: "Número do Cartão",
+                  border: OutlineInputBorder(),
+                ),
             ),
             SizedBox(height: 10),
-            TextFormField(
-              controller: validadeController,
-              validator: (value){
-                if(value == null || value.isEmpty || value.length < 5){
-                  return "Campo obrigatório";
-                }
-                return null;
-              },
-              inputFormatters: [_validadeFormatter],
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "Validade (MM/AA)",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 10),
-            TextFormField(
-              controller: cvvController,
-              validator: (value){
-                if(value == null || value.isEmpty || value.length < 3){
-                  return "Campo obrigatório";
-                }
-                return null;
-              },
-              inputFormatters: [_cvvFormatter],
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "CVV",
-                border: OutlineInputBorder(),
-              ),
-            ),
             TextFormField(
               controller: nomeController,
               validator: (value){
@@ -228,34 +193,89 @@ class CompraPageState extends State<CompraPage>{
                 border: OutlineInputBorder(),
               ),
             ),
-            TextFormField(
-              controller: cpfController,
-              validator: (value){
-                if(value == null || value.isEmpty || value.length < 14){
-                  return "Campo obrigatório";
-                }
-                return null;
-              },
-              inputFormatters: [_cpfFormatter],
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: "CPF",
-                border: OutlineInputBorder(),
-              ),
-            ),
+            SizedBox(height: 10),
+            Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0,0,8,0),
+                    width: 100,
+                    child: TextFormField(
+                      controller: validadeController,
+                      validator: (value){
+                        if(value == null || value.isEmpty || value.length < 5){
+                          return "Campo obrigatório";
+                        }
+                        return null;
+                      },
+                      inputFormatters: [_validadeFormatter],
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: "Validade",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0,0,8,0),
+                    width: 100,
+                    child: TextFormField(
+                      controller: cvvController,
+                      validator: (value){
+                        if(value == null || value.isEmpty || value.length < 3){
+                          return "Campo obrigatório";
+                        }
+                        return null;
+                      },
+                      inputFormatters: [_cvvFormatter],
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: "CVV",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Expanded(
+                    child: TextFormField(
+                      controller: cpfController,
+                      validator: (value){
+                        if(value == null || value.isEmpty || value.length < 14){
+                          return "Campo obrigatório";
+                        }
+                        return null;
+                      },
+                      inputFormatters: [_cpfFormatter],
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: "CPF",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                ],
+            ),       
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if(_formKey.currentState!.validate()){
-                  if(paymentMethod == "Cartão de crédito"){
-                    goToStep(2);
+            Container(
+              height: 55,
+              width: MediaQuery.of(context).size.width *.95,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: const Color.fromARGB(255, 204, 96, 82),
+              ),
+              child: TextButton(
+                onPressed: () {
+                  if(_formKey.currentState!.validate()){
+                    if(paymentMethod == "Cartão de crédito"){
+                      goToStep(2);
+                    }
+                    else{
+                      goToStep(3);
+                    }
                   }
-                  else{
-                    goToStep(3);
-                  }
-                }
-              }, 
-              child: Text("Continuar")
+                }, 
+                child: Text("Prosseguir", style: TextStyle(color: Colors.white))
+              ),
             )
           ],
         ),
@@ -402,7 +422,7 @@ class CompraPageState extends State<CompraPage>{
                   goToStep(4);
                 }
               }, 
-              child: Text("Continuar")
+              child: Text("Prosseguir")
             )
           ],
         ),
@@ -464,10 +484,19 @@ class CompraPageState extends State<CompraPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Selecionar Método de Pagamento"), 
+      appBar: AppBar(title: 
+                        _passo == 0 ?
+                          Text("Selecionar Método de Pagamento", style: TextStyle(color: Colors.white)) 
+                        : _passo == 1 ? Text("Inserir Dados do Cartão", style: TextStyle(color: Colors.white))
+                        : _passo == 2 ? Text("Selecionar parcelas", style: TextStyle(color: Colors.white))
+                        : _passo == 3 ? Text("Endereço", style: TextStyle(color: Colors.white))
+                        : _passo == 4 ? Text("Sumário", style: TextStyle(color: Colors.white))
+                        : Text(''), 
+                    elevation: _passo == 5 ? 0 : 1,
+                    backgroundColor: _passo == 5 ? Colors.transparent : Theme.of(context).primaryColor,
                     centerTitle: true,
                     leading: IconButton(
-                    icon: Icon(Icons.arrow_back),
+                    icon: Icon(Icons.arrow_back, color: _passo != 5 ? Colors.white : Colors.black),
                     onPressed: () {
                       if (_passo == 0 || _passo == 5) {
                         Navigator.pop(context); // leave screen
@@ -511,9 +540,8 @@ class CompraPageState extends State<CompraPage>{
                     },
                   ),
                 ),
-      body: Center(
-        child: _buildStep()
-      )
+      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
+      body: _buildStep()
       );
   }
 }

@@ -4,14 +4,14 @@ import 'package:casadosushi/repositories/pedido_repository.dart';
 import 'package:casadosushi/repositories/usuario_repository.dart';
 import 'package:flutter/material.dart';
 
-class Pedidos extends StatefulWidget{
-  const Pedidos({super.key});
+class PedidosPage extends StatefulWidget{
+  const PedidosPage({super.key});
 
   @override
-  PedidosState createState() => PedidosState();
+  PedidosPageState createState() => PedidosPageState();
 }
 
-class PedidosState extends State<Pedidos>{
+class PedidosPageState extends State<PedidosPage>{
   final PedidoRepository pedidoRepository = PedidoRepository();
   final UsuarioRepository usuarioRepository = UsuarioRepository();
   final Auth auth = Auth();

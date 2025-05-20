@@ -1,4 +1,3 @@
-import 'package:casadosushi/models/usuario.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 
