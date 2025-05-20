@@ -33,40 +33,47 @@ class CarrinhoPageState extends State<CarrinhoPage> with AutomaticKeepAliveClien
                         itemCount: carrinhoProvider.carrinho.length,
                         itemBuilder: (context, index) {
                           final item = carrinhoProvider.carrinho[index];
-                          return Card(
-                            child: ListTile(
-                              leading: Icon(Icons.fastfood, size: 50),
-                              title: Text(item.produto?.name ?? "Produto Desconhecido"),
-                              subtitle: Text("R\$ ${(item.produto?.value ?? 0).toStringAsFixed(2)}"),
-                              trailing: SizedBox(
-                                width: 100,
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.remove_circle),
-                                      onPressed: () {
-                                        carrinhoProvider.removeItem(item.produto!);
-                                      },                       
-                                    ),
-                                    SizedBox(
-                                      width: 20,
-                                      child: TextField(
-                                        controller: TextEditingController(text: item.quantidade.toString()),
-                                        readOnly: true,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          
+                          return Center(
+                            child: Container(
+                              height: 100,
+                              child: Card(
+                                child: ListTile(
+                                  leading: item.produto?.photo != null
+                                    ? Image.asset(item.produto!.photo!, width: 90, height: 90)
+                                    : Image.asset("assets/images/placeholder.jpg", width: 50, height: 50),
+                                  title: Text(item.produto?.name ?? "Produto Desconhecido"),
+                                  subtitle: Text("R\$ ${(item.produto?.value ?? 0).toStringAsFixed(2)}"),
+                                  trailing: SizedBox(
+                                    width: 100,
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          icon: Icon(Icons.remove_circle),
+                                          onPressed: () {
+                                            carrinhoProvider.removeItem(item.produto!);
+                                          },                       
                                         ),
-                                      ),
+                                        SizedBox(
+                                          width: 20,
+                                          child: TextField(
+                                            controller: TextEditingController(text: item.quantidade.toString()),
+                                            readOnly: true,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              
+                                            ),
+                                          ),
+                                        ),
+                                        
+                                        IconButton(
+                                          icon: Icon(Icons.add_circle),
+                                          onPressed: () {
+                                            carrinhoProvider.addItem(item.produto!);
+                                          },                       
+                                        )
+                                      ],
                                     ),
-                                    
-                                    IconButton(
-                                      icon: Icon(Icons.add_circle),
-                                      onPressed: () {
-                                        carrinhoProvider.addItem(item.produto!);
-                                      },                       
-                                    )
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),

@@ -1,5 +1,3 @@
-
-
 import 'package:casadosushi/carrinho_provider.dart';
 import 'package:casadosushi/models/item.dart';
 import 'package:casadosushi/models/produto.dart';
@@ -46,6 +44,7 @@ class ItemPageState extends State<ItemPage>{
   Widget build(BuildContext context){
     quantidadeController.text = "1";
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(title: Text("")),
       body: 
         Container(

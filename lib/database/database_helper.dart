@@ -142,7 +142,6 @@ class DatabaseHelper {
       )
     ];
     for(var produto in dummyProdutos) {
-      print(produto);
       await db.insert(
         'Produto',
         produto.toJson(),

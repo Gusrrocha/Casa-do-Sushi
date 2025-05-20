@@ -111,8 +111,8 @@ class PerfilState extends State<Perfil> {
                       ),
                     );
                   } catch (e) {
-                    print("Erro ao tentar sair: $e");
-                  }
+                    print("Erro ao sair: $e");                 
+                 }
                 }();
               },
               child: Text("Sair da conta"),
