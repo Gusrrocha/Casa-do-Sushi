@@ -18,6 +18,11 @@ class RelatoriosState extends State<Relatorios> {
   final ProdutoRepository produtoRepository = ProdutoRepository();
   Map<int, int> vendasPorProduto = {};
   Map<Produto, int> resultado = {};
+  Map<String, int> datasQuant = {};
+  Map<String, double> totalData = {};
+  List<MapEntry<String, double>> totalDataEntries = [];
+  double total = 0.0;
+
   @override
   void initState() {
     _getPedidos();
@@ -28,6 +33,16 @@ class RelatoriosState extends State<Relatorios> {
     List<Pedido> pedidosTemp = await pedidoRepository.listPedido();
     Map<int, int> vendasPorProdutoTemp = {};
     for (var pedido in pedidosTemp) {
+      datasQuant.update(
+        pedido.data, 
+        (value) => value + 1, 
+        ifAbsent: () => 1);
+      totalData.update(
+        pedido.data,
+        (value) => value + (pedido.valor ?? 0.0),
+        ifAbsent: () => pedido.valor ?? 0.0,
+      );
+      total += pedido.valor ?? 0.0;
       for (var item in pedido.listaItens) {
         vendasPorProdutoTemp.update(
           item.idProduto,
@@ -46,36 +61,56 @@ class RelatoriosState extends State<Relatorios> {
       pedidos = pedidosTemp;
       vendasPorProduto = vendasPorProdutoTemp;
       resultado = resultadoTemp;
+      totalDataEntries = totalData.entries.toList();
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
-    final total = resultado.entries.fold<int>(0, (previousValue, element) => previousValue + element.value);
-    final safeTotal = total == 0 ? 1 : total;
+    final quantTotal = resultado.entries.fold<int>(
+      0,
+      (previousValue, element) => previousValue + element.value,
+    );
+    final safeTotal = total == 0 ? 1 : quantTotal;
     return Scaffold(
+      appBar: AppBar(title: Text("Relatórios"),),
       body: Container(
         height: 600,
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
         padding: const EdgeInsets.all(10),
         child: Column(
-            children: [
+          children: [
+            if (totalDataEntries.isNotEmpty)
               Container(
-                height: 200,
+                height: 300,
                 width: 300,
                 child: BarChart(
                   BarChartData(
+                    maxY: total,
                     alignment: BarChartAlignment.spaceAround,
                     barTouchData: BarTouchData(enabled: true),
                     titlesData: FlTitlesData(
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: true),
+                      topTitles: AxisTitles(
+                        axisNameWidget: Text("Vendas por dia (R\$)"),
+                        sideTitles: SideTitles(showTitles: false),
+                        axisNameSize: 24,
                       ),
-                      bottomTitles: AxisTitles(
+                      rightTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      leftTitles: AxisTitles(
+                        axisNameWidget: Text("Valor (R\$)"),
                         sideTitles: SideTitles(
                           showTitles: true,
+                          reservedSize: 40,
+                        ),
+                      ),
+                      bottomTitles: AxisTitles(
+                        axisNameWidget: Text("Data"),
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 30,
                           getTitlesWidget: (value, meta) {
                             int index = value.toInt();
                             if (index < pedidos.length) {
@@ -88,12 +123,12 @@ class RelatoriosState extends State<Relatorios> {
                       ),
                     ),
                     barGroups: List.generate(
-                      pedidos.length,
+                      totalDataEntries.length,
                       (index) => BarChartGroupData(
                         x: index,
                         barRods: [
                           BarChartRodData(
-                            toY: pedidos[index].valor!.toDouble(),
+                            toY: totalDataEntries.isNotEmpty ? double.parse(totalDataEntries[index].value.toStringAsFixed(2)) : 0.0,
                             color: Colors.blue,
                           ),
                         ],
@@ -102,31 +137,43 @@ class RelatoriosState extends State<Relatorios> {
                   ),
                 ),
               ),
-              resultado.isEmpty
-              ? const Text("Nenhum produto vendido")
-              :
-              Container(
-                height: 250,
-                width: 250,
-                child: PieChart(
-                  PieChartData(
-                    sections: resultado.entries.map((entry){
-                      final porcentagem = (entry.value / safeTotal) * 100;
+            resultado.isEmpty
+                ? const Text("Nenhum produto vendido")
+                : 
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Vendas por Produto (%)"),
+                ),
+            
+            Expanded(
+              child: PieChart(
+                PieChartData(
+                  sections:
+                      resultado.entries.map((entry) {
+                        final porcentagem = (entry.value / safeTotal) * 100;
                         return PieChartSectionData(
-                          color: Colors.primaries[resultado.keys.toList().indexOf(entry.key) % Colors.primaries.length],
+                          color:
+                              Colors.primaries[resultado.keys.toList().indexOf(
+                                    entry.key,
+                                  ) %
+                                  Colors.primaries.length],
                           value: entry.value.toDouble(),
-                          title: '${entry.key.name}\n${porcentagem.toStringAsFixed(1)}%',
+                          title:
+                              '${entry.key.name}\n${porcentagem.toStringAsFixed(1)}%',
                           radius: 60,
-                          titleStyle: const TextStyle(fontSize: 12, color: Colors.white),
+                          titleStyle: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
                         );
-                      }
-                    ).toList(),
-                  ),
+                      }).toList(),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
   }
 }

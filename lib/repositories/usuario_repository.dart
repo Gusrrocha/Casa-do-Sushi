@@ -22,4 +22,6 @@ class UsuarioRepository {
   Future<Usuario> getUserByUID(String uid) => usuarioDAO.getUserByUID(uid);
 
   Future<int> getUserIdByUID(String uid) => usuarioDAO.getUserIdByUID(uid);
+
+  Future<Usuario> getUserById(int id) => usuarioDAO.getUserById(id);
 }

@@ -63,4 +63,9 @@ class UsuarioDAO {
     return result.first['id'] as int;
   }
 
+  Future<Usuario> getUserById(int id) async{
+    final db = await _db;
+    final result = await db.rawQuery("SELECT * FROM Usuario WHERE id = '$id'");
+    return Usuario.fromJson(result.first);
+  }
 }

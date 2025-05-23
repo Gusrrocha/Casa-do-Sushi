@@ -67,7 +67,8 @@ class CompraPageState extends State<CompraPage>{
     String formattedDate = "${data.day}/${data.month}/${data.year}";
     Pedido pedido = Pedido(listaItens: widget.itens, 
                           idUsuario: await usuarioRepository.getUserIdByUID(await auth.usuarioAtual()), 
-                          data: formattedDate, valor: valorTotal, 
+                          data: formattedDate, 
+                          valor: valorTotal, 
                           paymentMethod: paymentMethod, 
                           parcelas: paymentMethod == "Cartão de crédito" ? selectedMonth : null,
                           cep: cepController.text,

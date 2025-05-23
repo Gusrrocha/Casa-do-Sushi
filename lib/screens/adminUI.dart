@@ -1,6 +1,7 @@
 import 'package:casadosushi/screens/screensADB/relatorios.dart';
 import 'package:casadosushi/screens/screensADB/Produtos.dart';
 import 'package:casadosushi/screens/screensADB/pedidos.dart';
+import 'package:casadosushi/screens/screensADB/usuarioADMPage.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashBoard extends StatefulWidget{
@@ -30,6 +31,15 @@ class AdminDashBoardState extends State<AdminDashBoard>{
               }    
             ),
             ListTile(
+              title: const Text("Usuários"),
+              onTap: () {
+                setState(() {
+                  bdy = UsuarioADMPage();
+                  Navigator.pop(context);
+                });
+              },
+            ),
+            ListTile(
               title: const Text("Pedidos"),
               onTap: (){
                 setState(() {
@@ -47,6 +57,7 @@ class AdminDashBoardState extends State<AdminDashBoard>{
                 });  
               }    
             )
+
           ]
         )     
       ),
