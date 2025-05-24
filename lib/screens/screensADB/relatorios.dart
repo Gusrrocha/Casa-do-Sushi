@@ -73,104 +73,119 @@ class RelatoriosState extends State<Relatorios> {
     );
     final safeTotal = total == 0 ? 1 : quantTotal;
     return Scaffold(
-      appBar: AppBar(title: Text("Relatórios"),),
+      appBar: AppBar(title: Text("Relatórios")),
       body: Container(
-        height: 600,
+        height: 800,
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            if (totalDataEntries.isNotEmpty)
-              Container(
-                height: 300,
-                width: 300,
-                child: BarChart(
-                  BarChartData(
-                    maxY: total,
-                    alignment: BarChartAlignment.spaceAround,
-                    barTouchData: BarTouchData(enabled: true),
-                    titlesData: FlTitlesData(
-                      topTitles: AxisTitles(
-                        axisNameWidget: Text("Vendas por dia (R\$)"),
-                        sideTitles: SideTitles(showTitles: false),
-                        axisNameSize: 24,
-                      ),
-                      rightTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      leftTitles: AxisTitles(
-                        axisNameWidget: Text("Valor (R\$)"),
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 40,
+            Spacer(),
+            SizedBox(
+              height: 500,
+              width: MediaQuery.of(context).size.width,
+              child: ListView(
+                children: [
+                  if (totalDataEntries.isNotEmpty)
+                Container(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
+                  child: BarChart(
+                    BarChartData(
+                      maxY: total*1.5,
+                      alignment: BarChartAlignment.spaceAround,
+                      barTouchData: BarTouchData(enabled: true),
+                      titlesData: FlTitlesData(
+                        topTitles: AxisTitles(
+                          axisNameWidget: Text("Vendas por dia (R\$)"),
+                          sideTitles: SideTitles(showTitles: false),
+                          axisNameSize: 24,
                         ),
-                      ),
-                      bottomTitles: AxisTitles(
-                        axisNameWidget: Text("Data"),
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 30,
-                          getTitlesWidget: (value, meta) {
-                            int index = value.toInt();
-                            if (index < pedidos.length) {
-                              return Text(pedidos[index].data);
-                            } else {
-                              return const Text("");
-                            }
-                          },
+                        rightTitles: AxisTitles(
+                          sideTitles: SideTitles(showTitles: false),
                         ),
-                      ),
-                    ),
-                    barGroups: List.generate(
-                      totalDataEntries.length,
-                      (index) => BarChartGroupData(
-                        x: index,
-                        barRods: [
-                          BarChartRodData(
-                            toY: totalDataEntries.isNotEmpty ? double.parse(totalDataEntries[index].value.toStringAsFixed(2)) : 0.0,
-                            color: Colors.blue,
+                        leftTitles: AxisTitles(
+                          axisNameWidget: Text("Valor (R\$)"),
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 40,
                           ),
-                        ],
+                        ),
+                        bottomTitles: AxisTitles(
+                          axisNameWidget: Text("Data"),
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 30,
+                            getTitlesWidget: (value, meta) {
+                              int index = value.toInt();
+                              if (index < pedidos.length) {
+                                return Text(pedidos[index].data);
+                              } else {
+                                return const Text("");
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                      barGroups: List.generate(
+                        totalDataEntries.length,
+                        (index) => BarChartGroupData(
+                          x: index,
+                          barRods: [
+                            BarChartRodData(
+                              toY: totalDataEntries.isNotEmpty ? double.parse(totalDataEntries[index].value.toStringAsFixed(2)) : 0.0,
+                              color: Colors.blue,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
+              SizedBox(height: 20),
+              resultado.isEmpty
+                  ? Column(children: [
+                    SizedBox(height: 200), 
+                    Icon(Icons.money_off,size: 70),
+                    Text("Nenhum produto vendido")
+                  ])
+                  : 
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Vendas por Produto (%)"),
+                  ),
+              SizedBox(height: 20),                
+              SizedBox(
+                height: 200,
+                width: MediaQuery.of(context).size.width,
+                child: PieChart(
+                    PieChartData(
+                      sections:
+                          resultado.entries.map((entry) {
+                            final porcentagem = (entry.value / safeTotal) * 100;
+                            return PieChartSectionData(
+                              color:
+                                  Colors.primaries[resultado.keys.toList().indexOf(
+                                        entry.key,
+                                      ) %
+                                      Colors.primaries.length],
+                              value: entry.value.toDouble(),
+                              title:
+                                  '${entry.key.name}\n${porcentagem.toStringAsFixed(1)}%',
+                              radius: 60,
+                              titleStyle: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                              ),
+                            );
+                          }).toList(),
+                    ),
+                  ),
               ),
-            resultado.isEmpty
-                ? const Text("Nenhum produto vendido")
-                : 
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("Vendas por Produto (%)"),
-                ),
-            
-            Expanded(
-              child: PieChart(
-                PieChartData(
-                  sections:
-                      resultado.entries.map((entry) {
-                        final porcentagem = (entry.value / safeTotal) * 100;
-                        return PieChartSectionData(
-                          color:
-                              Colors.primaries[resultado.keys.toList().indexOf(
-                                    entry.key,
-                                  ) %
-                                  Colors.primaries.length],
-                          value: entry.value.toDouble(),
-                          title:
-                              '${entry.key.name}\n${porcentagem.toStringAsFixed(1)}%',
-                          radius: 60,
-                          titleStyle: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                          ),
-                        );
-                      }).toList(),
-                ),
+                ],
               ),
-            ),
+            )
           ],
         ),
       ),
