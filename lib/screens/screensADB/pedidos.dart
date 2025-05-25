@@ -38,7 +38,7 @@ class PedidosState extends State<Pedidos> {
       });       
     });
     for (int i = 0; i < pedidoList.length; i++) {
-        usuarioRepository.getUserById(pedidoList[i].idUsuario).then((value2) {
+        await usuarioRepository.getUserById(pedidoList[i].idUsuario).then((value2) {
           setState(() {
             usuarioList[i] = value2;
           });
@@ -53,55 +53,74 @@ class PedidosState extends State<Pedidos> {
   Widget build(BuildContext context) {
     if (isLoading) return const CircularProgressIndicator();
     return Scaffold(
-      appBar: AppBar(title: Text("Pedidos"),),
-      body: Column(
-        children: [
-          if (usuarioList.isNotEmpty && pedidoList.isNotEmpty)
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: pedidoList.length,
-              itemBuilder:
-                  (context, index) => Card(
-                    child: ListTile(
-                      leading: Text("#${pedidoList[index].id.toString()}"),
-                      title: Text(usuarioList[index].nome),
-                      subtitle: Text(
-                        "R\$ ${pedidoList[index].valor.toString().replaceAll('.', ',')}"
-                      ),
-                      trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            /*IconButton(
-                                    icon: Icon(Icons.edit),
+      backgroundColor: const Color.fromARGB(255, 255, 193, 193),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 255, 193, 193),
+        title: Text("Pedidos"),
+      ),
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            (usuarioList.isNotEmpty && pedidoList.isNotEmpty) ?
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(8),
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: pedidoList.length,
+                    itemBuilder:
+                        (context, index) => Card(
+                          child: ListTile(
+                            leading: Text("#${pedidoList[index].id.toString()}"),
+                            title: Text(usuarioList[index].nome),
+                            subtitle: Text(
+                              "R\$ ${pedidoList[index].valor!.toStringAsFixed(2).replaceAll('.', ',')}"
+                            ),
+                            trailing: SizedBox(
+                              width: 100,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  /*IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: () async {
+                                            await showModalBottomSheet(
+                                              context: context,
+                                              isScrollControlled: true,
+                                              useSafeArea: true,
+                                              builder: (context) => EditPedido(id: pedidoList[index].id!, pedidoList: pedidoList[index]),
+                                            );
+                                            refreshTable();
+                                          },
+                                        ),*/
+                                  IconButton(
+                                    icon: Icon(Icons.delete),
                                     onPressed: () async {
-                                      await showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        useSafeArea: true,
-                                        builder: (context) => EditPedido(id: pedidoList[index].id!, pedidoList: pedidoList[index]),
+                                      await pedidoRepository.deletePedido(
+                                        pedidoList[index].id!,
                                       );
                                       refreshTable();
                                     },
-                                  ),*/
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () async {
-                                await pedidoRepository.deletePedido(
-                                  pedidoList[index].id!,
-                                );
-                                refreshTable();
-                              },
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
                   ),
-            ),
-        ],
+                ),
+              )
+              :
+              Column(
+                children: [
+                  Icon(Icons.receipt, size: 70),
+                  Text("Sem pedidos no momento", style: TextStyle(fontWeight: FontWeight.bold), textScaler: TextScaler.linear(1.5),)
+              ],)
+          ],
+        ),
       ),
     );
   }

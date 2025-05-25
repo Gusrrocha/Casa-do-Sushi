@@ -37,9 +37,9 @@ class InicioState extends State<Inicio> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 233, 233, 233),
+      backgroundColor: const Color.fromARGB(255, 255, 193, 193),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 233, 233, 233),
+        backgroundColor: const Color.fromARGB(255, 255, 182, 182),
         title: const Text("Casa do Sushi"),
         centerTitle: true,
       ),
@@ -89,12 +89,15 @@ class InicioState extends State<Inicio> {
             margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
             padding: EdgeInsets.all(10),
             height: 500,
-            color: const Color.fromARGB(255, 233, 233, 233),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 255, 182, 182),
+              borderRadius: BorderRadius.circular(12)
+            ),
             child: GridView(
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.90,
+                childAspectRatio: 1.15,
               ),
               // This next line does the trick.
               children: <Widget>[

@@ -35,7 +35,11 @@ class PerfilState extends State<Perfil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: const Text("Perfil"))),
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 255, 182, 182),
+        title: Center(child: const Text("Perfil"))
+      ),
+      backgroundColor: const Color.fromARGB(255, 255, 193, 193),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

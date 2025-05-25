@@ -34,7 +34,9 @@ class ProdutosState extends State<Produtos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 193, 193),
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 255, 193, 193),
         title: Center(child:Text("Produtos"))
       ),
       body: Column(
@@ -58,46 +60,48 @@ class ProdutosState extends State<Produtos> {
             ),
           ),
           if (produto.isNotEmpty)
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: produto.length,
-              itemBuilder:
-                  (context, index) => Card(
-                    child: ListTile(
-                      leading: Text(produto[index].id.toString()),
-                      title: Text(produto[index].name),
-                      subtitle: Text("R\$ ${produto[index].value.toString().replaceAll('.',',')}"),
-                      trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            //Text(sushi[index].description ?? ""),
-                            IconButton(
-                              icon: Icon(Icons.edit),
-                              onPressed: () async {
-                                await showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  useSafeArea: true,
-                                  builder: (context) => EditProduto(id: produto[index].id!, produto: produto[index]),
-                                );
-                                refreshTable();
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () async {
-                                await produtoRepository.deleteProduto(produto[index].id!);
-                                refreshTable();
-                              },
-                            ),
-                          ],
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: produto.length,
+                itemBuilder:
+                    (context, index) => Card(
+                      child: ListTile(
+                        leading: Text(produto[index].id.toString()),
+                        title: Text(produto[index].name),
+                        subtitle: Text("R\$ ${produto[index].value.toString().replaceAll('.',',')}"),
+                        trailing: SizedBox(
+                          width: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              //Text(sushi[index].description ?? ""),
+                              IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () async {
+                                  await showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    useSafeArea: true,
+                                    builder: (context) => EditProduto(id: produto[index].id!, produto: produto[index]),
+                                  );
+                                  refreshTable();
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () async {
+                                  await produtoRepository.deleteProduto(produto[index].id!);
+                                  refreshTable();
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
+              ),
             ),
         ],
       ),

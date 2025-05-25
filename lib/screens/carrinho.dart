@@ -19,8 +19,12 @@ class CarrinhoPageState extends State<CarrinhoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Carrinho"), centerTitle: true),
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 255, 182, 182),
+        title: Text("Carrinho"), 
+        centerTitle: true
+      ),
+      backgroundColor: const Color.fromARGB(255, 255, 193, 193),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Consumer<CarrinhoProvider>(
@@ -35,7 +39,9 @@ class CarrinhoPageState extends State<CarrinhoPage> {
                       final item = carrinhoProvider.carrinho[index];
                       return Center(
                         child: Container(
+                          height: 150,
                           child: Card(
+                            color: Colors.white,
                             child: ListTile(
                               leading:
                                   item.produto?.photo != null
@@ -99,6 +105,7 @@ class CarrinhoPageState extends State<CarrinhoPage> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.260,),
                       Icon(Icons.remove_shopping_cart_outlined, size: 50),
                       SizedBox(height: 20),
                       Text("O carrinho está vazio")

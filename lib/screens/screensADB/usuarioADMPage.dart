@@ -30,52 +30,58 @@ class UsuarioADMPageState extends State<UsuarioADMPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Usuários"),),
+      backgroundColor: const Color.fromARGB(255, 255, 193, 193),
+      appBar: AppBar(        
+        backgroundColor: const Color.fromARGB(255, 255, 193, 193),
+        title: Text("Usuários"),
+      ),
       body: Column(
         children: [
           if (usuarioList.isNotEmpty)
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: usuarioList.length,
-              itemBuilder:
-                  (context, index) => Card(
-                    child: ListTile(
-                      leading: Text(usuarioList[index].id.toString()),
-                      title: Text(usuarioList[index].nome),
-                      subtitle: Text(usuarioList[index].email),
-                      trailing: SizedBox(
-                        width: 100,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            /*IconButton(
-                                    icon: Icon(Icons.edit),
-                                    onPressed: () async {
-                                      await showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        useSafeArea: true,
-                                        builder: (context) => EditUsuario(id: usuarioList[index].id!, usuarioList: usuarioList[index]),
-                                      );
-                                      refreshTable();
-                                    },
-                                  ),*/
-                            if(usuarioList[index].isAdmin != 1)
-                              IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () async {
-                                  await usuarioRepository.deleteUser(
-                                    usuarioList[index].id!,
-                                  );
-                                  refreshTable();
-                                },
-                              ),
-                          ],
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: usuarioList.length,
+                itemBuilder:
+                    (context, index) => Card(
+                      child: ListTile(
+                        leading: Text(usuarioList[index].id.toString()),
+                        title: Text(usuarioList[index].nome),
+                        subtitle: Text(usuarioList[index].email),
+                        trailing: SizedBox(
+                          width: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              /*IconButton(
+                                      icon: Icon(Icons.edit),
+                                      onPressed: () async {
+                                        await showModalBottomSheet(
+                                          context: context,
+                                          isScrollControlled: true,
+                                          useSafeArea: true,
+                                          builder: (context) => EditUsuario(id: usuarioList[index].id!, usuarioList: usuarioList[index]),
+                                        );
+                                        refreshTable();
+                                      },
+                                    ),*/
+                              if(usuarioList[index].isAdmin != 1)
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () async {
+                                    await usuarioRepository.deleteUser(
+                                      usuarioList[index].id!,
+                                    );
+                                    refreshTable();
+                                  },
+                                ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
+              ),
             ),
         ],
       ),
