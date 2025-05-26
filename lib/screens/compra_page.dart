@@ -71,6 +71,7 @@ class CompraPageState extends State<CompraPage>{
                           valor: valorTotal, 
                           paymentMethod: paymentMethod, 
                           parcelas: paymentMethod == "Cartão de crédito" ? selectedMonth : null,
+                          status: Status.emPreparo,
                           cep: cepController.text,
                           rua: ruaController.text,
                           numero: numeroController.text,

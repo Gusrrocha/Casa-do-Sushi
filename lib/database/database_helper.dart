@@ -58,6 +58,7 @@ class DatabaseHelper {
       valor $doubleType,
       paymentMethod $textType,
       parcelas INTEGER,
+      status TEXT NOT NULL,
       cep $textType,
       rua $textType,
       numero $textType,

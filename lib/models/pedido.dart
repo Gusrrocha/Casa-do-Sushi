@@ -1,6 +1,16 @@
 import 'package:casadosushi/models/item.dart';
 
-class Pedido{
+enum Status {
+  emPreparo('Em Preparo'),
+  aCaminho('A caminho'),
+  entregue('Entregue');
+
+  final String label;
+
+  const Status(this.label);
+}
+
+class Pedido {
   final int? id;
   final int idUsuario;
   List<Item> listaItens;
@@ -15,6 +25,7 @@ class Pedido{
   final String cidade;
   final String estado;
   int? parcelas;
+  Status? status;
 
 
   Pedido({
@@ -25,6 +36,7 @@ class Pedido{
     required this.valor,
     required this.paymentMethod,
     this.parcelas,
+    this.status,
     required this.cep,
     required this.rua,
     required this.numero,
@@ -34,8 +46,6 @@ class Pedido{
     required this.estado,
   });
 
-
-
   static Pedido fromJson(Map<String, dynamic> json) => Pedido(
     id: json['id'] as int?,
     idUsuario: json['idUsuario'] as int,
@@ -43,29 +53,31 @@ class Pedido{
     valor: json['valor'] as double?,
     paymentMethod: json['paymentMethod'] as String,
     parcelas: json['parcelas'] as int?,
+    status: Status.values.firstWhere((status) => status.label == json['status']),
     cep: json['cep'] as String,
     rua: json['rua'] as String,
     numero: json['numero'] as String,
     complemento: json['complemento'] as String,
     bairro: json['bairro'] as String,
     cidade: json['cidade'] as String,
-    estado: json['estado'] as String
+    estado: json['estado'] as String,
   );
 
-  Map<String, dynamic> toJson() =>{
+  Map<String, dynamic> toJson() => {
     'id': id,
     'idUsuario': idUsuario,
     'data': data,
     'valor': valor,
     'paymentMethod': paymentMethod,
     'parcelas': parcelas,
+    'status': status!.label,
     'cep': cep,
     'rua': rua,
     'numero': numero,
     'complemento': complemento,
     'bairro': bairro,
     'cidade': cidade,
-    'estado': estado
+    'estado': estado,
   };
 
   Pedido copyWith({
@@ -76,15 +88,15 @@ class Pedido{
     double? valor,
     String? paymentMethod,
     int? parcelas,
+    Status? status,
     String? cep,
     String? rua,
     String? numero,
     String? complemento,
     String? bairro,
     String? cidade,
-    String? estado
-  }) => 
-  Pedido(
+    String? estado,
+  }) => Pedido(
     id: id ?? this.id,
     idUsuario: idUsuario ?? this.idUsuario,
     listaItens: listaItens ?? this.listaItens,
@@ -92,13 +104,13 @@ class Pedido{
     valor: valor ?? this.valor,
     paymentMethod: paymentMethod ?? this.paymentMethod,
     parcelas: parcelas ?? this.parcelas,
+    status: status ?? this.status,
     cep: cep ?? this.cep,
     rua: rua ?? this.rua,
     numero: numero ?? this.numero,
     complemento: complemento ?? this.complemento,
     bairro: bairro ?? this.bairro,
     cidade: cidade ?? this.cidade,
-    estado: estado ?? this.estado
+    estado: estado ?? this.estado,
   );
 }
-
