@@ -239,9 +239,8 @@ class PedidosPageState extends State<PedidosPage> {
                             child: Row(
                               crossAxisAlignment:
                                   CrossAxisAlignment
-                                      .start, // Importante para alinhar ao topo
+                                      .start,
                               children: [
-                                // Parte da esquerda
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
@@ -264,7 +263,6 @@ class PedidosPageState extends State<PedidosPage> {
                                   ),
                                 ),
 
-                                // Parte da direita - alinhada ao topo
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [

@@ -97,7 +97,7 @@ class InicioState extends State<Inicio> {
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 1.15,
+                childAspectRatio: 1.00,
               ),
               // This next line does the trick.
               children: <Widget>[
