@@ -33,8 +33,8 @@ class PedidosPageState extends State<PedidosPage> {
     });
   }
 
-  _removePedido(int id) async {
-    await pedidoRepository.deletePedido(id);
+  _cancelarPedido(int id) async {
+    await pedidoRepository.cancelarPedido(id);
     _getPedidos();
   }
 
@@ -213,14 +213,18 @@ class PedidosPageState extends State<PedidosPage> {
                                         (pedidos[index].status ==
                                                     Status.aCaminho ||
                                                 pedidos[index].status ==
-                                                    Status.entregue)
+                                                    Status.entregue ||
+                                                pedidos[index].status ==
+                                                    Status.cancelado)
                                             ? null
                                             : () {
                                               Navigator.of(context).pop();
 
-                                              _removePedido(pedidos[index].id!);
+                                              _cancelarPedido(
+                                                pedidos[index].id!,
+                                              );
                                             },
-                                    child: Text("Remover Pedido"),
+                                    child: Text("Cancelar Pedido"),
                                   ),
                                   TextButton(
                                     onPressed:
@@ -237,9 +241,7 @@ class PedidosPageState extends State<PedidosPage> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
                                   child: Column(
@@ -330,7 +332,9 @@ class StatusChips extends StatelessWidget {
                   ? Colors.amberAccent
                   : status == Status.aCaminho
                   ? Colors.blue
-                  : Colors.green,
+                  : status == Status.entregue
+                  ? Colors.green
+                  : Colors.red,
           borderRadius: BorderRadius.circular(24),
         ),
         child: Align(

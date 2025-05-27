@@ -3,8 +3,9 @@ import 'package:casadosushi/models/item.dart';
 enum Status {
   emPreparo('Em Preparo'),
   aCaminho('A caminho'),
-  entregue('Entregue');
-
+  entregue('Entregue'),
+  cancelado('Cancelado');
+  
   final String label;
 
   const Status(this.label);

@@ -88,15 +88,13 @@ class RelatoriosState extends State<Relatorios> {
         title: Text("Relatórios"),
       ),
       body: Container(
-        height: 800,
+        height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            Spacer(),
-            SizedBox(
-              height: 500,
+            Expanded(
               child: ListView(
                 children: [
                   if (totalDataEntries.isNotEmpty)
@@ -112,15 +110,15 @@ class RelatoriosState extends State<Relatorios> {
                           BoxShadow(
                             color: Colors.grey.withValues(alpha: 0.5),
                             spreadRadius: 3,
-                            blurRadius: 4,
-                            offset: Offset(10, 1),
+                            blurRadius: 5,
+                            offset: Offset(2, 4),
                           ),
                         ],
                       ),
                       height: 300,
                       child: LineChart(
                         LineChartData(
-                          maxY: total * 1.5,
+                          maxY: total,
                           minY: 0.0,
                           lineTouchData: LineTouchData(enabled: true),
                           titlesData: FlTitlesData(
@@ -235,8 +233,8 @@ class RelatoriosState extends State<Relatorios> {
                                 BoxShadow(
                                   color: Colors.grey.withValues(alpha: 0.5),
                                   spreadRadius: 3,
-                                  blurRadius: 4,
-                                  offset: Offset(10, 1),
+                                  blurRadius: 5,
+                                  offset: Offset(2, 4),
                                 ),
                               ],
                             ),

@@ -86,7 +86,8 @@ class PedidosState extends State<Pedidos> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "#${pedidoList[index].id.toString()}",
@@ -111,7 +112,8 @@ class PedidosState extends State<Pedidos> {
                                               },
                                             ),*/
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         StatusChips(
                                           status: pedidoList[index].status!,
@@ -123,12 +125,16 @@ class PedidosState extends State<Pedidos> {
                                           onPressed:
                                               (pedidoList[index].status ==
                                                           Status.aCaminho ||
-                                                      pedidoList[index].status ==
-                                                          Status.entregue)
+                                                      pedidoList[index]
+                                                              .status ==
+                                                          Status.entregue ||
+                                                      pedidoList[index]
+                                                              .status ==
+                                                          Status.cancelado)
                                                   ? null
                                                   : () async {
                                                     await pedidoRepository
-                                                        .deletePedido(
+                                                        .cancelarPedido(
                                                           pedidoList[index].id!,
                                                         );
                                                     refreshTable();

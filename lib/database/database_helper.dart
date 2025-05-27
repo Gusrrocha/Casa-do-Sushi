@@ -1,3 +1,4 @@
+import 'package:casadosushi/models/item.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:casadosushi/models/produto.dart';
 import 'package:path/path.dart';
@@ -83,7 +84,11 @@ class DatabaseHelper {
     
     await db.execute('''INSERT INTO Usuario (firebaseUID, nome, telefone, email, senha, cpf, isAdmin) 
                         VALUES ('10y6NFSpbBVwwnHWH1n0aiGrHQ32', 'admin', 'admin', 'admin@gmail.com', 'admin123', 'admin', 1)''');
-
+    await db.execute('''INSERT INTO Usuario (firebaseUID, nome, telefone, email, senha, cpf, isAdmin) 
+                        VALUES ('zWMiNooM8AhH02IywNnfvF7dQKi2', 'teste', '(71) 91234-5678', 'teste@gmail.com', 'teste123', '123.456.789-01', 0)''');
+    
+    
+    
     await insertDummyData(db);
   }
 
@@ -148,5 +153,98 @@ class DatabaseHelper {
         produto.toJson(),
       );
     }
+    
+    await db.execute('''INSERT INTO Pedido (idUsuario, data, valor, paymentMethod, parcelas, status, cep, rua, numero, complemento, bairro, cidade, estado)
+                        VALUES (2, '28/5/2025 12:25', 36.99,'Dinheiro', null, 'Entregue', '12345-678', 'Rua dos Rubis', '21', '', 'Rocha Miranda', 'Rio de Janeiro', 'Rio de Janeiro')''');
+    await db.execute('''INSERT INTO Pedido (idUsuario, data, valor, paymentMethod, parcelas, status, cep, rua, numero, complemento, bairro, cidade, estado)
+                        VALUES (2, '29/5/2025 13:56', 83.98,'Cartão de crédito', 4, 'Entregue', '12345-678', 'Rua dos Rubis', '21', '', 'Rocha Miranda', 'Rio de Janeiro', 'Rio de Janeiro')''');
+    await db.execute('''INSERT INTO Pedido (idUsuario, data, valor, paymentMethod, parcelas, status, cep, rua, numero, complemento, bairro, cidade, estado)
+                        VALUES (2, '30/5/2025 11:20', 53.98,'Dinheiro', null, 'Entregue', '12345-678', 'Rua dos Rubis', '21', '', 'Rocha Miranda', 'Rio de Janeiro', 'Rio de Janeiro')''');
+    await db.execute('''INSERT INTO Pedido (idUsuario, data, valor, paymentMethod, parcelas, status, cep, rua, numero, complemento, bairro, cidade, estado)
+                        VALUES (2, '31/5/2025 12:10', 179.95,'Dinheiro', null, 'Entregue', '12345-678', 'Rua dos Rubis', '21', '', 'Rocha Miranda', 'Rio de Janeiro', 'Rio de Janeiro')''');
+    await db.execute('''INSERT INTO Pedido (idUsuario, data, valor, paymentMethod, parcelas, status, cep, rua, numero, complemento, bairro, cidade, estado)
+                        VALUES (2, '01/6/2025 14:20', 94.97,'Cartão de débito', null, 'Cancelado', '12345-678', 'Rua dos Rubis', '21', '', 'Rocha Miranda', 'Rio de Janeiro', 'Rio de Janeiro')''');
+    await db.execute('''INSERT INTO Pedido (idUsuario, data, valor, paymentMethod, parcelas, status, cep, rua, numero, complemento, bairro, cidade, estado)
+                        VALUES (2, '02/6/2025 17:39', 41.99,'Dinheiro', null, 'Entregue', '12345-678', 'Rua dos Rubis', '21', '', 'Rocha Miranda', 'Rio de Janeiro', 'Rio de Janeiro')''');
+    await db.execute('''INSERT INTO Pedido (idUsuario, data, valor, paymentMethod, parcelas, status, cep, rua, numero, complemento, bairro, cidade, estado)
+                        VALUES (2, '03/6/2025 13:35', 25.99,'Cartão de crédito', 2, 'A caminho', '12345-678', 'Rua dos Rubis', '21', '', 'Rocha Miranda', 'Rio de Janeiro', 'Rio de Janeiro')''');
+    await db.execute('''INSERT INTO Pedido (idUsuario, data, valor, paymentMethod, parcelas, status, cep, rua, numero, complemento, bairro, cidade, estado)
+                        VALUES (2, '03/6/2025 18:23', 35.99,'Dinheiro', null, 'Em Preparo', '12345-678', 'Rua dos Rubis', '21', '', 'Rocha Miranda', 'Rio de Janeiro', 'Rio de Janeiro')''');
+    
+    List<Item> dummyItems = [
+      Item(
+        idPedido: 1,
+        idProduto: 4,
+        quantidade: 1,
+        valor: 36.99
+      ),
+      Item(
+        idPedido: 2,
+        idProduto: 5,
+        quantidade: 2,
+        valor: 41.99
+      ),
+      Item(
+        idPedido: 3,
+        idProduto: 6,
+        quantidade: 1,
+        valor: 25.99
+      ),
+      Item(
+        idPedido: 3,
+        idProduto: 3,
+        quantidade: 1,
+        valor: 27.99 
+      ),
+      Item(
+        idPedido: 4,
+        idProduto: 1,
+        quantidade: 5,
+        valor: 35.99
+      ),
+      Item(
+        idPedido: 5,
+        idProduto: 1,
+        quantidade: 1,
+        valor: 35.99
+      ),
+      Item(
+        idPedido: 5,
+        idProduto: 2,
+        quantidade: 1,
+        valor: 30.99
+      ),
+      Item(
+        idPedido: 5,
+        idProduto: 3,
+        quantidade: 1,
+        valor: 27.99
+      ),
+      Item(
+        idPedido: 6,
+        idProduto: 5,
+        quantidade: 1,
+        valor: 41.99
+      ),
+      Item(
+        idPedido: 7,
+        idProduto: 6,
+        quantidade: 1,
+        valor: 25.99
+      ),
+      Item(
+        idPedido: 8,
+        idProduto: 1,
+        quantidade: 1,
+        valor: 35.99
+      ),
+    ];
+    for(var item in dummyItems) {
+      await db.insert(
+        'Item',
+        item.toJson(),
+      );
+    }
+    
   }
 }

@@ -34,6 +34,11 @@ class PedidoDAO{
     await db.delete('Pedido', where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<void> cancelarPedido(int id) async{
+    final db = await _db;
+    await db.rawUpdate('UPDATE Pedido SET status = ? WHERE id = ?', ['Cancelado', '$id']);
+  }
+
   Future<void> updatePedido(Pedido pedido, int id) async{
     final db = await _db;
     await db.update('Pedido', pedido.toJson(), where: 'id = ?', whereArgs: [id]);

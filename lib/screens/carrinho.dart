@@ -1,5 +1,5 @@
 import 'package:casadosushi/carrinho_provider.dart';
-import 'package:casadosushi/screens/compra_page.dart';
+import 'package:casadosushi/screens/compra/compra_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
