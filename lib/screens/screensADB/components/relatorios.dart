@@ -118,7 +118,6 @@ class RelatoriosState extends State<Relatorios> {
                       height: 300,
                       child: LineChart(
                         LineChartData(
-                          maxY: total,
                           minY: 0.0,
                           lineTouchData: LineTouchData(enabled: true),
                           titlesData: FlTitlesData(

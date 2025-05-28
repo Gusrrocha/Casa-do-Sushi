@@ -1,5 +1,5 @@
 import 'package:casadosushi/screens/loginPage.dart';
-import 'package:casadosushi/screens/tabs.dart';
+import 'package:casadosushi/screens/tabs/tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

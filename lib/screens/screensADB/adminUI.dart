@@ -1,7 +1,7 @@
-import 'package:casadosushi/screens/screensADB/relatorios.dart';
-import 'package:casadosushi/screens/screensADB/Produtos.dart';
-import 'package:casadosushi/screens/screensADB/pedidos.dart';
-import 'package:casadosushi/screens/screensADB/usuarioADMPage.dart';
+import 'package:casadosushi/screens/screensADB/components/relatorios.dart';
+import 'package:casadosushi/screens/screensADB/components/Produtos.dart';
+import 'package:casadosushi/screens/screensADB/components/pedidos.dart';
+import 'package:casadosushi/screens/screensADB/components/usuarioADMPage.dart';
 import 'package:flutter/material.dart';
 
 class AdminDashBoard extends StatefulWidget{

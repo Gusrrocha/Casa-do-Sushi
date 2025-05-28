@@ -1,11 +1,11 @@
 import 'package:casadosushi/repositories/usuario_repository.dart';
-import 'package:casadosushi/screens/adminUI.dart';
+import 'package:casadosushi/screens/screensADB/adminUI.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:casadosushi/screens/carrinho.dart';
-import 'package:casadosushi/screens/inicio.dart';
-import 'package:casadosushi/screens/perfil.dart';
-import 'package:casadosushi/screens/pedidosPage.dart';
+import 'package:casadosushi/screens/tabs/carrinho.dart';
+import 'package:casadosushi/screens/tabs/inicio.dart';
+import 'package:casadosushi/screens/tabs/perfil.dart';
+import 'package:casadosushi/screens/tabs/pedidosPage.dart';
 
 
 class Tabs extends StatefulWidget {

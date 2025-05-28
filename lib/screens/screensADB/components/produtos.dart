@@ -1,7 +1,7 @@
 import 'package:casadosushi/models/produto.dart';
 import 'package:casadosushi/repositories/produto_repository.dart';
-import 'package:casadosushi/screens/screensADB/add_produto.dart';
-import 'package:casadosushi/screens/screensADB/edit_produto.dart';
+import 'package:casadosushi/screens/screensADB/components/add_produto.dart';
+import 'package:casadosushi/screens/screensADB/components/edit_produto.dart';
 import 'package:flutter/material.dart';
 
 class Produtos extends StatefulWidget {

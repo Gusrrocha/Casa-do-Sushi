@@ -20,18 +20,23 @@ class TabelaMeses extends StatelessWidget{
     }
     return Container(
       height: 700,
-      padding: EdgeInsets.all(12),
       child: ListView.builder(
         itemCount: 12,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text("${index + 1}x"),
-            trailing: Text(
-              "R\$ ${(valorTotal / (index + 1)).toStringAsFixed(2).replaceAll('.', ',')}",
+          return Container(
+            height: 100,
+            decoration: BoxDecoration(
+              border: Border.all(color: Color.fromARGB(64, 0, 0, 0))
             ),
-            onTap: () {
-              prosseguir(index + 1);
-            },
+            child: ListTile(
+              title: Text("${index + 1}x", textScaler: TextScaler.linear(2),),
+              trailing: Text(
+                "R\$ ${(valorTotal / (index + 1)).toStringAsFixed(2).replaceAll('.', ',')}", textScaler: TextScaler.linear(2),
+              ),
+              onTap: () {
+                prosseguir(index + 1);
+              },
+            ),
           );
         },
       ),

@@ -44,8 +44,8 @@ class ItemPageState extends State<ItemPage>{
   Widget build(BuildContext context){
     quantidadeController.text = "1";
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(title: Text("")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(title: Text(""), backgroundColor: Color.fromARGB(255, 255, 182, 182), elevation: 0,),
       body: 
         Container(
           child: Column(
@@ -53,27 +53,36 @@ class ItemPageState extends State<ItemPage>{
               //Container(
               // child:Image()
               //),
-              SizedBox(
+              Container(
+                color: Colors.white,
                 height: 200,
+                width: double.infinity,
                 child: Image.asset(
                   item.produto?.photo ?? "assets/images/placeholder.jpg",
-                  fit: BoxFit.cover,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16,24,8,8),
-                child: Align(
-                    alignment: Alignment.centerLeft, 
-                    child: Text(widget.produto.name, 
-                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold))),
-              ),              
-              Padding(
-                padding: const EdgeInsets.fromLTRB(24,24,8,8),
-                child: Align(
-                    alignment: Alignment.centerLeft, 
-                    child: Text("R\$ ${widget.produto.value.toString().replaceAll('.', ',')}", 
-                    style: TextStyle(fontSize: 24), textScaler: TextScaler.linear(1.5))),
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16,24,8,8),
+                      child: Align(
+                          alignment: Alignment.centerLeft, 
+                          child: Text(widget.produto.name, 
+                          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold))),
+                    ),              
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16,24,8,8),
+                      child: Align(
+                          alignment: Alignment.centerLeft, 
+                          child: Text("R\$ ${widget.produto.value.toString().replaceAll('.', ',')}", 
+                          style: TextStyle(fontSize: 24), textScaler: TextScaler.linear(1.5))),
+                          
+                    ),
                     
+                  ],
+                ),
               ),
               Divider(),
               Padding(
@@ -81,7 +90,7 @@ class ItemPageState extends State<ItemPage>{
                 child: Align(
                     alignment: Alignment.centerLeft, 
                     child: Text("Descrição", 
-                    style: TextStyle(fontSize: 20))),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16,24,8,8),

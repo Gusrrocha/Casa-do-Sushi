@@ -1,6 +1,6 @@
 import 'package:casadosushi/models/produto.dart';
 import 'package:casadosushi/repositories/produto_repository.dart';
-import 'package:casadosushi/screens/itemPage.dart';
+import 'package:casadosushi/screens/tabs/itemPage.dart';
 import 'package:flutter/material.dart';
 
 class Inicio extends StatefulWidget {
@@ -129,7 +129,12 @@ class InicioState extends State<Inicio> {
                                 height: 100,
                                 fit: BoxFit.cover,
                               )
-                              : Icon(Icons.set_meal),
+                              : Image.asset(
+                                "assets/images/placeholder.jpg",
+                                width: 150,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
                             child: Align(

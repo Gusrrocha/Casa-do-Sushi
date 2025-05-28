@@ -2,7 +2,7 @@ import 'package:casadosushi/models/pedido.dart';
 import 'package:casadosushi/models/usuario.dart';
 import 'package:casadosushi/repositories/pedido_repository.dart';
 import 'package:casadosushi/repositories/usuario_repository.dart';
-import 'package:casadosushi/screens/pedidosPage.dart';
+import 'package:casadosushi/screens/tabs/pedidosPage.dart';
 import 'package:flutter/material.dart';
 
 class Pedidos extends StatefulWidget {

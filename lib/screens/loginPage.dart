@@ -1,7 +1,7 @@
 import 'package:casadosushi/database/auth.dart';
 import 'package:casadosushi/repositories/usuario_repository.dart';
 import 'package:casadosushi/screens/cadastro.dart';
-import 'package:casadosushi/screens/tabs.dart';
+import 'package:casadosushi/screens/tabs/tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -3,6 +3,7 @@ import 'package:casadosushi/database/auth.dart';
 import 'package:casadosushi/models/usuario.dart';
 import 'package:casadosushi/repositories/usuario_repository.dart';
 import 'package:casadosushi/screens/loginPage.dart';
+import 'package:casadosushi/screens/tabs/components/edit_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,12 +33,23 @@ class PerfilState extends State<Perfil> {
     });
   }
 
+  void _navigateAndRefresh() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => (EditUsuario(usuario: usuario!))),
+    );
+
+    if (result != null) {
+      await _getUsuario();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 182, 182),
-        title: Center(child: const Text("Perfil"))
+        title: Center(child: const Text("Perfil")),
       ),
       backgroundColor: const Color.fromARGB(255, 255, 193, 193),
       body: Column(
@@ -53,8 +65,7 @@ class PerfilState extends State<Perfil> {
             ),
             child: Icon(Icons.person, size: 100),
           ),
-          Expanded(
-            child: Container(
+          Container(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
@@ -83,11 +94,31 @@ class PerfilState extends State<Perfil> {
                         style: TextStyle(fontSize: 20),
                       ),
                     ],
-                  ),
+                  ), 
                 ],
               ),
             ),
+          InkWell(
+            onTap: () {
+              _navigateAndRefresh();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Color.fromARGB(64, 0, 0, 0))
+              ),
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+              child: Row(
+                children: [
+                  Icon(Icons.edit, size: 40,),
+                  SizedBox(width: 20),
+                  Text("Editar dados pessoais", style: TextStyle(fontWeight: FontWeight.bold), textScaler: TextScaler.linear(1.5),)
+                ],
+              )
+            )
           ),
+          Spacer(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
@@ -115,8 +146,8 @@ class PerfilState extends State<Perfil> {
                       ),
                     );
                   } catch (e) {
-                    print("Erro ao sair: $e");                 
-                 }
+                    print("Erro ao sair: $e");
+                  }
                 }();
               },
               child: Text("Sair da conta"),

@@ -109,17 +109,19 @@ class CompraPageState extends State<CompraPage> {
   Widget _buildStep() {
     switch (_passo) {
       case 0:
-        return PaginaInicial(prosseguir: (String metodo) {
-          setState(() {
-            paymentMethod = metodo;
-          });
-          if (paymentMethod == "Cartão de crédito" ||
-              paymentMethod == "Cartão de débito") {
-            goToStep(1);
-          } else {
-            goToStep(3);
-          }
-        });
+        return PaginaInicial(
+          prosseguir: (String metodo) {
+            setState(() {
+              paymentMethod = metodo;
+            });
+            if (paymentMethod == "Cartão de crédito" ||
+                paymentMethod == "Cartão de débito") {
+              goToStep(1);
+            } else {
+              goToStep(3);
+            }
+          },
+        );
       case 1:
         return Cartao(
           formKey: _formKey,
@@ -138,14 +140,14 @@ class CompraPageState extends State<CompraPage> {
             } else {
               goToStep(3);
             }
-          }
+          },
         );
       case 2:
         return TabelaMeses(
           itens: widget.itens,
           prosseguir: (index) {
             setState(() {
-                selectedMonth = index;
+              selectedMonth = index;
             });
             goToStep(3);
           },
@@ -161,23 +163,23 @@ class CompraPageState extends State<CompraPage> {
           bairroController: bairroController,
           ruaController: ruaController,
           numeroController: numeroController,
-          prosseguir: () => goToStep(4)
+          prosseguir: () => goToStep(4),
         );
       case 4:
         return Sumario(
           itens: widget.itens,
           paymentMethod: paymentMethod,
           selectedMonth: selectedMonth,
-          prosseguir: (valorTotal) async{
+          prosseguir: (valorTotal) async {
             await _finalizarCompra(valorTotal);
-              if (!mounted) return;
-              final carrinhoprovider = Provider.of<CarrinhoProvider>(
-                context,
-                listen: false,
-              );
+            if (!mounted) return;
+            final carrinhoprovider = Provider.of<CarrinhoProvider>(
+              context,
+              listen: false,
+            );
 
-              carrinhoprovider.clearCarrinho();
-              goToStep(5);
+            carrinhoprovider.clearCarrinho();
+            goToStep(5);
           },
         );
       case 5:
@@ -188,18 +190,36 @@ class CompraPageState extends State<CompraPage> {
   }
 
   Widget telaFinal() {
-    return Container(
-      child: Column(
-        children: [
-          Text("Compra finalizada com sucesso!"),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-            },
-            child: Text("Voltar para o início"),
-          ),
-        ],
+    return Center(
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.check_circle, color: Colors.green, size: 120),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Compra finalizada com sucesso!"),
+            ),
+            SizedBox(height: 20),
+            Container(
+              height: 55,
+              width: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: const Color.fromARGB(255, 204, 96, 82),
+              ),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "Voltar para o início",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -231,7 +251,7 @@ class CompraPageState extends State<CompraPage> {
                 : Text(''),
         elevation: _passo == 5 ? 0 : 1,
         backgroundColor:
-            _passo == 5 ? Colors.transparent : Theme.of(context).primaryColor,
+            _passo == 5 ? Colors.lightGreen : Theme.of(context).primaryColor,
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
@@ -282,7 +302,10 @@ class CompraPageState extends State<CompraPage> {
           },
         ),
       ),
-      backgroundColor: const Color.fromARGB(255, 250, 250, 250),
+      backgroundColor:
+          _passo == 5
+              ? Colors.lightGreen.shade100
+              : const Color.fromARGB(255, 250, 250, 250),
       body: _buildStep(),
     );
   }
