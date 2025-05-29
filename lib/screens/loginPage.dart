@@ -3,7 +3,6 @@ import 'package:casadosushi/repositories/usuario_repository.dart';
 import 'package:casadosushi/screens/cadastro.dart';
 import 'package:casadosushi/screens/tabs/tabs.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget{
   const LoginPage({super.key});
@@ -38,8 +37,6 @@ class LoginPageState extends State<LoginPage>{
               isLoading = true;
             });
             await auth.login(email,senha);
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setBool('isLoggedIn', true);
             if(!mounted) return;
               
             Navigator.pushReplacement(

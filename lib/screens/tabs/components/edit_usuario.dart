@@ -31,12 +31,12 @@ class EditUsuarioState extends State<EditUsuario> {
     super.initState();
   }
 
-  _salvarFormulario() async{
+  _salvarFormulario() async {
     final nome = "${nomeController.text} ${sobrenomeController.text}";
     final telefone = telefoneController.text;
     final email = emailController.text;
 
-    if(_formKey.currentState!.validate()){
+    if (_formKey.currentState!.validate()) {
       Usuario usuarioNew = widget.usuario.copyWith(
         id: widget.usuario.id,
         nome: nome,
@@ -45,19 +45,18 @@ class EditUsuarioState extends State<EditUsuario> {
         email: email,
         senha: widget.usuario.senha,
         cpf: widget.usuario.cpf,
-        isAdmin: widget.usuario.isAdmin
+        isAdmin: widget.usuario.isAdmin,
       );
       await usuarioRepository.updateUser(usuarioNew, widget.usuario.id!);
-      
+
       setState(() {});
-      if(!mounted) return;
+      if (!mounted) return;
       Navigator.of(context).pop(usuarioNew);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Dados Atualizados com Sucesso!")),
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -167,12 +166,8 @@ class EditUsuarioState extends State<EditUsuario> {
                 child: TextButton(
                   onPressed: () {
                     _salvarFormulario();
-                    
                   },
-                  child: Text(
-                    "Salvar",
-                    style: TextStyle(color: Colors.white),
-                  ),
+                  child: Text("Salvar", style: TextStyle(color: Colors.white)),
                 ),
               ),
             ],

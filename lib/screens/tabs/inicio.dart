@@ -25,11 +25,12 @@ class InicioState extends State<Inicio> {
 
   refreshTable() {
     produtoRepository.listProduto().then(
-      (value) => {
+      (value) {
+        if(!mounted) return;
         setState(() {
           produto = value;
           produtoList2 = value;
-        }),
+        });
       },
     );
   }

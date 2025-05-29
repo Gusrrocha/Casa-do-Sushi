@@ -85,7 +85,7 @@ class DatabaseHelper {
     await db.execute('''INSERT INTO Usuario (firebaseUID, nome, telefone, email, senha, cpf, isAdmin) 
                         VALUES ('10y6NFSpbBVwwnHWH1n0aiGrHQ32', 'admin', 'admin', 'admin@gmail.com', 'admin123', 'admin', 1)''');
     await db.execute('''INSERT INTO Usuario (firebaseUID, nome, telefone, email, senha, cpf, isAdmin) 
-                        VALUES ('5OZIFLQplgOlBSMm8bCJjxmldFy2', 'teste', '(71) 91234-5678', 'teste@gmail.com', 'teste123', '123.456.789-01', 0)''');
+                        VALUES ('Mmyw2WwhDKN819nXEnKWot59pIX2', 'teste', '(71) 91234-5678', 'teste@gmail.com', 'teste123', '123.456.789-01', 0)''');
     
     
     

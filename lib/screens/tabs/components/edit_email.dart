@@ -13,21 +13,28 @@ class EditEmail extends StatelessWidget {
   final UsuarioRepository usuarioRepository = UsuarioRepository();
   final Auth auth = Auth();
 
-
-  _salvarFormulario() async{
-    if(_formKey.currentState!.validate()){ 
-      await usuarioRepository.updateUser(Usuario(
-                                          nome: usuario.nome,
-                                          email: emailController.text,
-                                          telefone: usuario.telefone,
-                                          senha: usuario.senha,
-                                          cpf: usuario.cpf
-                                          ), usuario.id!
-                                          );
-      await FirebaseAuth.instance.currentUser!.verifyBeforeUpdateEmail(emailController.text);
+  _salvarFormulario() async {
+    if (_formKey.currentState!.validate()) {
+      await usuarioRepository.updateUser(
+        Usuario(
+          id: usuario.id,
+          firebaseUID: usuario.firebaseUID,
+          nome: usuario.nome,
+          email: emailController.text,
+          telefone: usuario.telefone,
+          senha: usuario.senha,
+          cpf: usuario.cpf,
+          isAdmin: usuario.isAdmin
+        ),
+        usuario.id!,
+      );
+      await FirebaseAuth.instance.currentUser!.verifyBeforeUpdateEmail(
+        emailController.text,
+      );
       auth.logout();
     }
   }
+
   @override
   Widget build(BuildContext context) {
     emailController.text = usuario.email;
