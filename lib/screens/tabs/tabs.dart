@@ -34,7 +34,7 @@ class TabsState extends State <Tabs> {
       return;
     }
     bool temp = await usuarioRepository.checkIfAdmin(user!.uid);
-    if(!mounted)
+    if(!mounted) return;
     setState((){
       isAdmin = temp;
     }); 

@@ -1,8 +1,12 @@
+import 'package:casadosushi/carrinho_provider.dart';
 import 'package:casadosushi/database/auth.dart';
 import 'package:casadosushi/models/usuario.dart';
 import 'package:casadosushi/repositories/usuario_repository.dart';
+import 'package:casadosushi/screens/loginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditEmail extends StatelessWidget {
   EditEmail({super.key, required this.usuario});
@@ -13,7 +17,7 @@ class EditEmail extends StatelessWidget {
   final UsuarioRepository usuarioRepository = UsuarioRepository();
   final Auth auth = Auth();
 
-  _salvarFormulario() async {
+  _salvarFormulario(context, CarrinhoProvider carrinhoprovider) async {
     if (_formKey.currentState!.validate()) {
       await usuarioRepository.updateUser(
         Usuario(
@@ -31,6 +35,24 @@ class EditEmail extends StatelessWidget {
       await FirebaseAuth.instance.currentUser!.verifyBeforeUpdateEmail(
         emailController.text,
       );
+      
+
+      carrinhoprovider.clearCarrinho();
+
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', false);
+        auth.logout();
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginPage(),
+          ),
+        );
+        } catch (e) {
+          print("Erro ao sair: $e");
+        }
       auth.logout();
     }
   }
@@ -73,7 +95,12 @@ class EditEmail extends StatelessWidget {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    _salvarFormulario();
+
+                    final carrinhoprovider = Provider.of<CarrinhoProvider>(
+                      context,
+                      listen: false,
+                    );
+                    _salvarFormulario(context, carrinhoprovider);
                   },
                   child: Text("Salvar", style: TextStyle(color: Colors.white)),
                 ),
