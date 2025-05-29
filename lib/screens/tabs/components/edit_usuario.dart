@@ -37,7 +37,7 @@ class EditUsuarioState extends State<EditUsuario> {
     final email = emailController.text;
 
     if(_formKey.currentState!.validate()){
-      Usuario usuario_new = widget.usuario.copyWith(
+      Usuario usuarioNew = widget.usuario.copyWith(
         id: widget.usuario.id,
         nome: nome,
         firebaseUID: widget.usuario.firebaseUID,
@@ -47,10 +47,11 @@ class EditUsuarioState extends State<EditUsuario> {
         cpf: widget.usuario.cpf,
         isAdmin: widget.usuario.isAdmin
       );
-      await usuarioRepository.updateUser(usuario_new, widget.usuario.id!);
+      await usuarioRepository.updateUser(usuarioNew, widget.usuario.id!);
+      
       setState(() {});
       if(!mounted) return;
-      Navigator.of(context).pop(usuario_new);
+      Navigator.of(context).pop(usuarioNew);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Dados Atualizados com Sucesso!")),
       );
@@ -60,8 +61,8 @@ class EditUsuarioState extends State<EditUsuario> {
 
   @override
   Widget build(BuildContext context) {
-    Usuario usuario_copy = widget.usuario;
-    List<String> nomeCompleto = usuario_copy.nome.split(' ');
+    Usuario usuarioCopy = widget.usuario;
+    List<String> nomeCompleto = usuarioCopy.nome.split(' ');
     nomeController.text = nomeCompleto.first;
     for (int i = 1; i < nomeCompleto.length; i++) {
       if (i == 1) {
@@ -70,8 +71,8 @@ class EditUsuarioState extends State<EditUsuario> {
         sobrenomeController.text += " ${nomeCompleto[i]}";
       }
     }
-    telefoneController.text = usuario_copy.telefone;
-    emailController.text = usuario_copy.email;
+    telefoneController.text = usuarioCopy.telefone;
+    emailController.text = usuarioCopy.email;
 
     return Scaffold(
       appBar: AppBar(title: Text("Editar Dados Pessoais"), centerTitle: true),

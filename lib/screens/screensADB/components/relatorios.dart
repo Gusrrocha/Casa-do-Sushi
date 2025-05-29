@@ -37,20 +37,22 @@ class RelatoriosState extends State<Relatorios> {
     List<Pedido> pedidosTemp = await pedidoRepository.listPedido();
     Map<int, int> vendasPorProdutoTemp = {};
     for (var pedido in pedidosTemp) {
-      datasQuant.update(pedido.data, (value) => value + 1, ifAbsent: () => 1);
-      totalData.update(
-        pedido.data,
-        (value) => value + (pedido.valor ?? 0.0),
-        ifAbsent: () => pedido.valor ?? 0.0,
-      );
-      total += pedido.valor ?? 0.0;
-      for (var item in pedido.listaItens) {
-        vendasPorProdutoTemp.update(
-          item.idProduto,
-          (value) => value + item.quantidade,
-          ifAbsent: () => item.quantidade,
+      if(pedido.status != Status.cancelado){
+        datasQuant.update(pedido.data, (value) => value + 1, ifAbsent: () => 1);
+        totalData.update(
+          pedido.data,
+          (value) => value +  (pedido.valor ?? 0.0),
+          ifAbsent: () => pedido.valor ?? 0.0,
+        );
+        total += pedido.valor ?? 0.0;
+        for (var item in pedido.listaItens) {
+          vendasPorProdutoTemp.update(
+            item.idProduto,
+            (value) => value + item.quantidade,
+            ifAbsent: () => item.quantidade,
         );
       }
+      }         
     }
     Map<Produto, int> resultadoTemp = {};
     for (var entry in vendasPorProdutoTemp.entries) {

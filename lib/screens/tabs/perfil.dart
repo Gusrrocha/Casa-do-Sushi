@@ -3,6 +3,8 @@ import 'package:casadosushi/database/auth.dart';
 import 'package:casadosushi/models/usuario.dart';
 import 'package:casadosushi/repositories/usuario_repository.dart';
 import 'package:casadosushi/screens/loginPage.dart';
+import 'package:casadosushi/screens/tabs/components/edit_email.dart';
+import 'package:casadosushi/screens/tabs/components/edit_senha.dart';
 import 'package:casadosushi/screens/tabs/components/edit_usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,11 +35,30 @@ class PerfilState extends State<Perfil> {
     });
   }
 
-  void _navigateAndRefresh() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => (EditUsuario(usuario: usuario!))),
-    );
+  void _navigateAndRefresh(int index) async {
+    dynamic result;
+    if(index == 1){
+      result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => (EditUsuario(usuario: usuario!)),
+        ),
+      );
+    }
+    else if(index == 2){
+      result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => (EditEmail(usuario: usuario!)),
+          ),
+        );
+    }
+    else{
+      result = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => (EditSenha(usuario: usuario!))),
+      );
+    }
 
     if (result != null) {
       await _getUsuario();
@@ -66,57 +87,106 @@ class PerfilState extends State<Perfil> {
             child: Icon(Icons.person, size: 100),
           ),
           Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Text("Nome: ", style: TextStyle(fontSize: 20)),
-                      Text(usuario?.nome ?? "", style: TextStyle(fontSize: 20)),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Text("Email: ", style: TextStyle(fontSize: 20)),
-                      Text(
-                        usuario?.email ?? "",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Text("Telefone: ", style: TextStyle(fontSize: 20)),
-                      Text(
-                        usuario?.telefone ?? "",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ],
-                  ), 
-                ],
-              ),
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text("Nome: ", style: TextStyle(fontSize: 20)),
+                    Text(usuario?.nome ?? "", style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text("Email: ", style: TextStyle(fontSize: 20)),
+                    Text(usuario?.email ?? "", style: TextStyle(fontSize: 20)),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Text("Telefone: ", style: TextStyle(fontSize: 20)),
+                    Text(
+                      usuario?.telefone ?? "",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+              ],
             ),
+          ),
           InkWell(
             onTap: () {
-              _navigateAndRefresh();
+              _navigateAndRefresh(1);
             },
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border.all(color: Color.fromARGB(64, 0, 0, 0))
+                border: Border.all(color: Color.fromARGB(64, 0, 0, 0)),
               ),
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
               child: Row(
                 children: [
-                  Icon(Icons.edit, size: 40,),
+                  Icon(Icons.edit, size: 40),
                   SizedBox(width: 20),
-                  Text("Editar dados pessoais", style: TextStyle(fontWeight: FontWeight.bold), textScaler: TextScaler.linear(1.5),)
+                  Text(
+                    "Editar dados pessoais",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    textScaler: TextScaler.linear(1.5),
+                  ),
                 ],
-              )
-            )
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              _navigateAndRefresh(2);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Color.fromARGB(64, 0, 0, 0)),
+              ),
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+              child: Row(
+                children: [
+                  Icon(Icons.email, size: 40),
+                  SizedBox(width: 20),
+                  Text(
+                    "Editar e-mail",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    textScaler: TextScaler.linear(1.5),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              _navigateAndRefresh(3);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Color.fromARGB(64, 0, 0, 0)),
+              ),
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+              child: Row(
+                children: [
+                  Icon(Icons.password, size: 40),
+                  SizedBox(width: 20),
+                  Text(
+                    "Alterar senha",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    textScaler: TextScaler.linear(1.5),
+                  ),
+                ],
+              ),
+            ),
           ),
           Spacer(),
           Padding(
