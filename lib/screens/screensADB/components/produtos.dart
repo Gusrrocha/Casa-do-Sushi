@@ -1,4 +1,5 @@
 import 'package:casadosushi/models/produto.dart';
+import 'package:casadosushi/repositories/item_repository.dart';
 import 'package:casadosushi/repositories/produto_repository.dart';
 import 'package:casadosushi/screens/screensADB/components/add_produto.dart';
 import 'package:casadosushi/screens/screensADB/components/edit_produto.dart';
@@ -14,6 +15,7 @@ class Produtos extends StatefulWidget {
 class ProdutosState extends State<Produtos> {
   ProdutoRepository produtoRepository = ProdutoRepository();
   late List<Produto> produto = [];
+  ItemRepository itemRepository = ItemRepository();
 
   @override
   void initState() {
@@ -37,16 +39,16 @@ class ProdutosState extends State<Produtos> {
       backgroundColor: const Color.fromARGB(255, 255, 193, 193),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 193, 193),
-        title: Center(child:Text("Produtos"))
+        title: Center(child: Text("Produtos")),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(padding: EdgeInsets.all(8), child: SizedBox(height:5.0)),
+          Padding(padding: EdgeInsets.all(8), child: SizedBox(height: 5.0)),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton( 
+            child: ElevatedButton(
               onPressed: () async {
                 await showModalBottomSheet(
                   context: context,
@@ -70,7 +72,9 @@ class ProdutosState extends State<Produtos> {
                       child: ListTile(
                         leading: Text(produto[index].id.toString()),
                         title: Text(produto[index].name),
-                        subtitle: Text("R\$ ${produto[index].value.toString().replaceAll('.',',')}"),
+                        subtitle: Text(
+                          "R\$ ${produto[index].value.toString().replaceAll('.', ',')}",
+                        ),
                         trailing: SizedBox(
                           width: 100,
                           child: Row(
@@ -84,7 +88,11 @@ class ProdutosState extends State<Produtos> {
                                     context: context,
                                     isScrollControlled: true,
                                     useSafeArea: true,
-                                    builder: (context) => EditProduto(id: produto[index].id!, produto: produto[index]),
+                                    builder:
+                                        (context) => EditProduto(
+                                          id: produto[index].id!,
+                                          produto: produto[index],
+                                        ),
                                   );
                                   refreshTable();
                                 },
@@ -92,8 +100,48 @@ class ProdutosState extends State<Produtos> {
                               IconButton(
                                 icon: Icon(Icons.delete),
                                 onPressed: () async {
-                                  await produtoRepository.deleteProduto(produto[index].id!);
-                                  refreshTable();
+                                  final confirm = await showDialog<bool>(
+                                    context: context,
+                                    builder:
+                                        (context) => AlertDialog(
+                                          title: Text('Deletar'),
+                                          content: Text(
+                                            'Tem certeza que deseja deletar o produto?',
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed:
+                                                  () => Navigator.of(
+                                                    context,
+                                                  ).pop(false),
+                                              child: Text('Não'),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(true);
+                                              },
+                                              child: Text('Sim'),
+                                            ),
+                                          ],
+                                        ),
+                                  );
+                                  if (confirm == true && mounted) {
+                                    final orders = await itemRepository.getItem(produto[index].id!);
+                                    if (orders.isNotEmpty) {
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                          content: Text('Este produto está vinculado a pedidos e não pode ser deletado.'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    } else {
+                                      await produtoRepository.deleteProduto(
+                                      produto[index].id!,
+                                      );
+                                      refreshTable();
+                                    }
+                                    
+                                  }
                                 },
                               ),
                             ],

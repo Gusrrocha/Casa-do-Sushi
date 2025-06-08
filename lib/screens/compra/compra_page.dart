@@ -191,37 +191,60 @@ class CompraPageState extends State<CompraPage> {
 
   Widget telaFinal() {
     return Center(
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.check_circle, color: Colors.green, size: 120),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("Compra finalizada com sucesso!"),
+    child: Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.green,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  offset: Offset(0, 5),
+                ),
+              ],
             ),
-            SizedBox(height: 20),
-            Container(
-              height: 55,
-              width: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: const Color.fromARGB(255, 204, 96, 82),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text(
-                  "Voltar para o início",
-                  style: TextStyle(color: Colors.white),
+            padding: EdgeInsets.all(20),
+            child: Icon(Icons.check, size: 80, color: Colors.white),
+          ),
+          SizedBox(height: 24),
+          Text(
+            "Compra finalizada com sucesso!",
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 40),
+          SizedBox(
+            width: double.infinity,
+            height: 60,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+              
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFFD66B5D), 
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
               ),
+              child: Text("Voltar para o início", style: TextStyle(fontSize: 16)),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
+    ),
+  );
   }
 
   @override

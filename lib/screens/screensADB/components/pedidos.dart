@@ -121,7 +121,7 @@ class PedidosState extends State<Pedidos> {
                                           height: 25,
                                         ),
                                         IconButton(
-                                          icon: Icon(Icons.delete),
+                                          icon: Icon(Icons.cancel_outlined),
                                           onPressed:
                                               (pedidoList[index].status ==
                                                           Status.aCaminho ||
@@ -133,11 +133,54 @@ class PedidosState extends State<Pedidos> {
                                                           Status.cancelado)
                                                   ? null
                                                   : () async {
-                                                    await pedidoRepository
-                                                        .cancelarPedido(
-                                                          pedidoList[index].id!,
-                                                        );
-                                                    refreshTable();
+                                                    final confirm = await showDialog<
+                                                      bool
+                                                    >(
+                                                      context: context,
+                                                      builder:
+                                                          (
+                                                            context,
+                                                          ) => AlertDialog(
+                                                            title: Text(
+                                                              'Cancelar',
+                                                            ),
+                                                            content: Text(
+                                                              'Tem certeza que quer cancelar o pedido?',
+                                                            ),
+                                                            actions: [
+                                                              TextButton(
+                                                                onPressed:
+                                                                    () => Navigator.of(
+                                                                      context,
+                                                                    ).pop(
+                                                                      false,
+                                                                    ),
+                                                                child: Text(
+                                                                  'Não',
+                                                                ),
+                                                              ),
+                                                              ElevatedButton(
+                                                                onPressed: () {
+                                                                  Navigator.of(
+                                                                    context,
+                                                                  ).pop(true);
+                                                                },
+                                                                child: Text(
+                                                                  'Sim',
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                    );
+                                                    if (confirm == true &&
+                                                        mounted) {
+                                                      await pedidoRepository
+                                                          .cancelarPedido(
+                                                            pedidoList[index]
+                                                                .id!,
+                                                          );
+                                                      refreshTable();
+                                                    }
                                                   },
                                         ),
                                       ],

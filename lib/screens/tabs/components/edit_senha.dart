@@ -59,7 +59,7 @@ class EditSenha extends StatelessWidget {
                     return null;
                   },
                   decoration: InputDecoration(
-                    labelText: "Senha",
+                    labelText: "Senha atual",
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -77,7 +77,7 @@ class EditSenha extends StatelessWidget {
                   },
 
                   decoration: InputDecoration(
-                    labelText: "Senha",
+                    labelText: "Senha nova",
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -94,8 +94,6 @@ class EditSenha extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     _salvarFormulario(context);
-                    
-                    
                   },
                   child: Text("Salvar", style: TextStyle(color: Colors.white)),
                 ),

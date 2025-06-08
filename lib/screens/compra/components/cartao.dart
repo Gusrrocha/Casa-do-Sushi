@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-
-class Cartao extends StatelessWidget{
+class Cartao extends StatelessWidget {
   final Function prosseguir;
   final GlobalKey<FormState> formKey;
   final TextEditingController cartaoController;
@@ -17,18 +16,18 @@ class Cartao extends StatelessWidget{
   final MaskTextInputFormatter cpfFormatter;
 
   const Cartao({
-    super.key, 
+    super.key,
     required this.formKey,
-    required this.cartaoController, 
-    required this.nomeController, 
-    required this.validadeController, 
-    required this.cvvController, 
-    required this.cpfController, 
-    required this.cartaoFormatter, 
-    required this.validadeFormatter, 
-    required this.cvvFormatter, 
+    required this.cartaoController,
+    required this.nomeController,
+    required this.validadeController,
+    required this.cvvController,
+    required this.cpfController,
+    required this.cartaoFormatter,
+    required this.validadeFormatter,
+    required this.cvvFormatter,
     required this.cpfFormatter,
-    required this.prosseguir, 
+    required this.prosseguir,
   });
 
   @override
@@ -51,7 +50,15 @@ class Cartao extends StatelessWidget{
               inputFormatters: [cartaoFormatter],
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                labelText: "Número do Cartão",
+                label: RichText(
+                  text: TextSpan(
+                    text: 'Número do Cartão',
+                    style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                    children: [
+                      TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -66,7 +73,15 @@ class Cartao extends StatelessWidget{
               },
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                labelText: "Nome no Cartão",
+                label: RichText(
+                  text: TextSpan(
+                    text: 'Nome no Cartão',
+                    style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                    children: [
+                      TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
                 border: OutlineInputBorder(),
               ),
             ),
@@ -75,7 +90,7 @@ class Cartao extends StatelessWidget{
               children: [
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                  width: 100,
+                  width: 120,
                   child: TextFormField(
                     controller: validadeController,
                     validator: (value) {
@@ -87,7 +102,21 @@ class Cartao extends StatelessWidget{
                     inputFormatters: [validadeFormatter],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: "Validade",
+                      label: RichText(
+                        text: TextSpan(
+                          text: 'Validade',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: ' *',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -107,7 +136,21 @@ class Cartao extends StatelessWidget{
                     inputFormatters: [cvvFormatter],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: "CVV",
+                      label: RichText(
+                        text: TextSpan(
+                          text: 'CVV',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: ' *',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
                       border: OutlineInputBorder(),
                     ),
                   ),
@@ -125,7 +168,21 @@ class Cartao extends StatelessWidget{
                     inputFormatters: [cpfFormatter],
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: "CPF",
+                      label: RichText(
+                        text: TextSpan(
+                          text: 'CPF',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: ' *',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
                       border: OutlineInputBorder(),
                     ),
                   ),

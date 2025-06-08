@@ -93,7 +93,7 @@ class RelatoriosState extends State<Relatorios> {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24), 
         child: Column(
           children: [
             Expanded(

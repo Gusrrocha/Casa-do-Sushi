@@ -5,14 +5,14 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../models/usuario.dart';
 
-class Cadastro extends StatefulWidget{
+class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
 
   @override
   CadastroState createState() => CadastroState();
 }
 
-class CadastroState extends State<Cadastro>{
+class CadastroState extends State<Cadastro> {
   final nomeController = TextEditingController();
   final sobrenomeController = TextEditingController();
   final emailController = TextEditingController();
@@ -20,8 +20,14 @@ class CadastroState extends State<Cadastro>{
   final confController = TextEditingController();
   final telefoneController = TextEditingController();
   final cpfController = TextEditingController();
-  final telefoneFormatter = MaskTextInputFormatter(mask: "(##) #####-####", filter: {"#": RegExp(r'[0-9]')});
-  final _cpfFormatter = MaskTextInputFormatter(mask: "###.###.###-##", filter: {"#": RegExp(r'[0-9]')});
+  final telefoneFormatter = MaskTextInputFormatter(
+    mask: "(##) #####-####",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
+  final _cpfFormatter = MaskTextInputFormatter(
+    mask: "###.###.###-##",
+    filter: {"#": RegExp(r'[0-9]')},
+  );
   String isUser = "";
   UsuarioRepository usuarioRepository = UsuarioRepository();
   final _formKey = GlobalKey<FormState>();
@@ -30,46 +36,54 @@ class CadastroState extends State<Cadastro>{
 
   @override
   void initState() {
-    
     super.initState();
   }
-  
+
   cadastrar() async {
     final nome = "${nomeController.text} ${sobrenomeController.text}";
     final email = emailController.text;
     final senha = senhaController.text;
     final telefone = telefoneFormatter.getMaskedText();
     final cpf = _cpfFormatter.getMaskedText();
-    if(_formKey.currentState!.validate()){
-      
+    if (_formKey.currentState!.validate()) {
       isUser = await usuarioRepository.checkUser(email, telefone, cpf);
-      if(isUser.isEmpty){
+      if (isUser.isEmpty) {
         isUserCorrect = true;
-        try{
+        try {
           setState(() {
             isLoading = true;
           });
-          final cred = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: senha);
-          Usuario usuario = Usuario(firebaseUID: cred.user!.uid, nome: nome, email: email, telefone: telefone, cpf: cpf, senha: senha, isAdmin: 0);
-          await usuarioRepository.insertUser(usuario);  
-          if(!mounted) return;      
+          final cred = await FirebaseAuth.instance
+              .createUserWithEmailAndPassword(email: email, password: senha);
+          Usuario usuario = Usuario(
+            firebaseUID: cred.user!.uid,
+            nome: nome,
+            email: email,
+            telefone: telefone,
+            cpf: cpf,
+            senha: senha,
+            isAdmin: 0,
+          );
+          await usuarioRepository.insertUser(usuario);
+          if (!mounted) return;
           Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Cadastro realizado com sucesso!")));
-        }
-        catch (e){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Cadastro realizado com sucesso!")),
+          );
+        } catch (e) {
           print("Erro ao cadastrar: $e");
         }
-      }
-      else{
+      } else {
         setState(() {
           isUserCorrect = false;
-        }); 
+        });
       }
     }
   }
+
   @override
-  Widget build(BuildContext context){
-    if(isLoading){
+  Widget build(BuildContext context) {
+    if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
     return Scaffold(
@@ -83,54 +97,102 @@ class CadastroState extends State<Cadastro>{
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0,0,0,64),
-                  child: Text("Cadastro", textScaler: TextScaler.linear(2.0), style: TextStyle(fontWeight: FontWeight.bold)),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 64),
+                  child: Text(
+                    "Cadastro",
+                    textScaler: TextScaler.linear(2.0),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width *.4325,
+                      width: MediaQuery.of(context).size.width * .4325,
                       margin: EdgeInsets.all(8.0),
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        color: const Color.fromARGB(255, 204, 96, 82).withAlpha(127)
+                        color: const Color.fromARGB(
+                          255,
+                          204,
+                          96,
+                          82,
+                        ).withAlpha(127),
                       ),
                       child: TextFormField(
                         controller: nomeController,
                         validator: (value) {
-                        if(value!.isEmpty){
-                          return "O nome é requerido.";
-                        }
-                        return null;
+                          if (value!.isEmpty) {
+                            return "O nome é requerido.";
+                          }
+                          return null;
                         },
-                        
+
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          labelText: "Nome"
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Nome',
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 16,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: ' *',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width *.4325,
+                      width: MediaQuery.of(context).size.width * .4325,
                       margin: EdgeInsets.all(8.0),
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
-                        color: const Color.fromARGB(255, 204, 96, 82).withAlpha(127)
+                        color: const Color.fromARGB(
+                          255,
+                          204,
+                          96,
+                          82,
+                        ).withAlpha(127),
                       ),
                       child: TextFormField(
                         controller: sobrenomeController,
                         validator: (value) {
-                        if(value!.isEmpty){
-                          return "O sobrenome é requerido.";
-                        }
-                        return null;
+                          if (value!.isEmpty) {
+                            return "O sobrenome é requerido.";
+                          }
+                          return null;
                         },
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          labelText: "Sobrenome"
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Sobrenome',
+                              style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 16,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: ' *',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -138,123 +200,220 @@ class CadastroState extends State<Cadastro>{
                 ),
 
                 Container(
-                  width: MediaQuery.of(context).size.width *.9,
+                  width: MediaQuery.of(context).size.width * .9,
                   margin: EdgeInsets.all(8.0),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
-                    color: const Color.fromARGB(255, 204, 96, 82).withAlpha(127)
+                    color: const Color.fromARGB(
+                      255,
+                      204,
+                      96,
+                      82,
+                    ).withAlpha(127),
                   ),
                   child: TextFormField(
                     controller: emailController,
                     validator: (value) {
-                    if(value!.isEmpty){
-                      return "O e-mail é requerido.";
-                    }
-                    return null;
+                      if (value!.isEmpty) {
+                        return "O e-mail é requerido.";
+                      }
+                      return null;
                     },
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      labelText: "Endereço de e-mail"
+                      label: RichText(
+                        text: TextSpan(
+                          text: 'Endereço de e-mail',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: ' *',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                
+
                 Container(
-                  width: MediaQuery.of(context).size.width *.9,
+                  width: MediaQuery.of(context).size.width * .9,
                   margin: EdgeInsets.all(8.0),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
-                    color: const Color.fromARGB(255, 204, 96, 82).withAlpha(127)
+                    color: const Color.fromARGB(
+                      255,
+                      204,
+                      96,
+                      82,
+                    ).withAlpha(127),
                   ),
                   child: TextFormField(
                     controller: telefoneController,
                     validator: (value) {
-                    if(value!.isEmpty || telefoneFormatter.getUnmaskedText().length < 10){
-                      return "O número de telefone é requerido.";
-                    }
-                    return null;
+                      if (value!.isEmpty ||
+                          telefoneFormatter.getUnmaskedText().length < 10) {
+                        return "O número de telefone é requerido.";
+                      }
+                      return null;
                     },
                     inputFormatters: [telefoneFormatter],
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      labelText: "Telefone",
-                      counterText: ''    
+                      label: RichText(
+                        text: TextSpan(
+                          text: 'Telefone',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: ' *',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
+                      counterText: '',
                     ),
                   ),
                 ),
 
                 Container(
-                  width: MediaQuery.of(context).size.width *.9,
+                  width: MediaQuery.of(context).size.width * .9,
                   margin: EdgeInsets.all(8.0),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
-                    color: const Color.fromARGB(255, 204, 96, 82).withAlpha(127)
+                    color: const Color.fromARGB(
+                      255,
+                      204,
+                      96,
+                      82,
+                    ).withAlpha(127),
                   ),
                   child: TextFormField(
                     controller: cpfController,
                     validator: (value) {
-                    if(value!.isEmpty || _cpfFormatter.getUnmaskedText().length < 11){
-                      return "O CPF é requerido.";
-                    }
-                    return null;
+                      if (value!.isEmpty ||
+                          _cpfFormatter.getUnmaskedText().length < 11) {
+                        return "O CPF é requerido.";
+                      }
+                      return null;
                     },
                     inputFormatters: [_cpfFormatter],
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      labelText: "CPF"
+                      label: RichText(
+                        text: TextSpan(
+                          text: 'CPF',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: ' *',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
 
                 Container(
-                  width: MediaQuery.of(context).size.width *.9,
+                  width: MediaQuery.of(context).size.width * .9,
                   margin: EdgeInsets.all(8.0),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
-                    color: const Color.fromARGB(255, 204, 96, 82).withAlpha(127)
+                    color: const Color.fromARGB(
+                      255,
+                      204,
+                      96,
+                      82,
+                    ).withAlpha(127),
                   ),
                   child: TextFormField(
                     controller: senhaController,
                     validator: (value) {
-                    if(value!.isEmpty || senhaController.text.length < 8){
-                      return "A senha é requerida.";
-                    }
-                    return null;
+                      if (value!.isEmpty || senhaController.text.length < 8) {
+                        return "A senha é requerida.";
+                      }
+                      return null;
                     },
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      labelText: "Senha"
+                      label: RichText(
+                        text: TextSpan(
+                          text: 'Senha',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: ' *',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     obscureText: true,
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width *.9,
+                  width: MediaQuery.of(context).size.width * .9,
                   margin: EdgeInsets.all(8.0),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
-                    color: const Color.fromARGB(255, 204, 96, 82).withAlpha(127)
+                    color: const Color.fromARGB(
+                      255,
+                      204,
+                      96,
+                      82,
+                    ).withAlpha(127),
                   ),
                   child: TextFormField(
                     controller: confController,
                     validator: (value) {
-                    if(value!.isEmpty){
-                      return "A senha é requerida.";
-                    }
-                    if(value != senhaController.text.trim()){
-                      return "As senhas não coincidem.";
-                    }
-                    return null;
+                      if (value!.isEmpty) {
+                        return "A senha é requerida.";
+                      }
+                      if (value != senhaController.text.trim()) {
+                        return "As senhas não coincidem.";
+                      }
+                      return null;
                     },
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      labelText: "Confirmar Senha"
+                      label: RichText(
+                        text: TextSpan(
+                          text: 'Confirmar Senha',
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 16,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: ' *',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     obscureText: true,
                   ),
@@ -262,26 +421,30 @@ class CadastroState extends State<Cadastro>{
                 SizedBox(height: 10),
                 Container(
                   height: 55,
-                  width: MediaQuery.of(context).size.width *.9,
+                  width: MediaQuery.of(context).size.width * .9,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: const Color.fromARGB(255, 204, 96, 82),
                   ),
                   child: TextButton(
-                    onPressed: (){cadastrar();}, 
-                    child: Text("Cadastrar", style: TextStyle(color: Colors.white),
-                    )
+                    onPressed: () {
+                      cadastrar();
+                    },
+                    child: Text(
+                      "Cadastrar",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
                 SizedBox(height: 20),
                 isUserCorrect
-                      ? const SizedBox()
-                      : Text(isUser, style: TextStyle(color:Colors.red))
+                    ? const SizedBox()
+                    : Text(isUser, style: TextStyle(color: Colors.red)),
               ],
             ),
           ),
         ),
-      )
+      ),
     );
   }
 }

@@ -31,7 +31,7 @@ class UsuarioADMPageState extends State<UsuarioADMPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 193, 193),
-      appBar: AppBar(        
+      appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 193, 193),
         title: Text("Usuários"),
       ),
@@ -54,26 +54,41 @@ class UsuarioADMPageState extends State<UsuarioADMPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              /*IconButton(
-                                      icon: Icon(Icons.edit),
-                                      onPressed: () async {
-                                        await showModalBottomSheet(
-                                          context: context,
-                                          isScrollControlled: true,
-                                          useSafeArea: true,
-                                          builder: (context) => EditUsuario(id: usuarioList[index].id!, usuarioList: usuarioList[index]),
-                                        );
-                                        refreshTable();
-                                      },
-                                    ),*/
-                              if(usuarioList[index].isAdmin != 1)
+                              if (usuarioList[index].isAdmin != 1)
                                 IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () async {
-                                    await usuarioRepository.deleteUser(
-                                      usuarioList[index].id!,
+                                    final confirm = await showDialog<bool>(
+                                      context: context,
+                                      builder:
+                                          (context) => AlertDialog(
+                                            title: Text('Deletar'),
+                                            content: Text(
+                                              'Tem certeza que quer deletar o usuário?',
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed:
+                                                    () => Navigator.of(
+                                                      context,
+                                                    ).pop(false), 
+                                                child: Text('Não'),
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  Navigator.of(
+                                                    context,
+                                                  ).pop(true); 
+                                                },
+                                                child: Text('Sim'),
+                                              ),
+                                            ],
+                                          ),
                                     );
-                                    refreshTable();
+                                    if (confirm == true && mounted) {
+                                      await usuarioRepository.deleteUser(usuarioList[index].id!);
+                                      refreshTable();
+                                    }                                  
                                   },
                                 ),
                             ],

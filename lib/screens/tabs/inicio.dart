@@ -43,142 +43,156 @@ class InicioState extends State<Inicio> {
         backgroundColor: const Color.fromARGB(255, 255, 182, 182),
         title: const Text("Casa do Sushi"),
         centerTitle: true,
+        elevation: 2,
       ),
-      body: Column(
-        children: [
-          Spacer(),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.85,
-            margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
-            padding: const EdgeInsets.all(6),
-            height: 50,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: TextField(
-              controller: searchField,
-              onChanged: (value) {
-                setState(() {
-                  produtoList2 =
-                      produto
-                          .where(
-                            (element) => element.name.toLowerCase().contains(
-                              value.toLowerCase(),
-                            ),
-                          )
-                          .toList();
-                });
-              },
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: "Pesquisar",
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.clear),
-                  onPressed: () {
-                    searchField.clear();
-                    refreshTable();
-                  },
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [const Color.fromARGB(255, 255, 182, 182), Colors.pink.shade100],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Column(
+          children: [
+            Spacer(),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.85,
+              margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
+              padding: const EdgeInsets.all(6),
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: TextField(
+                controller: searchField,
+                onChanged: (value) {
+                  setState(() {
+                    produtoList2 =
+                        produto
+                            .where(
+                              (element) => element.name.toLowerCase().contains(
+                                value.toLowerCase(),
+                              ),
+                            )
+                            .toList();
+                  });
+                },
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: "Pesquisar",
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: () {
+                      searchField.clear();
+                      refreshTable();
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(height: 20),
-
-          Container(
-            margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
-            padding: EdgeInsets.all(10),
-            height: 500,
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 255, 182, 182),
-              borderRadius: BorderRadius.circular(12)
-            ),
-            child: GridView(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.00,
+            SizedBox(height: 20),
+        
+            Container(
+              margin: const EdgeInsets.fromLTRB(4.0, 1.5, 4.0, 10),
+              padding: EdgeInsets.all(10),
+              height: 500,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [const Color.fromARGB(255, 253, 176, 176), const Color.fromARGB(255, 250, 180, 204)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+                borderRadius: BorderRadius.circular(12)
               ),
-              // This next line does the trick.
-              children: <Widget>[
-                for (var item in produtoList2)
-                  InkWell(
-                    hoverColor: Colors.transparent,
-                    onTap:
-                        () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder:
-                                (BuildContext context) =>
-                                    ItemPage(produto: item),
+              child: GridView(
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1.00,
+                ),
+                // This next line does the trick.
+                children: <Widget>[
+                  for (var item in produtoList2)
+                    InkWell(
+                      hoverColor: Colors.transparent,
+                      onTap:
+                          () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder:
+                                  (BuildContext context) =>
+                                      ItemPage(produto: item),
+                            ),
                           ),
+                      child: Card(
+                        color: Colors.white,
+                        elevation: 3,
+                        shadowColor: const Color.fromARGB(255, 161, 161, 161),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                    child: Card(
-                      color: Colors.white,
-                      elevation: 3,
-                      shadowColor: const Color.fromARGB(255, 161, 161, 161),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 10),
-                          item.photo != null
-                              ? Image.asset(
-                                item.photo!,
-                                width: 150,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              )
-                              : Image.asset(
-                                "assets/images/placeholder.jpg",
-                                width: 150,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                item.name,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 10),
+                            item.photo != null
+                                ? Image.asset(
+                                  item.photo!,
+                                  width: 150,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                )
+                                : Image.asset(
+                                  "assets/images/placeholder.jpg",
+                                  width: 150,
+                                  height: 100,
+                                  fit: BoxFit.cover,
                                 ),
-                                textScaler: TextScaler.linear(1.5),
-                              ),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "R\$ ${item.value.toString().contains('.') ? item.value.toString().replaceAll('.', ',') : "${item.value},00"}",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: const Color.fromARGB(
-                                    255,
-                                    202,
-                                    146,
-                                    146,
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  item.name,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
                                   ),
+                                  textScaler: TextScaler.linear(1.5),
                                 ),
-                                textScaler: TextScaler.linear(1.5),
                               ),
                             ),
-                          ),
-                        ],
+        
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "R\$ ${item.value.toString().contains('.') ? item.value.toString().replaceAll('.', ',') : "${item.value},00"}",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: const Color.fromARGB(
+                                      255,
+                                      202,
+                                      146,
+                                      146,
+                                    ),
+                                  ),
+                                  textScaler: TextScaler.linear(1.5),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

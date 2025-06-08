@@ -10,4 +10,6 @@ class ItemRepository {
   Future<void> deleteItem(int id) => itemDao.deleteItem(id);
 
   Future<void> updateItem(Item item, int id) => itemDao.updateItem(item, id);
+
+  Future<List<Map<String, Object?>>> getItem(int id) => itemDao.getItem(id);
 }

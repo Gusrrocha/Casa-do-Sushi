@@ -58,6 +58,7 @@ class TabsState extends State <Tabs> {
           body: TabBarView(
               physics: NeverScrollableScrollPhysics(), children: listScreens),
           bottomNavigationBar: TabBar(
+            indicatorColor: Color.fromARGB(255, 218, 162, 162),
             dividerColor: Colors.transparent,
             labelColor: Colors.black,
             labelStyle: TextStyle(fontWeight: FontWeight.bold),

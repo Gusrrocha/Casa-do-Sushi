@@ -20,4 +20,9 @@ class ItemDAO{
     final db = await _db;
     await db.update('Item', item.toJson(), where: 'id = ?', whereArgs: [id]);
   }
+
+  Future<List<Map<String, Object?>>> getItem(int id) async{
+    final db = await _db;
+    return db.query('Item', where: 'idProduto = ?', whereArgs: [id]);
+  }
 }

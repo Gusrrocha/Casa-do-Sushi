@@ -37,23 +37,19 @@ class PerfilState extends State<Perfil> {
 
   void _navigateAndRefresh(int index) async {
     dynamic result;
-    if(index == 1){
+    if (index == 1) {
       result = await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => (EditUsuario(usuario: usuario!)),
         ),
       );
-    }
-    else if(index == 2){
+    } else if (index == 2) {
       result = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => (EditEmail(usuario: usuario!)),
-          ),
-        );
-    }
-    else{
+        context,
+        MaterialPageRoute(builder: (context) => (EditEmail(usuario: usuario!))),
+      );
+    } else {
       result = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => (EditSenha(usuario: usuario!))),
@@ -65,165 +61,116 @@ class PerfilState extends State<Perfil> {
     }
   }
 
+  void _logout() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', false);
+      auth.logout();
+
+      if (!mounted) return;
+      Provider.of<CarrinhoProvider>(context, listen: false).clearCarrinho();
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    } catch (e) {
+      print("Erro ao sair: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 255, 182, 182),
         title: Center(child: const Text("Perfil")),
+        elevation: 2,
       ),
       backgroundColor: const Color.fromARGB(255, 255, 193, 193),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 40),
-          Container(
-            height: 150,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.grey,
-            ),
-            child: Icon(Icons.person, size: 100),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [const Color.fromARGB(255, 255, 182, 182), Colors.pink.shade100],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text("Nome: ", style: TextStyle(fontSize: 20)),
-                    Text(usuario?.nome ?? "", style: TextStyle(fontSize: 20)),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text("Email: ", style: TextStyle(fontSize: 20)),
-                    Text(usuario?.email ?? "", style: TextStyle(fontSize: 20)),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Text("Telefone: ", style: TextStyle(fontSize: 20)),
-                    Text(
-                      usuario?.telefone ?? "",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
-              ],
+        ),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.grey[400],
+              child: Icon(Icons.person, size: 60, color: Colors.white),
             ),
-          ),
-          InkWell(
-            onTap: () {
-              _navigateAndRefresh(1);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Color.fromARGB(64, 0, 0, 0)),
+            const SizedBox(height: 16),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text(usuario?.nome ?? "", style: TextStyle(fontSize: 18)),
+              subtitle: Text("Nome"),
+            ),
+            ListTile(
+              leading: Icon(Icons.email),
+              title: Text(usuario?.email ?? "", style: TextStyle(fontSize: 18)),
+              subtitle: Text("Email"),
+            ),
+            ListTile(
+              leading: Icon(Icons.phone),
+              title: Text(
+                usuario?.telefone ?? "",
+                style: TextStyle(fontSize: 18),
               ),
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-              child: Row(
+              subtitle: Text("Telefone"),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
                 children: [
-                  Icon(Icons.edit, size: 40),
-                  SizedBox(width: 20),
-                  Text(
+                  _buildActionCard(
                     "Editar dados pessoais",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    textScaler: TextScaler.linear(1.5),
+                    Icons.edit,
+                    () => _navigateAndRefresh(1),
                   ),
-                ],
-              ),
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              _navigateAndRefresh(2);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Color.fromARGB(64, 0, 0, 0)),
-              ),
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-              child: Row(
-                children: [
-                  Icon(Icons.email, size: 40),
-                  SizedBox(width: 20),
-                  Text(
+                  _buildActionCard(
                     "Editar e-mail",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    textScaler: TextScaler.linear(1.5),
+                    Icons.email_outlined,
+                    () => _navigateAndRefresh(2),
                   ),
-                ],
-              ),
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              _navigateAndRefresh(3);
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Color.fromARGB(64, 0, 0, 0)),
-              ),
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-              child: Row(
-                children: [
-                  Icon(Icons.password, size: 40),
-                  SizedBox(width: 20),
-                  Text(
+                  _buildActionCard(
                     "Alterar senha",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    textScaler: TextScaler.linear(1.5),
+                    Icons.lock_outline,
+                    () => _navigateAndRefresh(3),
                   ),
                 ],
               ),
             ),
-          ),
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                final navigator = Navigator.of(context);
-
-                final carrinhoprovider = Provider.of<CarrinhoProvider>(
-                  context,
-                  listen: false,
-                );
-
-                carrinhoprovider.clearCarrinho();
-
-                () async {
-                  try {
-                    final prefs = await SharedPreferences.getInstance();
-                    await prefs.setBool('isLoggedIn', false);
-                    auth.logout();
-
-                    if (!mounted) return;
-
-                    navigator.pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
-                      ),
-                    );
-                  } catch (e) {
-                    print("Erro ao sair: $e");
-                  }
-                }();
-              },
-              child: Text("Sair da conta"),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 24.0),
+              child: OutlinedButton.icon(
+                onPressed: _logout,
+                icon: Icon(Icons.logout),
+                label: Text("Sair da conta"),
+                style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionCard(String text, IconData icon, VoidCallback onTap) {
+    return Card(
+      child: ListTile(
+        leading: Icon(icon),
+        title: Text(text, style: TextStyle(fontWeight: FontWeight.bold)),
+        trailing: Icon(Icons.chevron_right),
+        onTap: onTap,
       ),
     );
   }
