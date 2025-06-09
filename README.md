@@ -1,16 +1,13 @@
 # Casa Do Sushi
 
-A new Flutter project.
+Aplicativo para dispositivos móveis direcionado a venda de comidas orientais feito em Flutter.
 
-## Getting Started
+- Utiliza o Firebase para autenticação de usuários como API Externa;
+- Utiliza Sqflite como banco de dados local;
+- Contém 15+ páginas, entre elas: páginas de compra, cadastro, login, de gráficos, e outros;
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Integrantes da Equipe:
+- Gustavo Rocha Gomes
+- José Angelo Tavares Neto
+- Ingrid Moreira Sousa
+- Erik Matos Sacramento
