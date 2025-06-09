@@ -82,6 +82,49 @@ class Sumario extends StatelessWidget {
             ),
           ),
           Divider(),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Total:",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "R\$ ${valorTotal.toStringAsFixed(2)}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          if (paymentMethod == "Cartão de crédito")
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Pagamento Parcelado:",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "${selectedMonth}x de R\$ ${(valorTotal / selectedMonth).toStringAsFixed(2).replaceAll('.', ',')}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
           SizedBox(height: 20),
           Container(
             height: 55,
@@ -94,7 +137,10 @@ class Sumario extends StatelessWidget {
               onPressed: () async {
                 prosseguir(valorTotal);
               },
-              child: Text("Finalizar Compra", style: TextStyle(color: Colors.white),),
+              child: Text(
+                "Finalizar Compra",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
           SizedBox(height: 40),

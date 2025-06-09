@@ -93,103 +93,52 @@ class PedidosPageState extends State<PedidosPage> {
                                     ),
                                     SizedBox(height: 10),
                                     Divider(),
+                                    SizedBox(height: 10),
                                     Text(
                                       "Local de Entrega",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    SizedBox(height: 10),
+                                    SizedBox(height: 8),
                                     Container(
-                                      height: 400,
-                                      width: 400,
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: GridView(
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              childAspectRatio: 3,
-                                            ),
+                                      width: double.infinity,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Text("Rua"),
-                                                Spacer(),
-                                                Text(pedidos[index].rua),
-                                              ],
-                                            ),
+                                          _infoChip("Rua", pedidos[index].rua),
+                                          SizedBox(height: 8),
+                                          _infoChip(
+                                            "Número",
+                                            pedidos[index].numero,
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Text("Número"),
-                                                Spacer(),
-                                                Text(pedidos[index].numero),
-                                              ],
-                                            ),
+                                          SizedBox(height: 8),
+                                          _infoChip(
+                                            "Complemento",
+                                            pedidos[index].complemento ?? "N/A",
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Text("Complemento"),
-                                                Spacer(),
-                                                Text(
-                                                  pedidos[index].complemento ??
-                                                      "N/A",
-                                                ),
-                                              ],
-                                            ),
+                                          SizedBox(height: 8),
+                                          _infoChip("CEP", pedidos[index].cep),
+                                          SizedBox(height: 8),
+                                          _infoChip(
+                                            "Bairro",
+                                            pedidos[index].bairro,
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Text("CEP"),
-                                                Spacer(),
-                                                Text(pedidos[index].cep),
-                                              ],
-                                            ),
+                                          SizedBox(height: 8),
+                                          _infoChip(
+                                            "Cidade",
+                                            pedidos[index].cidade,
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Text("Bairro"),
-                                                Spacer(),
-                                                Text(pedidos[index].bairro),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Text("Cidade"),
-                                                Spacer(),
-                                                Text(pedidos[index].cidade),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Text("Estado"),
-                                                Spacer(),
-                                                Text(pedidos[index].estado),
-                                              ],
-                                            ),
+                                          SizedBox(height: 8),
+                                          _infoChip(
+                                            "Estado",
+                                            pedidos[index].estado,
                                           ),
                                         ],
                                       ),
                                     ),
+                                    Spacer(),
                                     Expanded(
                                       child: Row(
                                         children: [
@@ -347,4 +296,28 @@ class StatusChips extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _infoChip(String label, String value) {
+  return Container(
+    width: double.infinity, 
+    padding: EdgeInsets.all(8),
+    margin: EdgeInsets.only(bottom: 8),
+    decoration: BoxDecoration(
+      color: Colors.grey.shade200,
+      borderRadius: BorderRadius.circular(8),
+    ),
+    child: RichText(
+      text: TextSpan(
+        style: TextStyle(color: Colors.black),
+        children: [
+          TextSpan(
+            text: "$label: ",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextSpan(text: value),
+        ],
+      ),
+    ),
+  );
 }
